@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import CompanyName from "./CompanyName";
-import { headerOptions } from "../../utils/constants/navbarConstants";
+import { headerOptions } from "../../constants/navbarConstants";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const SidebarDrawer = ({ open, handleDrawerToggle }) => {

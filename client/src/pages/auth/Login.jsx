@@ -7,7 +7,9 @@ import CustomLinkPrimary from "../../components/common/CustomLinkPrimary";
 import {
   defaultLoginUserForm,
   loginFormFields,
-} from "../../utils/constants/userConstants";
+} from "../../constants/userConstants";
+import axiosPublic from "../../config/axios";
+import { ENDPOINTS } from "../../constants/endpoints";
 
 const Login = () => {
   const [formData, setFormData] = useState(defaultLoginUserForm);
@@ -18,8 +20,14 @@ const Login = () => {
     })(e.target.name, e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
+    try {
+      const response=await axiosPublic.post(ENDPOINTS.login,formData);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -1,20 +1,20 @@
-import { Box } from '@mui/material'
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Box } from "@mui/material";
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const Main = () => {
   return (
-    <Box 
-        sx={{
-           flexGrow:1,
-           px:{
-            xs:"16px"
-           } 
-        }}
+    <Box
+      sx={{
+        flexGrow: 1,
+        px: {
+          xs: "16px",
+        },
+      }}
     >
-        <Outlet/>
+      <Outlet />
     </Box>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

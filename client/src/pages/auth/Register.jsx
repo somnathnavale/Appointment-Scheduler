@@ -4,7 +4,7 @@ import { useState } from "react";
 import {
   defaultRegisterUserForm,
   registerFormFields,
-} from "../../utils/constants/userConstants";
+} from "../../constants/userConstants";
 import Layout from "./Layout";
 import CustomLinkPrimary from "../../components/common/CustomLinkPrimary";
 import CustomButton from "../../components/common/CustomButton";
