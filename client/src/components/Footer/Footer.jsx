@@ -6,8 +6,8 @@ const Footer = () => {
       <Typography
         variant="inherit"
         sx={{
-          color: "primary.main",
-          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+          color: "grey.700",
+          bgcolor:"grey.100",
           textAlign: "center",
           p: 1,
         }}

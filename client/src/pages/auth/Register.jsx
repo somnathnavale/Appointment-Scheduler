@@ -9,12 +9,22 @@ import Layout from "./Layout";
 import CustomLinkPrimary from "../../components/common/CustomLinkPrimary";
 import CustomButton from "../../components/common/CustomButton";
 import GenerateFormFields from "../../components/common/GenerateFormFields";
+import axiosPublic from "../../config/axios";
+import { ENDPOINTS } from "../../constants/endpoints";
+import { STATUS, defaultInfo } from "../../constants/common";
 
 const Register = () => {
+  const [info, setInfo] = useState(defaultInfo);
   const [formData, setFormData] = useState(defaultRegisterUserForm);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await axiosPublic.post(ENDPOINTS.registerUser, formData);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChange = (e) => {
@@ -23,11 +33,10 @@ const Register = () => {
     })(e.target.name, e.target.value);
   };
 
-  const columnCalculator=(name)=>{
-    if(name==="firstname" || name==="lastname")
-      return 6;
+  const columnCalculator = (name) => {
+    if (name === "firstname" || name === "lastname") return 6;
     return 12;
-  }
+  };
 
   return (
     <Layout>
@@ -44,7 +53,7 @@ const Register = () => {
         <CustomLinkPrimary linkText="Sign in" url="/login" style={{ ml: 1 }} />
       </Box>
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={2} sx={{mt:2}}>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
           {registerFormFields.map((field) => (
             <Grid item key={field.name} xs={columnCalculator(field.name)}>
               <GenerateFormFields
@@ -58,9 +67,11 @@ const Register = () => {
           ))}
         </Grid>
         <CustomButton
-          btnText={"Create account"}
-          color="primary"
+          btnText={
+            info.status === STATUS.LOADING ? "Logging In..." : "Create account"
+          }
           style={{ mt: 2 }}
+          disabled={info.status === STATUS.LOADING}
         />
       </form>
     </Layout>

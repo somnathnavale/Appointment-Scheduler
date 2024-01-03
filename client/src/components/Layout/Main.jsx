@@ -7,9 +7,9 @@ const Main = () => {
     <Box
       sx={{
         flexGrow: 1,
-        px: {
-          xs: "16px",
-        },
+        // px: {
+        //   xs: "16px",
+        // },
       }}
     >
       <Outlet />

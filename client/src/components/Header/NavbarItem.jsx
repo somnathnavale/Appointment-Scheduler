@@ -1,4 +1,4 @@
-import { Box, ListItemButton, alpha } from "@mui/material";
+import { Box, ListItem, alpha } from "@mui/material";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -7,16 +7,20 @@ const NavbarItem = ({item}) => {
     const location=useLocation();
     
     function isActiveLink(url) {
-        return location.pathname.includes(url);
+      if(location.pathname!=="/"){
+        return location.pathname.includes(url) && url!=="/";
+      }
+      return url===location.pathname;
     }
     
     return (
-    <ListItemButton
+    <ListItem
       key={item.name}
       onClick={() => {
         navigate(`${item.url}`);
       }}
       sx={{
+        cursor:"pointer",
         color: "grey.700",
         position: "relative",
         "&::before": {
@@ -54,7 +58,7 @@ const NavbarItem = ({item}) => {
       }}
     >
       <Box component="span">{item.name} </Box>
-    </ListItemButton>
+    </ListItem>
   );
 };
 
