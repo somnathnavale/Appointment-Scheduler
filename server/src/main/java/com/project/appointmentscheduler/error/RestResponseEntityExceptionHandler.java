@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ErrorMessage> usernameNotFoundExceptionHandler(UsernameNotFoundException exception){
+    public ResponseEntity<ErrorMessage> handleUsernameNotFound(UsernameNotFoundException exception){
         ErrorMessage errorMessage=new ErrorMessage(HttpStatus.BAD_REQUEST,exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
@@ -32,6 +33,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                         .map(err -> err.getDefaultMessage())
                         .collect(Collectors.joining(", ")));
 
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorMessage> handleBadCredential(BadCredentialsException e){
+        ErrorMessage errorMessage=new ErrorMessage(HttpStatus.BAD_REQUEST,"Please Provide Valid Credentials");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 }
