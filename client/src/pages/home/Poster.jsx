@@ -30,18 +30,18 @@ const Poster = () => {
           <Typography
             variant="h2"
             gutterBottom
-            sx={{ maxWidth: { sm: "75%" }, color: "secondary.dark" }}
+            sx={{ maxWidth: { sm: "75%" } }}
           >
-            Schedule using Calendify
+            <Typography variant="span" color= "text.secondary">Schedule using</Typography> Calendify
           </Typography>
-          <Typography variant="body1" paragraph>
+          <Typography variant="body1" paragraph color="text.disabled">
             Planning made easy! Schedule appointments effortlessly, stay
             organized, and boost productivity with our user-friendly website
           </Typography>
           <CustomButton
             btnText="Schedule"
             type="button"
-            color="primary"
+            color="secondary"
             style={{ width: "auto" }}
             onClick={() => navigate("/schedule")}
           />

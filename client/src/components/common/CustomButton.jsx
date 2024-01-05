@@ -13,7 +13,6 @@ const CustomButton = (props) => {
         fontSize: "16px",
         ...style,
         "&.Mui-disabled": {
-          // backgroundColor: disabled ? (color ? color.darker : "primary.darker") : (color ? color.main : "primary.main"),
           color:"text.secondary"
         }
       }}

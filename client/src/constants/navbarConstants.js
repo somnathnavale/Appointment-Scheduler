@@ -4,8 +4,12 @@ export const headerOptions=[
     url:"/",
   },
   {
-    name:"About",
-    url:"/about",
+    name:"Schedule",
+    url:"/schedule",
+  },
+  {
+    name:"My Appointments",
+    url:"/meetings",
   },
   {
     name:"Profile",

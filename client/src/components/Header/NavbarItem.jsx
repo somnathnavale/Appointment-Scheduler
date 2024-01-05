@@ -23,6 +23,7 @@ const NavbarItem = ({item}) => {
         cursor:"pointer",
         color: "grey.700",
         position: "relative",
+        whiteSpace:"nowrap",
         "&::before": {
           content: `""`,
           position: "absolute",

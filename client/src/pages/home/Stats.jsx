@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
 import Layout from "./Layout";
 import meeting from "../../assets/meeting.png";
@@ -23,7 +23,7 @@ const Stats = () => {
     >
       <Box>
         <Typography variant="h3">Appointment Statistics</Typography>
-        <Typography variant="body1" sx={{ color: "grey.500" }}>
+        <Typography variant="body1" sx={{ color: "text.secondary" }}>
           Total appointment schedule on calendify
         </Typography>
         <Grid
@@ -33,29 +33,33 @@ const Stats = () => {
           sx={{ mt: 2 }}
           columnGap={4}
         >
-          <Grid item xs={12} sm={3} sx={styles.gridItem}>
-            <Box sx={styles.imageWrapper}>
-              <img src={meeting} style={styles.image} />
-            </Box>
-            <Box>
+          <Grid item xs={12} sm={3}>
+            <Paper elevation={2} sx={styles.gridItem}>
+              <Box sx={styles.imageWrapper}>
+                <img src={meeting} style={styles.image} />
+              </Box>
+              <Box>
+                <Typography variant="subtitle2" color="grey.700">
+                  In Person Meet
+                </Typography>
+                <Typography variant="body1" color="grey.600">
+                  54
+                </Typography>
+              </Box>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <Paper elevation={2} sx={styles.gridItem}>
+              <Box sx={styles.imageWrapper}>
+                <img src={onlineMeeting} style={styles.image} />
+              </Box>
               <Typography variant="subtitle2" color="grey.700">
-                In Person Meet
+                Video Conference Call
               </Typography>
               <Typography variant="body1" color="grey.600">
-                54
+                30
               </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={3} sx={styles.gridItem}>
-            <Box sx={styles.imageWrapper}>
-              <img src={onlineMeeting} style={styles.image} />
-            </Box>
-            <Typography variant="subtitle2" color="grey.700">
-              Video Conference Call
-            </Typography>
-            <Typography variant="body1" color="grey.600">
-              30
-            </Typography>
+            </Paper>
           </Grid>
         </Grid>
       </Box>
