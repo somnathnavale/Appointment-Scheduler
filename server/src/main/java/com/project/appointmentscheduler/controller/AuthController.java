@@ -1,8 +1,8 @@
 package com.project.appointmentscheduler.controller;
 
-import com.project.appointmentscheduler.dto.ErrorMessage;
 import com.project.appointmentscheduler.dto.LoginRequest;
 import com.project.appointmentscheduler.dto.LoginResponse;
+import com.project.appointmentscheduler.dto.Message;
 import com.project.appointmentscheduler.entity.User;
 import com.project.appointmentscheduler.service.interfaces.AuthService;
 import jakarta.validation.Valid;
@@ -19,9 +19,9 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<ErrorMessage> registerUser(@RequestBody @Valid User user){
-        User registeredUser=authService.registerUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ErrorMessage(HttpStatus.CREATED,"User Registered Successfully"));
+    public ResponseEntity<Message> registerUser(@RequestBody @Valid User user){
+        authService.registerUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new Message(HttpStatus.CREATED,"User Registered Successfully"));
     }
 
     @PostMapping("/login")

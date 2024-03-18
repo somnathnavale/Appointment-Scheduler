@@ -1,4 +1,4 @@
-import { Stack, Typography, alpha } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 const Footer = () => {
   return (

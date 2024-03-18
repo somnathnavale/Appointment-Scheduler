@@ -1,6 +1,6 @@
 package com.project.appointmentscheduler.error;
 
-import com.project.appointmentscheduler.dto.ErrorMessage;
+import com.project.appointmentscheduler.dto.Message;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -19,15 +19,15 @@ import java.util.stream.Collectors;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ErrorMessage> handleUsernameNotFound(UsernameNotFoundException exception){
-        ErrorMessage errorMessage=new ErrorMessage(HttpStatus.BAD_REQUEST,exception.getMessage());
+    public ResponseEntity<Message> handleUsernameNotFound(UsernameNotFoundException exception){
+        Message errorMessage=new Message(HttpStatus.BAD_REQUEST,exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 
     @Override
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
-        ErrorMessage errorMessage=new ErrorMessage(
+        Message errorMessage=new Message(
                 HttpStatus.BAD_REQUEST,
                 ex.getBindingResult().getFieldErrors().stream()
                         .map(err -> err.getDefaultMessage())
@@ -37,8 +37,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ErrorMessage> handleBadCredential(BadCredentialsException e){
-        ErrorMessage errorMessage=new ErrorMessage(HttpStatus.BAD_REQUEST,"Please Provide Valid Credentials");
+    public ResponseEntity<Message> handleBadCredential(BadCredentialsException e){
+        Message errorMessage=new Message(HttpStatus.BAD_REQUEST,"Please Provide Valid Credentials");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 }

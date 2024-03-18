@@ -3,13 +3,13 @@ import React from "react";
 import poster from "../../assets/homeposter.jpg";
 import CustomButton from "../../components/common/CustomButton";
 import { useNavigate } from "react-router-dom";
-import Layout from "./Layout";
+import InnerLayout from "../../components/Layout/InnerLayout";
 
 const Poster = () => {
   const navigate = useNavigate();
 
   return (
-    <Layout bgcolor="#fff">
+    <InnerLayout bgcolor="#fff">
       <Box
         sx={{
           display: "flex",
@@ -63,7 +63,7 @@ const Poster = () => {
           />
         </Box>
       </Box>
-    </Layout>
+    </InnerLayout>
   );
 };
 

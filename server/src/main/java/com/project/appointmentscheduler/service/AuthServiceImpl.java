@@ -7,7 +7,6 @@ import com.project.appointmentscheduler.repository.UserRepository;
 import com.project.appointmentscheduler.service.interfaces.AuthService;
 import com.project.appointmentscheduler.service.interfaces.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,6 +40,6 @@ public class AuthServiceImpl implements AuthService {
         User user=userRepository.findByEmail(loginBody.getEmail()).orElseThrow(()->new UsernameNotFoundException("User Not Found"));
         String token= jwtService.generateToken(user);
 
-        return LoginResponse.builder().token(token).firstname(user.getFirstname()).lastname(user.getLastname()).email(user.getEmail()).build();
+        return LoginResponse.builder().token(token).firstname(user.getFirstname()).lastname(user.getLastname()).email(user.getEmail()).userId(user.getUserId()).build();
     }
 }

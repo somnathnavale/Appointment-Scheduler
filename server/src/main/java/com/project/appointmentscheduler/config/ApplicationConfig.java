@@ -1,6 +1,5 @@
 package com.project.appointmentscheduler.config;
 
-import com.project.appointmentscheduler.service.UserServiceImpl;
 import com.project.appointmentscheduler.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

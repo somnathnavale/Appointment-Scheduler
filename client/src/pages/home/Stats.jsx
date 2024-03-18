@@ -1,8 +1,8 @@
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
-import Layout from "./Layout";
 import meeting from "../../assets/meeting.png";
 import onlineMeeting from "../../assets/onlinemeeting.png";
+import InnerLayout from "../../components/Layout/InnerLayout";
 
 const styles = {
   gridItem: { bgcolor: "#fff", boxShadow: "", borderRadius: 4, p: 2 },
@@ -17,7 +17,7 @@ const styles = {
 
 const Stats = () => {
   return (
-    <Layout
+    <InnerLayout
       bgcolor="grey.200"
       style={{ py: 4, textAlign: "center", color: "primary.main" }}
     >
@@ -63,7 +63,7 @@ const Stats = () => {
           </Grid>
         </Grid>
       </Box>
-    </Layout>
+    </InnerLayout>
   );
 };
 

@@ -5,6 +5,8 @@ import Login from "../pages/auth/Login";
 import PersistedLayer from "../components/Layout/PersistedLayer";
 import Profile from "../pages/profile/profile";
 import Home from "../pages/home/Home";
+import Schedule from "../pages/schedule/Schedule";
+import AuthLayout from "../components/Layout/AuthLayout";
 
 function App() {
   return (
@@ -14,7 +16,10 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home/>} />
-          <Route path="profile" element={<Profile/>}/>
+          <Route element={<AuthLayout/>}>
+            <Route path="profile" element={<Profile/>}/>
+          </Route>
+          <Route path="schedule" element={<Schedule/>}/>
           <Route path="*" element={<div>Not Found</div>} />
         </Route>
       </Route>

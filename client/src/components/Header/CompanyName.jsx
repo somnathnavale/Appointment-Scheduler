@@ -1,10 +1,12 @@
 import { Icon, Stack, Typography } from "@mui/material";
 import EventAvailableRoundedIcon from "@mui/icons-material/EventAvailableRounded";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const CompanyName = () => {
+  const navigate =useNavigate();
   return (
-    <Stack direction="row">
+    <Stack direction="row" onClick={()=>navigate('/')} sx={{cursor:"pointer"}}>
       <Icon
         sx={{
           mr: 0.5,

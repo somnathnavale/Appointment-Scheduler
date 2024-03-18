@@ -30,7 +30,7 @@ const NavbarItem = ({item}) => {
           left: "0px",
           width: "4px",
           height: "4px",
-          border: "2px solid red",
+          border: "3px solid red",
           borderRadius: "50%",
           display: "none",
         },

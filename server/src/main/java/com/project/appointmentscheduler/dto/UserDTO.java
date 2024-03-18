@@ -1,14 +1,18 @@
 package com.project.appointmentscheduler.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorMessage {
-    private HttpStatus status;
-    private String message;
+@Builder
+public class UserDTO {
+    Long userId;
+    String firstname;
+    String lastname;
+    String email;
 }
+

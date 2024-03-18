@@ -5,7 +5,6 @@ const CustomButton = (props) => {
   const { btnText, onClick, type, color, variant, style, disabled } = props;
   return (
     <Button
-      fullWidth
       variant={variant ? variant : "contained"}
       color={color ? color : "primary"}
       type={type ? type : "submit"}

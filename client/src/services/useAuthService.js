@@ -1,4 +1,3 @@
-import React from 'react'
 import axiosPublic from "../config/axios";
 import { ENDPOINTS } from '../constants/endpoints';
 
