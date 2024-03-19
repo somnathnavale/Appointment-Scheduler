@@ -21,7 +21,7 @@ export const userForm = [
     required: true,
     type: "email",
     defaultValue: "",
-    forms: ["register", "update", "login"],
+    forms: ["register", "login"],
   },
   {
     name: "password",
@@ -29,7 +29,7 @@ export const userForm = [
     required: true,
     type: "password",
     defaultValue: "",
-    forms: ["register", "update", "login"],
+    forms: ["register", "login","change"],
   },
 ];
 
@@ -56,6 +56,27 @@ export const defaultLoginUserForm = userForm
 
 export const loginFormFields = userForm
   .filter((elem) => elem.forms.indexOf("login") !== -1)
+  .map((obj) => {
+    const { forms, ...rest } = obj;
+    return rest;
+  });
+
+  export const defaultUpdateUserForm = userForm
+  .filter((elem) => elem.forms.indexOf("update") !== -1)
+  .reduce((acc, curr) => {
+    acc[curr.name] = curr.defaultValue;
+    return acc;
+  }, {});
+
+export const updateUserFormFields = userForm
+  .filter((elem) => elem.forms.indexOf("update") !== -1)
+  .map((obj) => {
+    const { forms, ...rest } = obj;
+    return rest;
+  });
+
+  export const changePasswordFormFields = userForm
+  .filter((elem) => elem.forms.indexOf("change") !== -1)
   .map((obj) => {
     const { forms, ...rest } = obj;
     return rest;

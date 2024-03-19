@@ -2,7 +2,6 @@ package com.project.appointmentscheduler.dto;
 
 import com.project.appointmentscheduler.entity.AppointmentType;
 import com.project.appointmentscheduler.entity.Occurrence;
-import com.project.appointmentscheduler.entity.Status;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -40,7 +39,4 @@ public class SaveAppointmentRequestDTO {
     private Occurrence occurrence;
 
     private String location;
-
-    @NotNull(message = "Appointment Status is required field")
-    private Status status;
 }

@@ -9,7 +9,7 @@ export const headerOptions=[
   },
   {
     name:"My Appointments",
-    url:"/meetings",
+    url:"/appointments",
   },
   {
     name:"Profile",

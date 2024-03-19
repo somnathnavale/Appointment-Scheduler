@@ -1,6 +1,6 @@
 package com.project.appointmentscheduler.repository;
 
-import com.project.appointmentscheduler.dto.GetAppointmentResponseDTO;
+import com.project.appointmentscheduler.dto.MeetStatsProjection;
 import com.project.appointmentscheduler.entity.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +24,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
 
     @Query(value = "Select * FROM appointment WHERE scheduled_by=:userId OR scheduled_with=:userId",nativeQuery = true)
     public List<Appointment> findAllByUserId(Long userId);
+
+    @Query(value= "SELECT type, count(type) as count FROM appointment group by type", nativeQuery = true)
+    public List<MeetStatsProjection> getAppointmentStats();
 }

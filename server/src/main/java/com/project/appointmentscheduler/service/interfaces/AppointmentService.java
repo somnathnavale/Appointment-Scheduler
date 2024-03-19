@@ -1,8 +1,9 @@
 package com.project.appointmentscheduler.service.interfaces;
 
+import com.project.appointmentscheduler.dto.GetAllAppointmentResponseDTO;
 import com.project.appointmentscheduler.dto.GetAppointmentResponseDTO;
+import com.project.appointmentscheduler.dto.MeetStatsProjection;
 import com.project.appointmentscheduler.dto.SaveAppointmentRequestDTO;
-import com.project.appointmentscheduler.entity.Appointment;
 
 import java.util.List;
 
@@ -11,5 +12,7 @@ public interface AppointmentService {
 
     GetAppointmentResponseDTO saveAppointment(SaveAppointmentRequestDTO saveAppointmentRequestDTO);
 
-    List<GetAppointmentResponseDTO> getAllAppointmentsByUser(Long scheduledBy,Long scheduledWith);
+    GetAllAppointmentResponseDTO getAllAppointmentsByUser(Long scheduledBy, Long scheduledWith);
+
+    List<MeetStatsProjection> getMeetStats();
 }

@@ -2,8 +2,20 @@ import { TextField } from "@mui/material";
 import React from "react";
 
 const CustomTextField = (props) => {
-  const { placeHolder, type, name, value, onChange, style, required,autoComplete, variant,InputLabelProps } = props;
-  
+  const {
+    placeHolder,
+    type,
+    name,
+    value,
+    onChange,
+    style,
+    required,
+    autoComplete,
+    variant,
+    InputLabelProps,
+    disabled,
+  } = props;
+
   return (
     <TextField
       variant={variant ? variant : "outlined"}
@@ -16,6 +28,7 @@ const CustomTextField = (props) => {
       sx={{
         ...style,
       }}
+      disabled={disabled}
       required={required}
       autoComplete={autoComplete}
       InputLabelProps={InputLabelProps}

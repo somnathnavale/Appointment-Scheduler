@@ -22,10 +22,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        String[] urls= {"/api/auth/**","/api/common/**"};
 
         http.csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth->
-                        auth.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated())
+                        auth.requestMatchers(urls).permitAll()
+                                .anyRequest().authenticated())
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(provider);
 

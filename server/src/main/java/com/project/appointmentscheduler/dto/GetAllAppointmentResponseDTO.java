@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class GetAllAppointmentResponseDTO {
-    List<Appointment> commonAppointments;
-    List<Appointment> otherAppointments;
+    List<GetAppointmentResponseDTO> commonAppointments;
+    List<GetAppointmentResponseDTO> otherAppointments;
 }

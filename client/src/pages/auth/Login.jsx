@@ -95,7 +95,7 @@ const Login = () => {
         />
         <CustomButton
           btnText={info.status === STATUS.LOADING ? "Logging in..." : "Login"}
-          style={{ mt: 2 }}
+          style={{ mt: 2,width:"100%" }}
           disabled={info.status === STATUS.LOADING}
         />
       </form>

@@ -1,8 +1,9 @@
 import { Box, Grid, Paper, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import meeting from "../../assets/meeting.png";
 import onlineMeeting from "../../assets/onlinemeeting.png";
 import InnerLayout from "../../components/Layout/InnerLayout";
+import axiosPublic from "../../config/axios";
 
 const styles = {
   gridItem: { bgcolor: "#fff", boxShadow: "", borderRadius: 4, p: 2 },
@@ -16,6 +17,24 @@ const styles = {
 };
 
 const Stats = () => {
+  const [stats,setStats]=useState({});
+
+  useEffect(()=>{
+    async function fetchStats(){
+      try {
+        const response= await axiosPublic.get("/api/common/meet-stats");
+        const statsObj = response.data.reduce((acc,curr)=>{
+          acc[curr.type]=curr.count;
+          return acc;
+        },{});
+        setStats(statsObj);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchStats();
+  },[])
+
   return (
     <InnerLayout
       bgcolor="grey.200"
@@ -43,7 +62,7 @@ const Stats = () => {
                   In Person Meet
                 </Typography>
                 <Typography variant="body1" color="grey.600">
-                  54
+                  {stats?.IN_PERSON}
                 </Typography>
               </Box>
             </Paper>
@@ -54,10 +73,10 @@ const Stats = () => {
                 <img src={onlineMeeting} style={styles.image} />
               </Box>
               <Typography variant="subtitle2" color="grey.700">
-                Video Conference Call
+                Virtual Meet UP
               </Typography>
               <Typography variant="body1" color="grey.600">
-                30
+              {stats?.VIRTUAL_MEET}
               </Typography>
             </Paper>
           </Grid>

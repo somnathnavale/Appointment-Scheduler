@@ -12,18 +12,25 @@ import GenerateFormFields from "../../components/common/GenerateFormFields";
 import axiosPublic from "../../config/axios";
 import { ENDPOINTS } from "../../constants/endpoints";
 import { STATUS, defaultInfo } from "../../constants/common";
+import { ErrorHandler } from "../../helpers/asyncHandler";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [info, setInfo] = useState(defaultInfo);
   const [formData, setFormData] = useState(defaultRegisterUserForm);
 
+  const navigate=useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setInfo({ status: STATUS.LOADING, message: "Registering User..." });
     try {
-      const response = await axiosPublic.post(ENDPOINTS.registerUser, formData);
-      console.log(response.data);
+      await axiosPublic.post(ENDPOINTS.registerUser, formData);
+      setInfo({ status: STATUS.SUCCESS, message: "" });
+      navigate("/login");
     } catch (error) {
-      console.log(error);
+      const errObj = ErrorHandler(error);
+      setInfo({ status: STATUS.ERROR, message: errObj.message });
     }
   };
 

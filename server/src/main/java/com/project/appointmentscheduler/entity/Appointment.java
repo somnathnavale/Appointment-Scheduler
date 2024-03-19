@@ -50,8 +50,4 @@ public class Appointment {
     private AppointmentType type;
 
     private String location;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status;
 }

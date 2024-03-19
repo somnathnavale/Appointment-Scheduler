@@ -1,6 +1,9 @@
 package com.project.appointmentscheduler.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.appointmentscheduler.dto.GetAllAppointmentResponseDTO;
 import com.project.appointmentscheduler.dto.GetAppointmentResponseDTO;
+import com.project.appointmentscheduler.dto.MeetStatsProjection;
 import com.project.appointmentscheduler.dto.SaveAppointmentRequestDTO;
 import com.project.appointmentscheduler.entity.Appointment;
 import com.project.appointmentscheduler.entity.AppointmentInstance;
@@ -81,7 +84,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         scheduledWithUser.ifPresent(appointment::setScheduledWith);
 
         Appointment saved = appointmentRepository.save(appointment);
-        System.out.println("appointment is" + appointment);
+
         List<AppointmentInstance> appointmentInstanceList = new ArrayList<>();
 
         for (int i = 0; i < instances; i++) {
@@ -98,21 +101,36 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         instanceRepository.saveAll(appointmentInstanceList);
 
-
-        return null;
+        GetAppointmentResponseDTO responseDTO = modelMapper.map(appointment,GetAppointmentResponseDTO.class);
+        responseDTO.setAppointmentInstances(appointmentInstanceList);
+        return responseDTO;
     }
 
     @Override
-    public List<GetAppointmentResponseDTO> getAllAppointmentsByUser(Long scheduledBy, Long scheduledWith) {
+    public GetAllAppointmentResponseDTO getAllAppointmentsByUser(Long scheduledBy, Long scheduledWith) {
         List<Appointment> allAppointments = appointmentRepository.findAllByUserId(scheduledWith);
 
         //find common appointments
         List<GetAppointmentResponseDTO> commonAppointments = allAppointments.stream().filter(appointment -> (appointment.getScheduledBy().getUserId() == scheduledBy || appointment.getScheduledWith().getUserId() == scheduledBy)
         ).map(appointment -> modelMapper.map(appointment, GetAppointmentResponseDTO.class)).toList();
 
-        return commonAppointments;
+        List<GetAppointmentResponseDTO> otherPrivateAppointments=  allAppointments.stream().filter(appointment -> (appointment.getScheduledBy().getUserId() != scheduledBy && appointment.getScheduledWith().getUserId() != scheduledBy)
+        ).map(appointment -> convertAppointmentToPrivateAppointment(appointment)).toList();
+
+        GetAllAppointmentResponseDTO responseDTO= new GetAllAppointmentResponseDTO(commonAppointments,otherPrivateAppointments);
+        return responseDTO;
     }
 
+    @Override
+    public List<MeetStatsProjection> getMeetStats() {
+        return appointmentRepository.getAppointmentStats();
+    }
+
+    private GetAppointmentResponseDTO convertAppointmentToPrivateAppointment(Appointment appointment){
+        GetAppointmentResponseDTO responseDTO = GetAppointmentResponseDTO.builder().appointmentId(appointment.getAppointmentId()).title("Scheduled With Another User").description("busy").appointmentInstances(appointment.getAppointmentInstances()).build();
+
+        return responseDTO;
+    }
     private boolean isAppointmentsOverlapping(LocalDateTime startDateTime, LocalDateTime endDateTime, int instances, int daysGap, Long scheduledBy, Long scheduledWith) {
 
         List<LocalDateTime> startTimesList = new ArrayList<>();

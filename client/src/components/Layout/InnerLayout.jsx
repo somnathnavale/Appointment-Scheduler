@@ -1,11 +1,12 @@
 import React from 'react'
 import { Box } from "@mui/material";
 
-const InnerLayout = ({children,bgcolor,style}) => {
+const InnerLayout = ({children,bgcolor,style,height}) => {
     return (
       <Box
         sx={{
           bgcolor: bgcolor,
+          height:height ?? 'auto'
         }}
       >
         <Box

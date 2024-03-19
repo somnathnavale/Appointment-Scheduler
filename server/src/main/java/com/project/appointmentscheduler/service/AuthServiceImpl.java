@@ -1,11 +1,14 @@
 package com.project.appointmentscheduler.service;
 
+import com.project.appointmentscheduler.dto.ChangePasswordDTO;
 import com.project.appointmentscheduler.dto.LoginRequest;
 import com.project.appointmentscheduler.dto.LoginResponse;
+import com.project.appointmentscheduler.dto.UserDTO;
 import com.project.appointmentscheduler.entity.User;
 import com.project.appointmentscheduler.repository.UserRepository;
 import com.project.appointmentscheduler.service.interfaces.AuthService;
 import com.project.appointmentscheduler.service.interfaces.JwtService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,5 +44,13 @@ public class AuthServiceImpl implements AuthService {
         String token= jwtService.generateToken(user);
 
         return LoginResponse.builder().token(token).firstname(user.getFirstname()).lastname(user.getLastname()).email(user.getEmail()).userId(user.getUserId()).build();
+    }
+
+    @Override
+    public void changePassword(ChangePasswordDTO passwordDTO) {
+        User user = userRepository.findById(passwordDTO.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found with given id"));
+
+        user.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
+        userRepository.save(user);
     }
 }
