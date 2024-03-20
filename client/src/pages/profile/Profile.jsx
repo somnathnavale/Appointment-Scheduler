@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import InnerLayout from "../../components/Layout/InnerLayout";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, alpha } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../components/common/CustomButton";
 import GenerateFormFields from "../../components/common/GenerateFormFields";
@@ -16,6 +16,8 @@ import axiosPublic from "../../config/axios";
 import { ErrorHandler } from "../../helpers/asyncHandler";
 import ErrorSnackbar from "../../components/common/ErrorSnackbar";
 import { setUser } from "../../features/user/userSlice";
+import { useTheme } from "@emotion/react";
+import useLogout from "../../hooks/useLogout";
 
 const Profile = () => {
   const [info, setInfo] = useState(defaultInfo);
@@ -26,6 +28,8 @@ const Profile = () => {
 
   const axios = useAxios(axiosPublic);
   const dispatch =useDispatch();
+
+  const handleLogout = useLogout();
 
   useEffect(() => {
     setFormData((prev) => ({ ...prev, ...user }));
@@ -161,6 +165,17 @@ const Profile = () => {
             </Grid>
           </form>
         </Box>
+        <CustomButton
+          btnText="Logout"
+          style={{
+            width: "100%",
+            mt:4
+          }}
+          variant="outlined"
+          color="error"
+          disabled={info.status === STATUS.LOADING}
+          onClick={handleLogout}
+        />
       </Box>
     </InnerLayout>
   );

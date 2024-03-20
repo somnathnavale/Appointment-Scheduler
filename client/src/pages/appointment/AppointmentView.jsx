@@ -2,32 +2,38 @@ import { Box, Button,alpha } from "@mui/material";
 import React from "react";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import CustomButton from "../../components/common/CustomButton";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setPageView, setSelectedEvent } from "../../features/schedule/scheduleSlice";
+import { Page } from "../../constants/common";
 
-const AppointmentView = ({ appointment }) => {
-  const navigate = useNavigate();
+const AppointmentView = () => {
+
+  const {selectedEvent:appointment} =useSelector((store)=>store.schedule);
+
+  const dispatch=useDispatch();
+  const goBack=()=>{
+    dispatch(setPageView(Page.CALENDER));
+    dispatch(setSelectedEvent(null));
+  }
+
   return (
     <Box>
-
-    
     <Box sx={{bgcolor:(theme) => alpha(theme.palette.secondary.lighter, 0.25)}}>
       <Box sx={{ p: 1, display: "flex", justifyContent: "space-between" }}>
         <ArrowBackRoundedIcon
           sx={{
             color: "primary.main",
-            border:"1px solid red",
             borderColor: "primary.main",
             cursor: "pointer",
             fontSize: "40px",
-            borderRadius: "50%",
             ":hover":{
                 opacity:"80%"
             }
           }}
+          onClick={goBack}
         />
         <CustomButton
           btnText="Edit Appointment"
-          onClick={() => navigate("edit")}
           type="secondary"
           variant="outlined"
           color="secondary"

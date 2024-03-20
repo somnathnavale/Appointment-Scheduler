@@ -22,7 +22,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
             @Param("p_scheduled_with") Long scheduledWith
     );
 
-    @Query(value = "Select * FROM appointment WHERE scheduled_by=:userId OR scheduled_with=:userId",nativeQuery = true)
+    @Query(
+            value = "Select * FROM appointment WHERE scheduled_by=:userId OR scheduled_with=:userId",
+            nativeQuery = true
+    )
     public List<Appointment> findAllByUserId(Long userId);
 
     @Query(value= "SELECT type, count(type) as count FROM appointment group by type", nativeQuery = true)

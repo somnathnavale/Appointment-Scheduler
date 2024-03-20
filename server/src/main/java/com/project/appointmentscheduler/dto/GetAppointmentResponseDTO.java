@@ -2,6 +2,7 @@ package com.project.appointmentscheduler.dto;
 
 import com.project.appointmentscheduler.entity.AppointmentInstance;
 import com.project.appointmentscheduler.entity.AppointmentType;
+import com.project.appointmentscheduler.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

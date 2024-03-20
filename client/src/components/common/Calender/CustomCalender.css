@@ -8,5 +8,8 @@
 
 .rbc-events-container:hover{
     cursor: pointer!important;
-    /* border: 2px dotted blue!important;  */
 }
+
+/* .rbc-event{
+    padding:0px !important;
+} */

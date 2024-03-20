@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -25,6 +27,12 @@ public class UserController {
         userService.updateUser(user);
         Message message=new Message(HttpStatus.OK,"User Updated Successfully");
         return ResponseEntity.ok(message);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<UserDTO>> getAllUsers(){
+        List<UserDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
 }

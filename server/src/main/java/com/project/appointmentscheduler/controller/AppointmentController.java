@@ -1,10 +1,8 @@
 package com.project.appointmentscheduler.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.project.appointmentscheduler.dto.GetAllAppointmentResponseDTO;
 import com.project.appointmentscheduler.dto.GetAppointmentResponseDTO;
 import com.project.appointmentscheduler.dto.SaveAppointmentRequestDTO;
-import com.project.appointmentscheduler.dto.Views;
 import com.project.appointmentscheduler.service.interfaces.AppointmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
