@@ -21,7 +21,7 @@ const CustomDatePicker = ({
   return (
     <Box
       sx={{
-        bgcolor:"#fff !important",
+        bgcolor: "#fff !important",
         borderRadius: 1,
       }}
     >

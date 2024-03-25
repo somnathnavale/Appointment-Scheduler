@@ -61,11 +61,13 @@ const Header = () => {
             </List>
           ) : (
             <IconButton edge="start" onClick={handleDrawerToggle}>
-              <MenuRoundedIcon sx={{ 
-                color:"secondary.dark", 
-                height: "32px",
-                width: "32px"
-               }} />
+              <MenuRoundedIcon
+                sx={{
+                  color: "secondary.dark",
+                  height: "32px",
+                  width: "32px",
+                }}
+              />
             </IconButton>
           )}
         </Toolbar>

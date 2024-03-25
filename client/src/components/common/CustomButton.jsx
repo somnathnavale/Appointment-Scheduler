@@ -12,8 +12,8 @@ const CustomButton = (props) => {
         fontSize: "16px",
         ...style,
         "&.Mui-disabled": {
-          color:"text.secondary"
-        }
+          color: "text.secondary",
+        },
       }}
       disabled={disabled}
       onClick={onClick}

@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import Layout from "./Layout";
 import { Box, Typography } from "@mui/material";
 import GenerateFormFields from "../../components/common/GenerateFormFields";
@@ -22,8 +22,8 @@ const Login = () => {
   const [info, setInfo] = useState(defaultInfo);
 
   const dispatch = useDispatch();
-  const navigate=useNavigate();
-  const location=useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e) => {
     return ((name, value) => {
@@ -37,10 +37,10 @@ const Login = () => {
       setInfo({ status: STATUS.LOADING, message: "Logging in..." });
       const response = await axiosPublic.post(ENDPOINTS.login, formData);
       dispatch(setUser(response.data));
-      sessionStorage.setItem("user",JSON.stringify(response.data));
+      sessionStorage.setItem("user", JSON.stringify(response.data));
       setInfo({ status: STATUS.SUCCESS, message: "" });
       setFormData(defaultLoginUserForm);
-      const path=location.state?.from || "/home";
+      const path = location.state?.from || "/home";
       navigate(path);
     } catch (error) {
       const errObj = ErrorHandler(error);
@@ -95,7 +95,7 @@ const Login = () => {
         />
         <CustomButton
           btnText={info.status === STATUS.LOADING ? "Logging in..." : "Login"}
-          style={{ mt: 2,width:"100%" }}
+          style={{ mt: 2, width: "100%" }}
           disabled={info.status === STATUS.LOADING}
         />
       </form>

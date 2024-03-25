@@ -7,7 +7,7 @@ const Footer = () => {
         variant="inherit"
         sx={{
           color: "grey.700",
-          bgcolor:"grey.100",
+          bgcolor: "grey.100",
           textAlign: "center",
           p: 1,
         }}

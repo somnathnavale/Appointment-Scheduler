@@ -2,28 +2,28 @@ import { Box, ListItem, alpha } from "@mui/material";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const NavbarItem = ({item}) => {
-    const navigate=useNavigate();
-    const location=useLocation();
-    
-    function isActiveLink(url) {
-      if(location.pathname!=="/"){
-        return location.pathname.includes(url) && url!=="/";
-      }
-      return url===location.pathname;
+const NavbarItem = ({ item }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  function isActiveLink(url) {
+    if (location.pathname !== "/") {
+      return location.pathname.includes(url) && url !== "/";
     }
-    
-    return (
+    return url === location.pathname;
+  }
+
+  return (
     <ListItem
       key={item.name}
       onClick={() => {
         navigate(`${item.url}`);
       }}
       sx={{
-        cursor:"pointer",
+        cursor: "pointer",
         color: "grey.700",
         position: "relative",
-        whiteSpace:"nowrap",
+        whiteSpace: "nowrap",
         "&::before": {
           content: `""`,
           position: "absolute",

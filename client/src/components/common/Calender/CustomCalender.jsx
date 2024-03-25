@@ -1,8 +1,6 @@
 import React, {
-  cloneElement,
   memo,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from "react";

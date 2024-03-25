@@ -32,7 +32,10 @@ const Poster = () => {
             gutterBottom
             sx={{ maxWidth: { sm: "75%" } }}
           >
-            <Typography variant="span" color= "text.secondary">Schedule using</Typography> Calendify
+            <Typography variant="span" color="text.secondary">
+              Schedule using
+            </Typography>{" "}
+            Calendify
           </Typography>
           <Typography variant="body1" paragraph color="text.disabled">
             Planning made easy! Schedule appointments effortlessly, stay

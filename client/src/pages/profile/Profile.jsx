@@ -16,7 +16,6 @@ import axiosPublic from "../../config/axios";
 import { ErrorHandler } from "../../helpers/asyncHandler";
 import ErrorSnackbar from "../../components/common/ErrorSnackbar";
 import { setUser } from "../../features/user/userSlice";
-import { useTheme } from "@emotion/react";
 import useLogout from "../../hooks/useLogout";
 
 const Profile = () => {
@@ -27,7 +26,7 @@ const Profile = () => {
   const [formData, setFormData] = useState(defaultRegisterUserForm);
 
   const axios = useAxios(axiosPublic);
-  const dispatch =useDispatch();
+  const dispatch = useDispatch();
 
   const handleLogout = useLogout();
 
@@ -46,10 +45,10 @@ const Profile = () => {
       userId: formData.userId,
       firstname: formData.firstname,
       lastname: formData.lastname,
-      email:formData.email
+      email: formData.email,
     };
     try {
-      await axios.put(`/api/users/${formData.userId}`,updatedUserObj);
+      await axios.put(`/api/users/${formData.userId}`, updatedUserObj);
       setInfo({ status: STATUS.SUCCESS, message: "" });
       dispatch(setUser(updatedUserObj));
     } catch (error) {
@@ -62,11 +61,14 @@ const Profile = () => {
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
     setInfo({ status: STATUS.LOADING, message: "Changing User Password" });
-    const updatedUserObj = {...formData};
+    const updatedUserObj = { ...formData };
     try {
-      await axios.put(`/api/auth/${formData.userId}/change-password`,updatedUserObj);
+      await axios.put(
+        `/api/auth/${formData.userId}/change-password`,
+        updatedUserObj
+      );
       setInfo({ status: STATUS.SUCCESS, message: "" });
-      setFormData(prev=>({...prev,password:""}));
+      setFormData((prev) => ({ ...prev, password: "" }));
     } catch (error) {
       const errObj = ErrorHandler(error);
       setInfo({ status: STATUS.ERROR, message: errObj.message });
@@ -169,7 +171,7 @@ const Profile = () => {
           btnText="Logout"
           style={{
             width: "100%",
-            mt:4
+            mt: 4,
           }}
           variant="outlined"
           color="error"

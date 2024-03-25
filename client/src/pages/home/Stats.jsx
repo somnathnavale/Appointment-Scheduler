@@ -17,23 +17,23 @@ const styles = {
 };
 
 const Stats = () => {
-  const [stats,setStats]=useState({});
+  const [stats, setStats] = useState({});
 
-  useEffect(()=>{
-    async function fetchStats(){
+  useEffect(() => {
+    async function fetchStats() {
       try {
-        const response= await axiosPublic.get("/api/common/meet-stats");
-        const statsObj = response.data.reduce((acc,curr)=>{
-          acc[curr.type]=curr.count;
+        const response = await axiosPublic.get("/api/common/meet-stats");
+        const statsObj = response.data.reduce((acc, curr) => {
+          acc[curr.type] = curr.count;
           return acc;
-        },{});
+        }, {});
         setStats(statsObj);
       } catch (error) {
         console.log(error);
       }
     }
     fetchStats();
-  },[])
+  }, []);
 
   return (
     <InnerLayout
@@ -76,7 +76,7 @@ const Stats = () => {
                 Virtual Meet UP
               </Typography>
               <Typography variant="body1" color="grey.600">
-              {stats?.VIRTUAL_MEET}
+                {stats?.VIRTUAL_MEET}
               </Typography>
             </Paper>
           </Grid>

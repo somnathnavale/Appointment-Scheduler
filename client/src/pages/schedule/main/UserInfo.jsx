@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import React, { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../../components/common/CustomButton";
@@ -9,7 +9,7 @@ const UserInfo = memo(({selectedUser}) => {
   const { user } = useSelector((store) => store.user);
 
   const dispatch = useDispatch();
-  
+
   return (
     <Stack
       direction="row"

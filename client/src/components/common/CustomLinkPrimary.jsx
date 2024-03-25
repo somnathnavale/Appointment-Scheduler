@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const CustomLinkPrimary = ({ linkText,url,style }) => {
+const CustomLinkPrimary = ({ linkText, url, style }) => {
   const navigate = useNavigate();
   return (
     <Typography
@@ -13,7 +13,7 @@ const CustomLinkPrimary = ({ linkText,url,style }) => {
         "&:hover": {
           textDecoration: "underline",
         },
-        ...style
+        ...style,
       }}
       onClick={() => navigate(url)}
     >

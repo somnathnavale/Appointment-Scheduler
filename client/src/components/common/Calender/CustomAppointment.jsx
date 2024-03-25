@@ -18,12 +18,19 @@ const CustomAppointment = ({ appointment, isMonthView }) => {
           p: "2px",
           overflow: isMonthView ? "hidden" : "initial",
           height: "100%",
-          border:"1px solid red",
-          borderColor:"grey.600"
+          border: "1px solid red",
+          borderColor: "grey.600",
         }}
-        title={isMonthView ? "From " + moment(appointment.start).format("HH:mm")+" To "+moment(appointment.end).format("HH:mm") : ""}
+        title={
+          isMonthView
+            ? "From " +
+              moment(appointment.start).format("HH:mm") +
+              " To " +
+              moment(appointment.end).format("HH:mm")
+            : ""
+        }
       >
-        <Typography variant="body1" sx={{ fontSize: "14px", lineHeight: 1.2 }} >
+        <Typography variant="body1" sx={{ fontSize: "14px", lineHeight: 1.2 }}>
           Private Appointment of{" "}
           {selectedUser.firstname + " " + selectedUser.lastname}
         </Typography>
@@ -43,13 +50,21 @@ const CustomAppointment = ({ appointment, isMonthView }) => {
         p: "2px",
         overflow: isMonthView ? "hidden" : "initial",
         height: "100%",
-        border:"1px solid red",
-        borderColor:appointment?.type ===
-        appointmentType.find((type) => type.value === "IN_PERSON").value
-          ? "secondary.light"
-          : "primary.light",
+        border: "1px solid red",
+        borderColor:
+          appointment?.type ===
+          appointmentType.find((type) => type.value === "IN_PERSON").value
+            ? "secondary.light"
+            : "primary.light",
       }}
-      title={isMonthView ? "From " + moment(appointment.start).format("HH:mm")+" To "+moment(appointment.end).format("HH:mm"):""}
+      title={
+        isMonthView
+          ? "From " +
+            moment(appointment.start).format("HH:mm") +
+            " To " +
+            moment(appointment.end).format("HH:mm")
+          : ""
+      }
     >
       <Typography variant="body1" sx={{ fontSize: "14px", lineHeight: 1.2 }}>
         {appointment.title}

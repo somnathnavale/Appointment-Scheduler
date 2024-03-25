@@ -19,7 +19,7 @@ const Register = () => {
   const [info, setInfo] = useState(defaultInfo);
   const [formData, setFormData] = useState(defaultRegisterUserForm);
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

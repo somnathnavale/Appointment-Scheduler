@@ -12,15 +12,15 @@ import MyAppointments from "../pages/appointment/MyAppointments.jsx";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<PersistedLayer/>}>
+      <Route path="/" element={<PersistedLayer />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home/>} />
-          <Route element={<AuthLayout/>}>
-            <Route path="profile" element={<Profile/>}/>
-            <Route path="schedule" element={<Schedule/>}/>
-            <Route path="appointments" element={<MyAppointments/>}/>
+          <Route index element={<Home />} />
+          <Route element={<AuthLayout />}>
+            <Route path="profile" element={<Profile />} />
+            <Route path="schedule" element={<Schedule />} />
+            <Route path="appointments" element={<MyAppointments />} />
           </Route>
           <Route path="*" element={<div>Not Found</div>} />
         </Route>

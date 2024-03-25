@@ -7,9 +7,6 @@ import { ErrorHandler } from "../../helpers/asyncHandler";
 import { Box } from "@mui/material";
 import InnerLayout from "../../components/Layout/InnerLayout";
 import CustomCalender from "../../components/common/Calender/CustomCalender";
-import moment from "moment";
-import useApi from "../../hooks/useApi";
-import { getAllAppointmentOfCurrentUser } from "../../services/appointmentService";
 import { convertAppointmentIntoInstnaces } from "../../helpers/appointmentsHelper";
 
 const defaultAsyncInfo = {

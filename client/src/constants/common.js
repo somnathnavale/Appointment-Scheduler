@@ -1,4 +1,4 @@
-export const STATUS =Object.freeze({
+export const STATUS = Object.freeze({
   IDLE: "IDLE",
   LOADING: "LOADING",
   SUCCESS: "SUCCESS",
@@ -22,6 +22,5 @@ export const Page = {
   CALENDER: "calender",
   EVENT: "event",
   SCHEDULE: "schedule",
-  MY_APPOINTMENT:"my_appointment"
+  MY_APPOINTMENT: "my_appointment",
 };
-

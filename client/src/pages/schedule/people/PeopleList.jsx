@@ -1,6 +1,9 @@
 import React, { memo } from "react";
 import { Box, List, ListItem, ListItemText, alpha } from "@mui/material";
-import { setPageView, setSelectedUser } from "../../../features/schedule/scheduleSlice";
+import {
+  setPageView,
+  setSelectedUser,
+} from "../../../features/schedule/scheduleSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Page } from "../../../constants/common";
 
@@ -10,7 +13,7 @@ const PeopleList = memo(({ people }) => {
   const dispatch = useDispatch();
 
   const handleUserSelect = (person) => {
-    dispatch(setPageView(Page.CALENDER))
+    dispatch(setPageView(Page.CALENDER));
     dispatch(setSelectedUser(person));
   };
 
@@ -35,7 +38,9 @@ const PeopleList = memo(({ people }) => {
                     : (theme) => alpha(theme.palette.grey[300], 0.6),
               },
               bgcolor:
-                selectedUser?.userId === person?.userId ? "grey.300" : "grey.200",
+                selectedUser?.userId === person?.userId
+                  ? "grey.300"
+                  : "grey.200",
             }}
             onClick={() => handleUserSelect(person)}
           >

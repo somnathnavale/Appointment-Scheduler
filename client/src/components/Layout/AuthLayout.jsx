@@ -11,7 +11,7 @@ const AuthLayout = ({ children }) => {
   }
 
   return (
-    <Box sx={{height:"100%"}}>
+    <Box sx={{ height: "100%" }}>
       <Outlet />
     </Box>
   );

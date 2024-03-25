@@ -1,33 +1,33 @@
-import React from 'react'
+import React from "react";
 import { Box } from "@mui/material";
 
-const InnerLayout = ({children,bgcolor,style,height}) => {
-    return (
+const InnerLayout = ({ children, bgcolor, style, height }) => {
+  return (
+    <Box
+      sx={{
+        bgcolor: bgcolor,
+        height: height ?? "auto",
+      }}
+    >
       <Box
         sx={{
-          bgcolor: bgcolor,
-          height:height ?? 'auto'
+          width: "1180px",
+          maxWidth: "100%",
+          mx: "auto",
+          justifyContent: "space-between",
+          color: "secondary.main",
+          px: {
+            xs: 2,
+            sm: 3,
+          },
+          pb: 4,
+          ...style,
         }}
       >
-        <Box
-          sx={{
-            width: "1180px",
-            maxWidth: "100%",
-            mx: "auto",
-            justifyContent: "space-between",
-            color: "secondary.main",
-            px: {
-              xs: 2,
-              sm: 3,
-            },
-            pb: 4,
-            ...style
-          }}
-        >
-          {children}
-        </Box>
+        {children}
       </Box>
-    );
-  };
+    </Box>
+  );
+};
 
-export default InnerLayout
+export default InnerLayout;

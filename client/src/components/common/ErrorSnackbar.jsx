@@ -10,12 +10,16 @@ const ErrorSnackbar = (props) => {
       autoHideDuration={6000}
       onClose={onClose}
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      style={{...style}}
+      style={{ ...style }}
     >
-      <ErrorAlert message={message} onClose={onClose} severity={severity} style={{my:0}}/>
+      <ErrorAlert
+        message={message}
+        onClose={onClose}
+        severity={severity}
+        style={{ my: 0 }}
+      />
     </Snackbar>
   );
 };
 
 export default ErrorSnackbar;
-

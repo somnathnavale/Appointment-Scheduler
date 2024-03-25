@@ -1,9 +1,8 @@
-import { Box, Paper, Toolbar } from '@mui/material'
-import React from 'react'
-import CompanyName from '../../components/Header/CompanyName'
+import { Box, Paper, Toolbar } from "@mui/material";
+import React from "react";
+import CompanyName from "../../components/Header/CompanyName";
 
-const Layout = ({children}) => {
-  
+const Layout = ({ children }) => {
   return (
     <Box
       sx={{
@@ -44,7 +43,7 @@ const Layout = ({children}) => {
         </Paper>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

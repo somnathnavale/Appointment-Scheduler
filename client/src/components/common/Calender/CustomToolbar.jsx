@@ -1,29 +1,14 @@
-import { Box, Button, ButtonGroup, Slider, Stack } from "@mui/material";
-import React, { memo, useMemo } from "react";
+import { Box, ButtonGroup, Slider, Stack } from "@mui/material";
+import React, { memo } from "react";
 import ZoomInRoundedIcon from "@mui/icons-material/ZoomInRounded";
 import ZoomOutRoundedIcon from "@mui/icons-material/ZoomOutRounded";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import CustomDatePicker from "../CustomDatePicker";
-import { Views } from "react-big-calendar";
 import CustomButton from "../CustomButton";
 import moment from "moment";
 import { Page } from "../../../constants/common";
-
-const ViewsEnum = [
-  {
-    name: "Month",
-    value: Views.MONTH,
-  },
-  {
-    name: "Week",
-    value: Views.WEEK,
-  },
-  {
-    name: "Day",
-    value: Views.DAY,
-  },
-];
+import { ViewsEnum } from "../../../constants/calenderConstants";
 
 const iconStyle = {
   cursor: "pointer",

@@ -54,7 +54,7 @@ const Main = () => {
               <Box
                 sx={{
                   p: 1,
-                  height:"100%"
+                  height: "100%",
                 }}
               >
                 <CalenderView />

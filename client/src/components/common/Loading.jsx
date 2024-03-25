@@ -12,12 +12,12 @@ const Loading = ({ text }) => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        zIndex:10,
-        position:"absolute"
+        zIndex: 10,
+        position: "absolute",
       }}
     >
       <CircularProgress />
-      <Typography variant="span"  mt={2} color="primary.main">
+      <Typography variant="span" mt={2} color="primary.main">
         {text}
       </Typography>
     </Box>

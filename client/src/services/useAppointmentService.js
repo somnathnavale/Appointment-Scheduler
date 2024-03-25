@@ -16,20 +16,17 @@ const defaultAsyncInfo = {
 };
 
 const useAppointmentService = ({ callback, initialData }) => {
-  
- const [asyncInfo, setAsyncInfo] = useState(defaultAsyncInfo);
+  const [asyncInfo, setAsyncInfo] = useState(defaultAsyncInfo);
   const [data, setData] = useState(initialData);
 
   const { user } = useSelector((store) => store.user);
 
   const axios = useAxios(axiosPublic);
 
-  useEffect(()=>{
-    async function fetch(){
-      
-    }
+  useEffect(() => {
+    async function fetch() {}
     fetch();
-  },[])
+  }, []);
 
   // const getAllAppointmentOfCurrentUser = async () => {
   //   setAsyncInfo({
@@ -62,7 +59,7 @@ const useAppointmentService = ({ callback, initialData }) => {
   //   }
   // };
 
-  return { asyncInfo, data  };
+  return { asyncInfo, data };
 };
 
 export default useAppointmentService;

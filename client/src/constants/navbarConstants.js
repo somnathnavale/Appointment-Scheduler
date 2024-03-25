@@ -1,18 +1,18 @@
-export const headerOptions=[
+export const headerOptions = [
   {
-    name:"Home",
-    url:"/",
+    name: "Home",
+    url: "/",
   },
   {
-    name:"Schedule",
-    url:"/schedule",
+    name: "Schedule",
+    url: "/schedule",
   },
   {
-    name:"My Appointments",
-    url:"/appointments",
+    name: "My Appointments",
+    url: "/appointments",
   },
   {
-    name:"Profile",
-    url:"/profile"
-  }
-]
+    name: "Profile",
+    url: "/profile",
+  },
+];
