@@ -9,6 +9,7 @@ import com.project.appointmentscheduler.entity.Appointment;
 import com.project.appointmentscheduler.entity.AppointmentInstance;
 import com.project.appointmentscheduler.entity.Occurrence;
 import com.project.appointmentscheduler.entity.User;
+import com.project.appointmentscheduler.error.exceptions.InvalidAppointmentException;
 import com.project.appointmentscheduler.helper.CommonHelper;
 import com.project.appointmentscheduler.repository.AppointmentInstanceRepository;
 import com.project.appointmentscheduler.repository.AppointmentRepository;
@@ -53,7 +54,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         Optional<User> scheduledWithUser = userRepository.findById(saveAppointmentRequestDTO.getScheduledWith());
 
         if (scheduledByUser.isEmpty() || scheduledWithUser.isEmpty()) {
-            throw new RuntimeException(("Provide Correct Values for Schedule By and Schedule With field"));
+            throw new InvalidAppointmentException("Provide Correct Values for Scheduled By and Scheduled With User field");
         }
 
         Occurrence occurrence = saveAppointmentRequestDTO.getOccurrence();
@@ -63,22 +64,22 @@ public class AppointmentServiceImpl implements AppointmentService {
         LocalDateTime endDateTime = saveAppointmentRequestDTO.getEndDateTime();
 
         if ((occurrence == Occurrence.ONCE && instances > 1) || (occurrence != Occurrence.ONCE && instances == 1)) {
-            throw new RuntimeException("Invalid appointment occurrence and instances input");
+            throw new InvalidAppointmentException("Invalid appointment occurrence and instances input");
         }
 
         if (instances > 30) {
-            throw new RuntimeException("Cannot create more than 30 appointment instances one time");
+            throw new InvalidAppointmentException("Cannot create more than 30 appointment instances one time");
         }
 
         if (startDateTime.isAfter(endDateTime) || startDateTime.isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Appointment Only be created in Present Or Future");
+            throw new InvalidAppointmentException("Appointments Only be created in Present Or Future");
         }
 
         int daysGap = commonHelper.getIntOccurrenceByEnumKey(occurrence);
 
         boolean isOverlappingAppointmentExists = isAppointmentsOverlapping(startDateTime, endDateTime, instances, daysGap, saveAppointmentRequestDTO.getScheduledBy(), saveAppointmentRequestDTO.getScheduledWith());
 
-        if (isOverlappingAppointmentExists) throw new RuntimeException("Cannot create Overlapping meetings");
+        if (isOverlappingAppointmentExists) throw new InvalidAppointmentException("Cannot create Overlapping appointments");
 
         scheduledByUser.ifPresent(appointment::setScheduledBy);
         scheduledWithUser.ifPresent(appointment::setScheduledWith);
@@ -146,7 +147,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         String startTimesJSON = commonHelper.convertDatesToJsonArray(startTimesList);
         String endTimesJSON = commonHelper.convertDatesToJsonArray(endTimesList);
         if (startTimesJSON == null || endTimesJSON == null) {
-            throw new RuntimeException("Error Occurred During Processing");
+            throw new RuntimeException("Error occurred during processing request, please try again later");
         }
         boolean areAppointmentsOverlapping = appointmentRepository.checkOverlappingAppointments(
                 startTimesJSON,

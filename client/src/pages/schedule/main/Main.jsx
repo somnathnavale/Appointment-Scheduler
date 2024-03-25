@@ -2,7 +2,6 @@ import { Box } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import UserInfo from "./UserInfo";
-import CustomCalender from "../../../components/common/Calender/CustomCalender";
 import CalenderView from "./CalenderView";
 import { Page } from "../../../constants/common";
 import AppointmentView from "../../appointment/AppointmentView";
@@ -30,9 +29,11 @@ const Main = () => {
   return (
     <Box sx={{ height: "100%", bgcolor: "fff" }}>
       {pageView === Page.CALENDER ? (
-        <Box sx={{ height: "100%", bgcolor: "fff" }}>
-          <UserInfo />
-          <Box sx={{ height: "90%", p: 1, bgcolor: "#fff" }}>
+        <Box sx={{ height: "100%", bgcolor: "fff",display:"flex",flexDirection:"column" }}>
+          <Box sx={{}}>
+            <UserInfo />
+          </Box>
+          <Box sx={{ flexGrow:1, p: 1, bgcolor: "#fff",maxWidth:"100vw",overflowX:"auto" }}>
             <CalenderView />
           </Box>
         </Box>

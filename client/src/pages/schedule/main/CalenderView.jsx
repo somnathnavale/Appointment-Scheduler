@@ -68,6 +68,7 @@ const CalenderView = () => {
     <CustomCalender
       events={appointments}
       handleEventSelect={handleEventSelect}
+      page={Page.SCHEDULE}
     />
   );
 };

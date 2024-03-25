@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, css } from "@mui/material";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { registerAppointmentFields } from "../../../constants/appointmentConstants";
@@ -29,7 +29,6 @@ const ScheduleForm = () => {
               );
             })}
           </Grid>
-          {/* <CustomDatePicker/> */}
         </form>
       </Box>
     </Box>

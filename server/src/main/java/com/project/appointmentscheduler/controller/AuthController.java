@@ -3,6 +3,7 @@ package com.project.appointmentscheduler.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.project.appointmentscheduler.dto.*;
 import com.project.appointmentscheduler.entity.User;
+import com.project.appointmentscheduler.error.exceptions.ForbiddenAccessException;
 import com.project.appointmentscheduler.service.interfaces.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,8 @@ public class AuthController {
     }
     @PutMapping("/{id}/change-password")
     public ResponseEntity<Message> changePassword(@PathVariable("id") Long userId, @RequestBody ChangePasswordDTO passwordDTO, @AuthenticationPrincipal  User loggedInUser){
-
         if(loggedInUser==null || userId!=passwordDTO.getUserId() || userId!= loggedInUser.getUserId())
-            throw new RuntimeException("Access Denied to update user");
+            throw new ForbiddenAccessException("Access Denied To Update User");
 
        authService.changePassword(passwordDTO);
         Message message=new Message(HttpStatus.OK,"Password Updated Successfully");

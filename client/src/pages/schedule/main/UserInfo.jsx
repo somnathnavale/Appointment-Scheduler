@@ -16,7 +16,7 @@ const UserInfo = () => {
       direction="row"
       justifyContent="space-between"
       alignItems="center"
-      sx={{ height: "10%", bgcolor: "grey.300", px: 2 }}
+      sx={{height:"100%", bgcolor: "grey.300", px: 2,py:1 }}
     >
       <Typography variant="h4" sx={{}}>
         {selectedUser.firstname + " " + selectedUser.lastname}{" "}

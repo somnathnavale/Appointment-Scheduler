@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void changePassword(ChangePasswordDTO passwordDTO) {
-        User user = userRepository.findById(passwordDTO.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found with given id"));
+        User user = userRepository.findById(passwordDTO.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found with given Id: "+ passwordDTO.getUserId()));
 
         user.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
         userRepository.save(user);

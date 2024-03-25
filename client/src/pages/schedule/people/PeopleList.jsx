@@ -40,7 +40,7 @@ const PeopleList = memo(({ people }) => {
             onClick={() => handleUserSelect(person)}
           >
             <ListItemText sx={{ m: 0 }}>{person.name}</ListItemText>
-            <ListItemText sx={{ fontSize: "14px", color: "#b6b6b2", m: 0 }}>
+            <ListItemText sx={{ fontSize: "14px", color: "grey.500", m: 0 }}>
               {person.email}
             </ListItemText>
           </ListItem>

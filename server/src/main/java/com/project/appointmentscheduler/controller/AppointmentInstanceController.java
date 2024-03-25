@@ -20,10 +20,10 @@ public class AppointmentInstanceController {
         return ResponseEntity.ok(instanceService.getAllAppointmentInstanceByAppointmentId(appointmentId));
     }
 
-    @PostMapping("/{appointmentId}/appointment-instance")
-    public ResponseEntity<AppointmentInstance> addAppointmentInstance(@PathVariable("appointmentId") Long appointmentId, @RequestBody AppointmentInstance instance){
-        return null;
-    }
+//    @PostMapping("/{appointmentId}/appointment-instance")
+//    public ResponseEntity<AppointmentInstance> addAppointmentInstance(@PathVariable("appointmentId") Long appointmentId, @RequestBody AppointmentInstance instance){
+//        return null;
+//    }
 
     @GetMapping("/{appointmentId}/appointment-instance/{instanceId}")
     public ResponseEntity<AppointmentInstance> getAppointmentInstanceById(@PathVariable("appointmentId") Long appointmentId,@PathVariable("instanceId") Long instanceId){

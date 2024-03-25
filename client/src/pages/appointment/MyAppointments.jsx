@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axiosPublic from "../../config/axios";
 import useAxios from "../../hooks/useAxios";
-import { STATUS } from "../../constants/common";
+import { Page, STATUS } from "../../constants/common";
 import { ErrorHandler } from "../../helpers/asyncHandler";
 import { Box } from "@mui/material";
 import InnerLayout from "../../components/Layout/InnerLayout";
@@ -25,11 +25,11 @@ const MyAppointments = () => {
   const [asyncInfo, setAsyncInfo] = useState(defaultAsyncInfo);
   const [events, setEvents] = useState();
   const [selectedEvent, setSelectedEvent] = useState(null);
-  
+
   const { user } = useSelector((store) => store.user);
 
   const axios = useAxios(axiosPublic);
-  
+
   useEffect(() => {
     async function fetchUserAppointments() {
       setAsyncInfo((prev) => ({
@@ -41,9 +41,15 @@ const MyAppointments = () => {
         const response = await axios.get(
           `/api/appointments/users?scheduled-by=${user.userId}&scheduled-with=${user.userId}`
         );
-        const totalAppointments=convertAppointmentIntoInstnaces(response.data.commonAppointments);
+        const totalAppointments = convertAppointmentIntoInstnaces(
+          response.data.commonAppointments
+        );
         setAppointments([...totalAppointments]);
-        setAsyncInfo({...defaultAsyncInfo,loadingStatus:false,loadingMessage:""});
+        setAsyncInfo({
+          ...defaultAsyncInfo,
+          loadingStatus: false,
+          loadingMessage: "",
+        });
       } catch (error) {
         const errObj = ErrorHandler(error);
         setAsyncInfo((prev) => ({
@@ -58,17 +64,29 @@ const MyAppointments = () => {
     fetchUserAppointments();
   }, [axios, user?.userId]);
 
-  function handleEventSelect(e){
+  function handleEventSelect(e) {
     console.log(e);
   }
 
   return (
-    <Box sx={{ height: "100%",bgcolor:"grey.200" }}>
+    <Box sx={{ height: "100%", bgcolor: "grey.200" }}>
       <InnerLayout
-        style={{ p: 2, color: "grey.700", height: "100%" }}
+        style={{
+          p: 2,
+          pb: "0px !important",
+          color: "grey.700",
+          height: "100%",
+          maxWidth: "100vw",
+          overflowX: "auto",
+          maxHeight: { xs: "inherit", md: "calc( 100vh - 120px )" },
+        }}
         height="100%"
       >
-        <CustomCalender events={appointments} handleEventSelect={handleEventSelect} />
+        <CustomCalender
+          events={appointments}
+          handleEventSelect={handleEventSelect}
+          page={Page.MY_APPOINTMENT}
+        />
       </InnerLayout>
     </Box>
   );

@@ -7,7 +7,6 @@ const Main = () => {
     <Box
       sx={{
         flexGrow: 1,
-        height:"100%",
       }}
     >
       <Outlet />

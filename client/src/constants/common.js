@@ -22,5 +22,6 @@ export const Page = {
   CALENDER: "calender",
   EVENT: "event",
   SCHEDULE: "schedule",
+  MY_APPOINTMENT:"my_appointment"
 };
 
