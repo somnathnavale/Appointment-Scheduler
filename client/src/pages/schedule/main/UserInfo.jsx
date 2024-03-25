@@ -1,16 +1,15 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../../components/common/CustomButton";
 import { setPageView } from "../../../features/schedule/scheduleSlice";
 import { Page } from "../../../constants/common";
 
-const UserInfo = () => {
-  const { selectedUser } = useSelector((store) => store.schedule);
+const UserInfo = memo(({selectedUser}) => {
   const { user } = useSelector((store) => store.user);
 
   const dispatch = useDispatch();
-
+  
   return (
     <Stack
       direction="row"
@@ -30,6 +29,8 @@ const UserInfo = () => {
       />
     </Stack>
   );
-};
+});
+
+UserInfo.displayName="UserInfo";
 
 export default UserInfo;

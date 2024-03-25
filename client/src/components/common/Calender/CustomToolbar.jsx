@@ -1,5 +1,5 @@
 import { Box, Button, ButtonGroup, Slider, Stack } from "@mui/material";
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import ZoomInRoundedIcon from "@mui/icons-material/ZoomInRounded";
 import ZoomOutRoundedIcon from "@mui/icons-material/ZoomOutRounded";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
@@ -36,9 +36,9 @@ const iconStyle = {
   height: "100%",
 };
 
-const CustomToolbar = ({
+const CustomToolbar = memo(({
   zoom,
-  setZoom,
+  changeZoom,
   view,
   onViewChange,
   date,
@@ -64,7 +64,7 @@ const CustomToolbar = ({
       <Stack spacing={1} direction="row" alignItems="center">
         <ZoomInRoundedIcon
           sx={iconStyle}
-          onClick={() => setZoom((prev) => (prev + 5 > 20 ? 20 : prev + 5))}
+          onClick={() => changeZoom((zoom + 5) > 20 ? 20 : zoom + 5)}
           titleAccess="Zoom In"
         />
         <Slider
@@ -72,13 +72,13 @@ const CustomToolbar = ({
           value={zoom}
           min={5}
           max={20}
-          onChange={(e, v) => setZoom(v)}
+          onChange={(e, v) => changeZoom(v)}
           sx={{ minWidth: "80px", color: "primary.dark" }}
           size="small"
         />
         <ZoomOutRoundedIcon
           sx={iconStyle}
-          onClick={() => setZoom((prev) => (prev - 5 < 5 ? 5 : prev - 5))}
+          onClick={() => changeZoom((zoom - 5) < 5 ? 5 : zoom - 5)}
           titleAccess="Zoom Out"
         />
       </Stack>
@@ -159,6 +159,8 @@ const CustomToolbar = ({
       </ButtonGroup>
     </Stack>
   );
-};
+});
+
+CustomToolbar.displayName="CustomToolbar";
 
 export default CustomToolbar;

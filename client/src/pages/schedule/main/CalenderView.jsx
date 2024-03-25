@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import CustomCalender from "../../../components/common/Calender/CustomCalender";
 import { Page, STATUS, defaultAsyncInfo } from "../../../constants/common";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import {
   setSelectedEvent,
 } from "../../../features/schedule/scheduleSlice";
 
-const CalenderView = () => {
+const CalenderView = memo(() => {
   const [appointments, setAppointments] = useState([]);
   const [asyncInfo, setAsyncInfo] = useState(defaultAsyncInfo);
 
@@ -56,21 +56,28 @@ const CalenderView = () => {
     fetchUserAppointments();
   }, [axios, user?.userId, selectedUser?.userId]);
 
-  const handleEventSelect = (selectedEvent) => {
-    if(selectedEvent.type==null){
-      return;
-    }
-    dispatch(setPageView(Page.EVENT));
-    dispatch(setSelectedEvent(selectedEvent));
-  };
+  const handleEventSelect = useCallback(
+    (selectedEvent) => {
+      if (selectedEvent.type == null) {
+        return;
+      }
+      dispatch(setPageView(Page.EVENT));
+      dispatch(setSelectedEvent(selectedEvent));
+    },
+    [dispatch]
+  );
 
   return (
-    <CustomCalender
-      events={appointments}
-      handleEventSelect={handleEventSelect}
-      page={Page.SCHEDULE}
-    />
+    <>
+      <CustomCalender
+        events={appointments}
+        handleEventSelect={handleEventSelect}
+        page={Page.SCHEDULE}
+      />
+    </>
   );
-};
+});
+
+CalenderView.displayName = "CalenderView";
 
 export default CalenderView;

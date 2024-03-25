@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  cloneElement,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -6,17 +13,27 @@ import "./CustomCalender.css";
 import { Box, alpha } from "@mui/material";
 import CustomAppointment from "./CustomAppointment";
 import CustomToolbar from "./CustomToolbar";
+import { defaultContextMenu } from "../../../constants/calenderConstants";
+import CustomMenuCalender from "./CustomMenuCalender";
 
-const CustomCalender = ({ events, handleEventSelect, page }) => {
+const CustomCalender =memo(({ events, handleEventSelect, page }) => {
   const [zoom, setZoom] = useState(5);
   const [view, setView] = useState(Views.WEEK);
   const [date, setDate] = useState(moment(new Date()));
+  const [contextMenuInfo, setContextMenuInfo] = useState(defaultContextMenu);
 
   const localizer = momentLocalizer(moment);
 
-  const handleSlotSelect = (slot) => {
-    console.log(slot);
-  };
+  const handleSlotSelect =useCallback((e) => {
+    if (view === Views.MONTH) return;
+    setContextMenuInfo({
+      xPosition: e.box.x,
+      yPosition: e.box.y,
+      start: e.start,
+      end: e.end,
+      resourceId: e.resourceId,
+    });
+  },[view]);
 
   const dateText = useMemo(() => {
     if (view === Views.DAY) return moment(date).format("dddd");
@@ -30,7 +47,7 @@ const CustomCalender = ({ events, handleEventSelect, page }) => {
     }
   }, [view, date]);
 
-  const onNextClick=useCallback(()=>{
+  const onNextClick = useCallback(() => {
     if (view === Views.DAY) {
       setDate(moment(date).add(1, "d"));
     } else if (view === Views.WEEK) {
@@ -38,9 +55,9 @@ const CustomCalender = ({ events, handleEventSelect, page }) => {
     } else {
       setDate(moment(date).add(1, "M"));
     }
-  },[date,view])
-  
-  const onPrevClick=useCallback(()=>{
+  }, [date, view]);
+
+  const onPrevClick = useCallback(() => {
     if (view === Views.DAY) {
       setDate(moment(date).subtract(1, "d"));
     } else if (view === Views.WEEK) {
@@ -48,18 +65,21 @@ const CustomCalender = ({ events, handleEventSelect, page }) => {
     } else {
       setDate(moment(date).subtract(1, "M"));
     }
-  },[date,view])
+  }, [date, view]);
+
+  const changeZoom=useCallback((val)=>{
+    setZoom(val);
+  },[]) 
 
   const components = {
     event: ({ event }) => {
-      if (event)
+      if (event?.title)
         return (
           <CustomAppointment
             appointment={event}
             isMonthView={view === Views.MONTH}
           />
         );
-
       return null;
     },
   };
@@ -74,13 +94,14 @@ const CustomCalender = ({ events, handleEventSelect, page }) => {
         minWidth: "600px",
       }}
     >
-      <CustomToolbar
+      <CustomMenuCalender contextMenuInfo={contextMenuInfo} setContextMenuInfo={setContextMenuInfo}/>
+       <CustomToolbar
         zoom={zoom}
-        setZoom={setZoom}
+        changeZoom={changeZoom}
         view={view}
-        onViewChange={(_,val) =>setView(val)}
+        onViewChange={useCallback((_, val) => setView(val),[])}
         date={date}
-        onDateChange={date => setDate(date)}
+        onDateChange={useCallback((date) => setDate(date),[])}
         onNextClick={onNextClick}
         onPrevClick={onPrevClick}
         dateText={dateText}
@@ -97,26 +118,27 @@ const CustomCalender = ({ events, handleEventSelect, page }) => {
           },
           ".rbc-time-slot": {
             color: "secondary.main",
+            borderColor: (theme) => alpha(theme.palette.primary.light, 0.4),
             zIndex: 1,
           },
-          ".rbc-time-slot:not(.rbc-today .rbc-time-slot),.rbc-day-bg:not(.rbc-off-range-bg )":
+          ".rbc-time-slot:not(.rbc-today), .rbc-day-bg:not(.rbc-off-range-bg )":
             {
               bgcolor: (theme) => alpha(theme.palette.secondary.lighter, 0.2),
             },
-          ".rbc-today .rbc-time-slot, .rbc-today:not(.rbc-off-range-bg,.rbc-time-header-cell):not(.rbc-header)":
+          ".rbc-today.rbc-time-slot, .rbc-today:not(.rbc-off-range-bg,.rbc-time-header-cell):not(.rbc-header)":
             {
               bgcolor: (theme) => alpha(theme.palette.primary.lighter, 0.5),
             },
-          ".rbc-day-slot .rbc-time-slot": {
-            borderColor: (theme) => alpha(theme.palette.primary.light, 0.2),
-          },
           ".rbc-event, .rbc-background-event": {
             height: "100%",
             bgcolor: "#fff",
           },
           ".rbc-timeslot-group": {
-            minHeight:` ${zoom * 24}px !important`
-          }
+            minHeight: ` ${zoom * 24}px !important`,
+          },
+          ".rbc-time-slot:hover": {
+            cursor: "pointer",
+          },
         }}
       >
         <Calendar
@@ -134,7 +156,7 @@ const CustomCalender = ({ events, handleEventSelect, page }) => {
           max={moment().set({ hour: 18, minute: 0, second: 0 }).format()}
           components={components}
           onView={(v) => setView(v)}
-          onNavigate={(...e)=>console.log(e)}
+          onNavigate={(...e) => console.log(e)}
           onSelectSlot={handleSlotSelect}
           onSelectEvent={handleEventSelect}
           timeslots={2}
@@ -142,6 +164,8 @@ const CustomCalender = ({ events, handleEventSelect, page }) => {
       </Box>
     </Box>
   );
-};
+});
+
+CustomCalender.displayName="CustomCalender";
 
 export default CustomCalender;
