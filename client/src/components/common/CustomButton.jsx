@@ -5,7 +5,9 @@ const CustomButton = (props) => {
   const { btnText, onClick, type, color, variant, style, disabled } = props;
   return (
     <Button
-      variant={variant ? variant : "contained"}
+      variant={variant ? 
+        variant : 
+        "contained"}
       color={color ? color : "primary"}
       type={type ? type : "submit"}
       sx={{
