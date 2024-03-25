@@ -7,7 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "precommit": "npm run lint && npm run format"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit"
+    }
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -33,6 +40,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "husky": "^9.0.11",
     "prettier": "^3.2.5",
     "vite": "^5.0.8"
   },
