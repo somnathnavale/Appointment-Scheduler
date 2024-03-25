@@ -100,7 +100,7 @@ export const appointmentForm = [
     required: true,
     type: "dropdown",
     defaultValue: appointmentStatuses.find(
-      (status) => status.value === "SCHEDULED"
+      (status) => status.value === "SCHEDULED",
     ).value,
     disabled: {
       register: true,
@@ -115,7 +115,7 @@ export const appointmentForm = [
     required: true,
     type: "dropdown",
     defaultValue: appointmentOccurrences.find(
-      (status) => status.value === "ONCE"
+      (status) => status.value === "ONCE",
     ).value,
     disabled: {
       register: false,

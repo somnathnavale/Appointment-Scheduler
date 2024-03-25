@@ -22,7 +22,7 @@ export default function ThemeProvider({ children }) {
       customShadows: customShadows(),
       shape: { borderRadius: 8 },
     }),
-    []
+    [],
   );
 
   const theme = createTheme(memoizedValue);

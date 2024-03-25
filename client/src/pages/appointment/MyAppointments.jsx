@@ -36,10 +36,10 @@ const MyAppointments = () => {
       }));
       try {
         const response = await axios.get(
-          `/api/appointments/users?scheduled-by=${user.userId}&scheduled-with=${user.userId}`
+          `/api/appointments/users?scheduled-by=${user.userId}&scheduled-with=${user.userId}`,
         );
         const totalAppointments = convertAppointmentIntoInstnaces(
-          response.data.commonAppointments
+          response.data.commonAppointments,
         );
         setAppointments([...totalAppointments]);
         setAsyncInfo({

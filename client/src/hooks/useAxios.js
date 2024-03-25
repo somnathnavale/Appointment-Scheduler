@@ -14,7 +14,7 @@ const useAxios = (axiosInstance) => {
       },
       (error) => {
         return Promise.reject(error);
-      }
+      },
     );
 
     const responseInterceptor = axiosInstance.interceptors.response.use(
@@ -37,7 +37,7 @@ const useAxios = (axiosInstance) => {
           //   })
         }
         return Promise.reject(error);
-      }
+      },
     );
 
     return () => {

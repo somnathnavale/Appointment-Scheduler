@@ -65,7 +65,7 @@ const Profile = () => {
     try {
       await axios.put(
         `/api/auth/${formData.userId}/change-password`,
-        updatedUserObj
+        updatedUserObj,
       );
       setInfo({ status: STATUS.SUCCESS, message: "" });
       setFormData((prev) => ({ ...prev, password: "" }));

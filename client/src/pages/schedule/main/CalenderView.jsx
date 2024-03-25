@@ -30,7 +30,7 @@ const CalenderView = memo(() => {
       }));
       try {
         const response = await axios.get(
-          `/api/appointments/users?scheduled-by=${user.userId}&scheduled-with=${selectedUser.userId}`
+          `/api/appointments/users?scheduled-by=${user.userId}&scheduled-with=${selectedUser.userId}`,
         );
         const totalAppointments = convertAppointmentIntoInstnaces([
           ...response.data.commonAppointments,
@@ -64,7 +64,7 @@ const CalenderView = memo(() => {
       dispatch(setPageView(Page.EVENT));
       dispatch(setSelectedEvent(selectedEvent));
     },
-    [dispatch]
+    [dispatch],
   );
 
   return (

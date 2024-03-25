@@ -1,9 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -14,7 +9,7 @@ import CustomToolbar from "./CustomToolbar";
 import { defaultContextMenu } from "../../../constants/calenderConstants";
 import CustomMenuCalender from "./CustomMenuCalender";
 
-const CustomCalender =memo(({ events, handleEventSelect, page }) => {
+const CustomCalender = memo(({ events, handleEventSelect, page }) => {
   const [zoom, setZoom] = useState(5);
   const [view, setView] = useState(Views.WEEK);
   const [date, setDate] = useState(moment(new Date()));
@@ -22,16 +17,19 @@ const CustomCalender =memo(({ events, handleEventSelect, page }) => {
 
   const localizer = momentLocalizer(moment);
 
-  const handleSlotSelect =useCallback((e) => {
-    if (view === Views.MONTH) return;
-    setContextMenuInfo({
-      xPosition: e.box.x,
-      yPosition: e.box.y,
-      start: e.start,
-      end: e.end,
-      resourceId: e.resourceId,
-    });
-  },[view]);
+  const handleSlotSelect = useCallback(
+    (e) => {
+      if (view === Views.MONTH) return;
+      setContextMenuInfo({
+        xPosition: e.box.x,
+        yPosition: e.box.y,
+        start: e.start,
+        end: e.end,
+        resourceId: e.resourceId,
+      });
+    },
+    [view],
+  );
 
   const dateText = useMemo(() => {
     if (view === Views.DAY) return moment(date).format("dddd");
@@ -65,9 +63,9 @@ const CustomCalender =memo(({ events, handleEventSelect, page }) => {
     }
   }, [date, view]);
 
-  const changeZoom=useCallback((val)=>{
+  const changeZoom = useCallback((val) => {
     setZoom(val);
-  },[]) 
+  }, []);
 
   const components = {
     event: ({ event }) => {
@@ -92,14 +90,17 @@ const CustomCalender =memo(({ events, handleEventSelect, page }) => {
         minWidth: "600px",
       }}
     >
-      <CustomMenuCalender contextMenuInfo={contextMenuInfo} setContextMenuInfo={setContextMenuInfo}/>
-       <CustomToolbar
+      <CustomMenuCalender
+        contextMenuInfo={contextMenuInfo}
+        setContextMenuInfo={setContextMenuInfo}
+      />
+      <CustomToolbar
         zoom={zoom}
         changeZoom={changeZoom}
         view={view}
-        onViewChange={useCallback((_, val) => setView(val),[])}
+        onViewChange={useCallback((_, val) => setView(val), [])}
         date={date}
-        onDateChange={useCallback((date) => setDate(date),[])}
+        onDateChange={useCallback((date) => setDate(date), [])}
         onNextClick={onNextClick}
         onPrevClick={onPrevClick}
         dateText={dateText}
@@ -164,6 +165,6 @@ const CustomCalender =memo(({ events, handleEventSelect, page }) => {
   );
 });
 
-CustomCalender.displayName="CustomCalender";
+CustomCalender.displayName = "CustomCalender";
 
 export default CustomCalender;

@@ -15,7 +15,7 @@ export const getAllAppointmentOfCurrentUser = async function (...args) {
         params: args.params,
       });
       const appointments = convertAppointmentIntoInstnaces(
-        response.data.commonAppointments
+        response.data.commonAppointments,
       );
       setData(appointments);
       setAsyncInfo({
