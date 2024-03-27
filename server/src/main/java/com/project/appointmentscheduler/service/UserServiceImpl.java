@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
-        List<UserDTO> users = userRepository.findAll().stream().map(user -> modelMapper.map(user, UserDTO.class)).toList();
+    public List<UserDTO> getAllUsers(String name) {
+        List<UserDTO> users = userRepository.findByFullNameContainingIgnoreCase(name).stream().map(user -> modelMapper.map(user, UserDTO.class)).toList();
         return users;
     }
 }

@@ -30,9 +30,9 @@ public class UserController {
         return ResponseEntity.ok(message);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<UserDTO>> getAllUsers(){
-        List<UserDTO> users = userService.getAllUsers();
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam String name){
+        List<UserDTO> users = userService.getAllUsers(name);
         return ResponseEntity.ok(users);
     }
 

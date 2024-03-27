@@ -1,30 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axiosPublic from "../../config/axios";
 import useAxios from "../../hooks/useAxios";
-import { Page, STATUS } from "../../constants/common";
+import { Page, STATUS, defaultAsyncInfo } from "../../constants/common";
 import { ErrorHandler } from "../../helpers/asyncHandler";
 import { Box } from "@mui/material";
 import InnerLayout from "../../components/Layout/InnerLayout";
 import CustomCalender from "../../components/common/Calender/CustomCalender";
 import { convertAppointmentIntoInstnaces } from "../../helpers/appointmentsHelper";
 
-const defaultAsyncInfo = {
-  loadingStatus: false,
-  loadingMessage: "",
-  loadingAction: "",
-  message: "",
-  status: "",
-};
-
 const MyAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [asyncInfo, setAsyncInfo] = useState(defaultAsyncInfo);
   const [events, setEvents] = useState();
-  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const { user } = useSelector((store) => store.user);
 
+  const dispatch = useDispatch();
   const axios = useAxios(axiosPublic);
 
   useEffect(() => {
@@ -65,6 +57,11 @@ const MyAppointments = () => {
     console.log(e);
   }
 
+  const handleSlotSelect = useCallback((e) => {
+    console.log(e);
+    //write code to dispatch action to set page view and event
+  }, []);
+
   return (
     <Box sx={{ height: "100%", bgcolor: "grey.200" }}>
       <InnerLayout
@@ -83,6 +80,7 @@ const MyAppointments = () => {
           events={appointments}
           handleEventSelect={handleEventSelect}
           page={Page.MY_APPOINTMENT}
+          handleSlotSelect={handleSlotSelect}
         />
       </InnerLayout>
     </Box>

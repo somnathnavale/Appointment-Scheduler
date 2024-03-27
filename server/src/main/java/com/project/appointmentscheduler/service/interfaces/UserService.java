@@ -10,5 +10,5 @@ public interface UserService {
 
     void updateUser(UserDTO user);
 
-    List<UserDTO> getAllUsers();
+    List<UserDTO> getAllUsers(String name);
 }

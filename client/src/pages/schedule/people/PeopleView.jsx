@@ -1,11 +1,13 @@
 import React, { useEffect, useState, memo } from "react";
 import SearchPeople from "./SearchPeople";
 import PeopleList from "./PeopleList";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { STATUS, defaultAsyncInfo } from "../../../constants/common";
 import useAxios from "../../../hooks/useAxios";
 import axiosPublic from "../../../config/axios";
 import { ErrorHandler } from "../../../helpers/asyncHandler";
+import useDebounce from "../../../hooks/useDebounce";
+import Loading from "../../../components/common/Loading";
 
 const PeopleView = memo(() => {
   const [searchText, setSearchText] = useState("");
@@ -13,6 +15,7 @@ const PeopleView = memo(() => {
   const [asyncInfo, setAsyncInfo] = useState(defaultAsyncInfo);
 
   const axios = useAxios(axiosPublic);
+  const debouncedSearchText = useDebounce(searchText, 1000);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -22,7 +25,11 @@ const PeopleView = memo(() => {
         loadingMessage: "Fetching Users",
       }));
       try {
-        const response = await axios.get("/api/users/");
+        const response = await axios.get("/api/users/search", {
+          params: {
+            name: debouncedSearchText,
+          },
+        });
         const peopleWithNames = response.data.map((user) => ({
           ...user,
           name: user.firstname + " " + user.lastname,
@@ -30,8 +37,6 @@ const PeopleView = memo(() => {
         setPeople(peopleWithNames);
         setAsyncInfo({
           ...defaultAsyncInfo,
-          loadingStatus: false,
-          loadingMessage: "",
         });
       } catch (error) {
         const errObj = ErrorHandler(error);
@@ -45,22 +50,19 @@ const PeopleView = memo(() => {
       }
     }
     fetchUsers();
-  }, [axios]);
-
-  // useEffect(()=>{
-  //   const filteredPeople = peopleList.filter(person=>{
-  //     return (
-  //       person.name.toLowerCase().includes(searchText.toLowerCase())
-  //     )
-  //   })
-  //   setPeople(filteredPeople);
-  // },[searchText])
+  }, [axios, debouncedSearchText]);
 
   return (
-    <Box sx={{ overflow: "auto" }}>
+    <Stack sx={{ overflow: "auto", height: "100%" }}>
       <SearchPeople searchText={searchText} setSearchText={setSearchText} />
-      <PeopleList people={people} />
-    </Box>
+      <Box sx={{ position: "relative", flexGrow: 1 }}>
+        {asyncInfo.loadingStatus ? (
+          <Loading text={asyncInfo.loadingMessage} />
+        ) : (
+          <PeopleList people={people} />
+        )}
+      </Box>
+    </Stack>
   );
 });
 

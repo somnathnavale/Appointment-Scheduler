@@ -61,8 +61,24 @@ const CalenderView = memo(() => {
       if (selectedEvent.type == null) {
         return;
       }
+      console.log(selectedEvent);
       dispatch(setPageView(Page.EVENT));
       dispatch(setSelectedEvent(selectedEvent));
+    },
+    [dispatch],
+  );
+
+  const handleCreateSelect = useCallback(
+    (e) => {
+      dispatch(setPageView(Page.SCHEDULE));
+      dispatch(
+        setSelectedEvent({
+          start: e.start,
+          end: e.end,
+          appointmentId: -1,
+          appointmentInstanceId: -1,
+        }),
+      );
     },
     [dispatch],
   );
@@ -73,6 +89,7 @@ const CalenderView = memo(() => {
         events={appointments}
         handleEventSelect={handleEventSelect}
         page={Page.SCHEDULE}
+        handleCreateSelect={handleCreateSelect}
       />
     </>
   );

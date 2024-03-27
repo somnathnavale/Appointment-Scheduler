@@ -46,7 +46,7 @@ const AppointmentView = () => {
           />
         </Box>
       </Box>
-      <Box>{JSON.stringify(appointment)}</Box>
+      <Box sx={{ overflow: "auto" }}>{JSON.stringify(appointment)}</Box>
     </Box>
   );
 };
