@@ -15,6 +15,11 @@ import { STATUS, defaultInfo } from "../../constants/common";
 import { ErrorHandler } from "../../helpers/asyncHandler";
 import { useNavigate } from "react-router-dom";
 
+const styles = {
+  loginLink: { ml: 1 },
+  caBtn: { mt: 2, width: "100%" },
+};
+
 const Register = () => {
   const [info, setInfo] = useState(defaultInfo);
   const [formData, setFormData] = useState(defaultRegisterUserForm);
@@ -46,7 +51,7 @@ const Register = () => {
   };
 
   return (
-    <Layout>
+    <>
       <Typography
         variant="h4"
         sx={{
@@ -57,7 +62,11 @@ const Register = () => {
       </Typography>
       <Box sx={{ mt: 2 }}>
         <Typography variant="span">Already have an account?</Typography>
-        <CustomLinkPrimary linkText="Sign in" url="/login" style={{ ml: 1 }} />
+        <CustomLinkPrimary
+          linkText="Sign in"
+          url="/login"
+          style={styles.loginLink}
+        />
       </Box>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} sx={{ mt: 2 }}>
@@ -75,14 +84,24 @@ const Register = () => {
         </Grid>
         <CustomButton
           btnText={
-            info.status === STATUS.LOADING ? "Logging In..." : "Create account"
+            info.status === STATUS.LOADING
+              ? "Creating acc..."
+              : "Create account"
           }
-          style={{ mt: 2 }}
+          style={styles.caBtn}
           disabled={info.status === STATUS.LOADING}
         />
       </form>
+    </>
+  );
+};
+
+const RegisterWithLayout = () => {
+  return (
+    <Layout>
+      <Register />
     </Layout>
   );
 };
 
-export default Register;
+export default RegisterWithLayout;

@@ -1,16 +1,17 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 
-const CustomPasswordField = (props) => {
-  const { placeHolder, type, name, value, onChange, style, required } = props;
+const CustomPasswordField = memo((props) => {
+  const { label, placeholder, name, value, onChange, style, required } = props;
 
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <TextField
       variant="outlined"
-      label={placeHolder}
+      label={label}
+      placeholder={placeholder}
       type={showPassword ? "text" : "password"}
       name={name}
       value={value}
@@ -31,6 +32,8 @@ const CustomPasswordField = (props) => {
       }}
     />
   );
-};
+});
+
+CustomPasswordField.displayName = "CustomPasswordField";
 
 export default CustomPasswordField;

@@ -6,12 +6,12 @@ import {
   Toolbar,
   alpha,
 } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 import CompanyName from "./CompanyName";
 import { headerOptions } from "../../constants/navbarConstants";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const SidebarDrawer = ({ open, handleDrawerToggle }) => {
+const SidebarDrawer = memo(({ open, handleDrawerToggle }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -70,6 +70,8 @@ const SidebarDrawer = ({ open, handleDrawerToggle }) => {
       </Drawer>
     </nav>
   );
-};
+});
+
+SidebarDrawer.displayName = "SidebarDrawer";
 
 export default SidebarDrawer;

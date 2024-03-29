@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 
-import React, { useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 
 import SidebarDrawer from "./SidebarDrawer";
 import CompanyName from "./CompanyName";
@@ -17,14 +17,14 @@ import CompanyName from "./CompanyName";
 import { headerOptions } from "../../constants/navbarConstants";
 import NavbarItem from "./NavbarItem";
 
-const Header = () => {
+const Header = memo(() => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
-  const handleDrawerToggle = () => {
+  const handleDrawerToggle = useCallback(() => {
     setOpen((prevState) => !prevState);
-  };
+  }, []);
 
   return (
     <Box>
@@ -75,6 +75,8 @@ const Header = () => {
       <SidebarDrawer open={open} handleDrawerToggle={handleDrawerToggle} />
     </Box>
   );
-};
+});
+
+Header.displayName = "Header";
 
 export default Header;

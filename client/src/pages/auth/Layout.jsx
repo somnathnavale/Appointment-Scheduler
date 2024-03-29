@@ -1,8 +1,8 @@
 import { Box, Paper, Toolbar } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 import CompanyName from "../../components/Header/CompanyName";
 
-const Layout = ({ children }) => {
+const Layout = memo(({ children }) => {
   return (
     <Box
       sx={{
@@ -44,6 +44,8 @@ const Layout = ({ children }) => {
       </Box>
     </Box>
   );
-};
+});
+
+Layout.displayName = "Layout";
 
 export default Layout;

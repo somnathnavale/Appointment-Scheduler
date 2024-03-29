@@ -1,13 +1,15 @@
 import { Button } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 
-const CustomButton = (props) => {
-  const { btnText, onClick, type, color, variant, style, disabled } = props;
+const CustomButton = memo((props) => {
+  const { btnText, onClick, type, color, variant, style, disabled, id } = props;
+  console.log(btnText);
   return (
     <Button
       variant={variant ? variant : "contained"}
       color={color ? color : "primary"}
       type={type ? type : "submit"}
+      id={id}
       sx={{
         fontSize: "16px",
         ...style,
@@ -21,6 +23,8 @@ const CustomButton = (props) => {
       {btnText}
     </Button>
   );
-};
+});
+
+CustomButton.displayName = "CustomButton";
 
 export default CustomButton;

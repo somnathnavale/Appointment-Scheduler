@@ -61,7 +61,7 @@ const CalenderView = memo(() => {
       if (selectedEvent.type == null) {
         return;
       }
-      console.log(selectedEvent);
+
       dispatch(setPageView(Page.EVENT));
       dispatch(setSelectedEvent(selectedEvent));
     },
@@ -84,14 +84,12 @@ const CalenderView = memo(() => {
   );
 
   return (
-    <>
-      <CustomCalender
-        events={appointments}
-        handleEventSelect={handleEventSelect}
-        page={Page.SCHEDULE}
-        handleCreateSelect={handleCreateSelect}
-      />
-    </>
+    <CustomCalender
+      events={appointments}
+      handleEventSelect={handleEventSelect}
+      page={Page.SCHEDULE}
+      handleCreateSelect={handleCreateSelect}
+    />
   );
 });
 

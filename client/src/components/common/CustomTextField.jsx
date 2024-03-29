@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 
-const CustomTextField = (props) => {
+const CustomTextField = memo((props) => {
   const {
     placeHolder,
     type,
@@ -12,17 +12,18 @@ const CustomTextField = (props) => {
     required,
     autoComplete,
     variant,
-    InputLabelProps,
+    label,
     disabled,
   } = props;
 
   return (
     <TextField
       variant={variant ? variant : "outlined"}
-      label={placeHolder}
+      label={label}
       type={type ? type : "text"}
       name={name}
       value={value}
+      placeholder={placeHolder}
       onChange={onChange}
       fullWidth
       sx={{
@@ -31,9 +32,10 @@ const CustomTextField = (props) => {
       disabled={disabled}
       required={required}
       autoComplete={autoComplete}
-      InputLabelProps={InputLabelProps}
     />
   );
-};
+});
+
+CustomTextField.displayName = "CustomTextField";
 
 export default CustomTextField;

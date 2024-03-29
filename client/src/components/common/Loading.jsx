@@ -1,7 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 import { CircularProgress, Typography, Box } from "@mui/material";
 
-const Loading = ({ text, style }) => {
+const Loading = memo(({ text, style }) => {
   return (
     <Box
       sx={{
@@ -23,6 +23,8 @@ const Loading = ({ text, style }) => {
       </Typography>
     </Box>
   );
-};
+});
+
+Loading.displayName = "Loading";
 
 export default Loading;

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import InnerLayout from "../../components/Layout/InnerLayout";
-import { Box, Grid, Typography, alpha } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../components/common/CustomButton";
 import GenerateFormFields from "../../components/common/GenerateFormFields";
@@ -18,7 +18,23 @@ import ErrorSnackbar from "../../components/common/ErrorSnackbar";
 import { setUser } from "../../features/user/userSlice";
 import useLogout from "../../hooks/useLogout";
 
-const Profile = () => {
+const styles = {
+  innerLayout: {
+    display: "flex",
+    justifyContent: "center",
+    textAlign: "center",
+  },
+  editBtn: { mt: 2, width: "100%", fontWeight: 500 },
+  changePassBtn: {
+    width: "100%",
+    fontWeight: 500,
+    px: 1,
+    height: "100%",
+  },
+  logoutBtn: { width: "100%", mt: 4 },
+};
+
+const Profile = memo(() => {
   const [info, setInfo] = useState(defaultInfo);
   const [editToggle, setEditToggle] = useState(false);
   const { user } = useSelector((store) => store.user);
@@ -34,66 +50,66 @@ const Profile = () => {
     setFormData((prev) => ({ ...prev, ...user }));
   }, [user]);
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    if (!editToggle) {
-      setEditToggle(true);
-      return;
-    }
-    setInfo({ status: STATUS.LOADING, message: "Updating User" });
-    const updatedUserObj = {
-      userId: formData.userId,
-      firstname: formData.firstname,
-      lastname: formData.lastname,
-      email: formData.email,
-    };
-    try {
-      await axios.put(`/api/users/${formData.userId}`, updatedUserObj);
-      setInfo({ status: STATUS.SUCCESS, message: "" });
-      dispatch(setUser(updatedUserObj));
-    } catch (error) {
-      console.log(error);
-      const errObj = ErrorHandler(error);
-      setInfo({ status: STATUS.ERROR, message: errObj.message });
-    }
-  };
+  const handleUpdate = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!editToggle) {
+        setEditToggle(true);
+        return;
+      }
+      setInfo({ status: STATUS.LOADING, message: "Updating User" });
+      const updatedUserObj = {
+        userId: formData.userId,
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+        email: formData.email,
+      };
+      try {
+        await axios.put(`/api/users/${formData.userId}`, updatedUserObj);
+        setInfo({ status: STATUS.SUCCESS, message: "" });
+        dispatch(setUser(updatedUserObj));
+      } catch (error) {
+        console.log(error);
+        const errObj = ErrorHandler(error);
+        setInfo({ status: STATUS.ERROR, message: errObj.message });
+      }
+    },
+    [formData, axios, dispatch, editToggle],
+  );
 
-  const handleUpdatePassword = async (e) => {
-    e.preventDefault();
-    setInfo({ status: STATUS.LOADING, message: "Changing User Password" });
-    const updatedUserObj = { ...formData };
-    try {
-      await axios.put(
-        `/api/auth/${formData.userId}/change-password`,
-        updatedUserObj,
-      );
-      setInfo({ status: STATUS.SUCCESS, message: "" });
-      setFormData((prev) => ({ ...prev, password: "" }));
-    } catch (error) {
-      const errObj = ErrorHandler(error);
-      setInfo({ status: STATUS.ERROR, message: errObj.message });
-    }
-  };
+  const handleUpdatePassword = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setInfo({ status: STATUS.LOADING, message: "Changing User Password" });
+      const updatedUserObj = { ...formData };
+      try {
+        await axios.put(
+          `/api/auth/${formData.userId}/change-password`,
+          updatedUserObj,
+        );
+        setInfo({ status: STATUS.SUCCESS, message: "" });
+        setFormData((prev) => ({ ...prev, password: "" }));
+      } catch (error) {
+        const errObj = ErrorHandler(error);
+        setInfo({ status: STATUS.ERROR, message: errObj.message });
+      }
+    },
+    [axios, formData],
+  );
 
-  const handleChange = (e) => {
-    return ((name, value) => {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    })(e.target.name, e.target.value);
-  };
+  const handleChange = useCallback(
+    (e) =>
+      setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value })),
+    [],
+  );
+
+  const onClose = useCallback(() => setInfo(defaultInfo), []);
 
   return (
-    <InnerLayout
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        textAlign: "center",
-      }}
-      height="100%"
-      bgcolor="grey.200"
-    >
+    <InnerLayout style={styles.innerLayout} height="100%" bgcolor="grey.200">
       <ErrorSnackbar
         open={info.status === STATUS.ERROR}
-        onClose={() => setInfo(defaultInfo)}
+        onClose={onClose}
         message={info.message}
       />
       <Box
@@ -129,7 +145,7 @@ const Profile = () => {
                     : "Update User"
                   : "Edit User"
               }
-              style={{ mt: 2, width: "100%", fontWeight: 500 }}
+              style={styles.editBtn}
               disabled={info.status === STATUS.LOADING}
             />
           </form>
@@ -155,12 +171,7 @@ const Profile = () => {
                       ? "Changing Password..."
                       : "Change Password"
                   }
-                  style={{
-                    width: "100%",
-                    fontWeight: 500,
-                    px: 1,
-                    height: "100%",
-                  }}
+                  style={styles.changePassBtn}
                   disabled={info.status === STATUS.LOADING}
                 />
               </Grid>
@@ -169,10 +180,7 @@ const Profile = () => {
         </Box>
         <CustomButton
           btnText="Logout"
-          style={{
-            width: "100%",
-            mt: 4,
-          }}
+          style={styles.logoutBtn}
           variant="outlined"
           color="error"
           disabled={info.status === STATUS.LOADING}
@@ -181,6 +189,16 @@ const Profile = () => {
       </Box>
     </InnerLayout>
   );
+});
+
+Profile.displayName = "Profile";
+
+const WrappedProfile = () => {
+  return (
+    <InnerLayout style={styles.innerLayout} height="100%" bgcolor="grey.200">
+      <Profile />
+    </InnerLayout>
+  );
 };
 
-export default Profile;
+export default WrappedProfile;

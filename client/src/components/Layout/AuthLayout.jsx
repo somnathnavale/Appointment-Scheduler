@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { memo } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-const AuthLayout = ({ children }) => {
+const AuthLayout = memo(() => {
   const { user } = useSelector((store) => store.user);
   const location = useLocation();
   if (!user?.token) {
@@ -15,6 +15,8 @@ const AuthLayout = ({ children }) => {
       <Outlet />
     </Box>
   );
-};
+});
+
+AuthLayout.displayName = "AuthLayout";
 
 export default AuthLayout;

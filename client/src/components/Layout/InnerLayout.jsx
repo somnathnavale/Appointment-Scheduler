@@ -1,7 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import { Box } from "@mui/material";
 
-const InnerLayout = ({ children, bgcolor, style, height }) => {
+const InnerLayout = memo(({ children, bgcolor, style, height }) => {
+  console.log("inner layout", children?._source?.fileName);
   return (
     <Box
       sx={{
@@ -28,6 +29,8 @@ const InnerLayout = ({ children, bgcolor, style, height }) => {
       </Box>
     </Box>
   );
-};
+});
+
+InnerLayout.displayName = "InnerLayout";
 
 export default InnerLayout;

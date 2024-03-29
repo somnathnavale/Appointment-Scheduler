@@ -64,22 +64,11 @@ const CustomCalender = memo(
       }
     }, [date, view]);
 
-    const changeZoom = useCallback((val) => {
-      setZoom(val);
-    }, []);
+    const changeZoom = useCallback((val) => setZoom(val), []);
 
-    const components = {
-      event: ({ event }) => {
-        if (event?.title)
-          return (
-            <CustomAppointment
-              appointment={event}
-              isMonthView={view === Views.MONTH}
-            />
-          );
-        return null;
-      },
-    };
+    const onViewChange = useCallback((_, val) => setView(val), []);
+
+    const onDateChange = useCallback((date) => setDate(date), []);
 
     return (
       <Box
@@ -100,9 +89,9 @@ const CustomCalender = memo(
           zoom={zoom}
           changeZoom={changeZoom}
           view={view}
-          onViewChange={useCallback((_, val) => setView(val), [])}
+          onViewChange={onViewChange}
           date={date}
-          onDateChange={useCallback((date) => setDate(date), [])}
+          onDateChange={onDateChange}
           onNextClick={onNextClick}
           onPrevClick={onPrevClick}
           dateText={dateText}
@@ -155,12 +144,23 @@ const CustomCalender = memo(
             style={{ flexGrow: 1 }}
             min={moment().set({ hour: 9, minute: 0, second: 0 }).format()}
             max={moment().set({ hour: 18, minute: 0, second: 0 }).format()}
-            components={components}
             onView={(v) => setView(v)}
             onNavigate={(...e) => console.log(e)}
             onSelectSlot={handleSlotSelect}
             onSelectEvent={handleEventSelect}
             timeslots={2}
+            components={{
+              event: ({ event }) => {
+                if (event?.title)
+                  return (
+                    <CustomAppointment
+                      appointment={event}
+                      isMonthView={view === Views.MONTH}
+                    />
+                  );
+                return null;
+              },
+            }}
           />
         </Box>
       </Box>

@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 import { Outlet } from "react-router-dom";
 
-const Main = () => {
+const Main = memo(() => {
   return (
     <Box
       sx={{
@@ -12,6 +12,8 @@ const Main = () => {
       <Outlet />
     </Box>
   );
-};
+});
+
+Main.displayName = "Main";
 
 export default Main;

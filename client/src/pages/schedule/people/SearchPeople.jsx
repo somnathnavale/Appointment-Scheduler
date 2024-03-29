@@ -1,7 +1,16 @@
-import React from "react";
+import React, { memo } from "react";
 import CustomTextField from "../../../components/common/CustomTextField";
 
-const SearchPeople = ({ searchText, setSearchText }) => {
+const styles = {
+  searchText: {
+    position: "sticky",
+    top: 0,
+    zIndex: 10,
+    backgroundColor: "grey.100",
+  },
+};
+
+const SearchPeople = memo(({ searchText, handleChange }) => {
   return (
     <>
       <CustomTextField
@@ -9,19 +18,16 @@ const SearchPeople = ({ searchText, setSearchText }) => {
         type="text"
         name="searchText"
         value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
+        onChange={handleChange}
         required={false}
         autoComplete="off"
         variant="standard"
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-          backgroundColor: "grey.100",
-        }}
+        style={styles.searchText}
       />
     </>
   );
-};
+});
+
+SearchPeople.displayName = "SearchPeople";
 
 export default SearchPeople;

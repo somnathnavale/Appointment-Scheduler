@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { setUser } from "../../features/user/userSlice";
 import Loading from "../common/Loading";
 
-const PersistedLayer = () => {
+const PersistedLayer = memo(() => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
@@ -20,6 +20,8 @@ const PersistedLayer = () => {
   if (loading) return <Loading text="loading" />;
 
   return <Outlet />;
-};
+});
+
+PersistedLayer.displayName = "PersistedLayer";
 
 export default PersistedLayer;

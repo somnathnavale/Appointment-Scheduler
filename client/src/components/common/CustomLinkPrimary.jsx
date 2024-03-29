@@ -1,9 +1,11 @@
 import { Typography } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
 
-const CustomLinkPrimary = ({ linkText, url, style }) => {
+const CustomLinkPrimary = memo((props) => {
+  const { linkText, url, style } = props;
   const navigate = useNavigate();
+
   return (
     <Typography
       variant="span"
@@ -20,6 +22,8 @@ const CustomLinkPrimary = ({ linkText, url, style }) => {
       {linkText}
     </Typography>
   );
-};
+});
+
+CustomLinkPrimary.displayName = "CustomLinkPrimary";
 
 export default CustomLinkPrimary;

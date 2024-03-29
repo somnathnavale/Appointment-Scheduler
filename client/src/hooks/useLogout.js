@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { setUser } from "../features/user/userSlice";
+import { resetUser } from "../features/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const useLogout = () => {
@@ -9,7 +9,7 @@ const useLogout = () => {
 
   const handleLogout = useCallback(() => {
     sessionStorage.removeItem("user");
-    dispatch(setUser({}));
+    dispatch(resetUser({}));
     navigate("/login");
   }, [dispatch, navigate]);
 

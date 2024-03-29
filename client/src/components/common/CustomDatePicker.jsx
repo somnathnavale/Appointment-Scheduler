@@ -1,23 +1,25 @@
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import React from "react";
+import React, { memo } from "react";
 import { Box } from "@mui/material";
 
-const CustomDatePicker = ({
-  required,
-  label,
-  name,
-  size,
-  format,
-  readOnly,
-  disablePast,
-  disableFuture,
-  value,
-  onChange,
-  style,
-  variant,
-}) => {
+const CustomDatePicker = memo((props) => {
+  const {
+    required,
+    label,
+    name,
+    size,
+    format,
+    readOnly,
+    disablePast,
+    disableFuture,
+    value,
+    onChange,
+    style,
+    variant,
+  } = props;
+
   return (
     <Box
       sx={{
@@ -51,6 +53,8 @@ const CustomDatePicker = ({
       </LocalizationProvider>
     </Box>
   );
-};
+});
+
+CustomDatePicker.displayName = "CustomDatePicker";
 
 export default CustomDatePicker;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from "react";
+import React, { useEffect, useState, memo, useCallback } from "react";
 import SearchPeople from "./SearchPeople";
 import PeopleList from "./PeopleList";
 import { Box, Stack } from "@mui/material";
@@ -52,9 +52,11 @@ const PeopleView = memo(() => {
     fetchUsers();
   }, [axios, debouncedSearchText]);
 
+  const handleChange = useCallback((e) => setSearchText(e.target.value), []);
+
   return (
     <Stack sx={{ overflow: "auto", height: "100%" }}>
-      <SearchPeople searchText={searchText} setSearchText={setSearchText} />
+      <SearchPeople searchText={searchText} handleChange={handleChange} />
       <Box sx={{ position: "relative", flexGrow: 1 }}>
         {asyncInfo.loadingStatus ? (
           <Loading text={asyncInfo.loadingMessage} />

@@ -1,11 +1,25 @@
 import { Stack } from "@mui/material";
-import React, { memo } from "react";
+import React, { memo, useCallback } from "react";
 import CustomButton from "../CustomButton";
 import { defaultContextMenu } from "../../../constants/calenderConstants";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 
+const styles = {
+  crAppStyle: { fontWeight: 500, fontSize: "16px" },
+};
+
 const CustomMenuCalender = memo(
   ({ contextMenuInfo, handleCreateSelect, setContextMenuInfo }) => {
+    const onCreateSelect = useCallback(
+      () => handleCreateSelect(contextMenuInfo),
+      [handleCreateSelect, contextMenuInfo],
+    );
+
+    const onCancelSelect = useCallback(
+      () => setContextMenuInfo(defaultContextMenu),
+      [setContextMenuInfo],
+    );
+
     return (
       <Stack
         sx={{
@@ -25,9 +39,9 @@ const CustomMenuCalender = memo(
         alignItems="center"
       >
         <CustomButton
-          onClick={() => handleCreateSelect(contextMenuInfo)}
+          onClick={onCreateSelect}
           color="primary"
-          style={{ fontWeight: 500, fontSize: "16px" }}
+          style={styles.crAppStyle}
           btnText="Create Appointment"
         />
         <HighlightOffRoundedIcon
@@ -39,7 +53,7 @@ const CustomMenuCalender = memo(
             height: "100%",
             fontSize: "36px",
           }}
-          onClick={() => setContextMenuInfo(defaultContextMenu)}
+          onClick={onCancelSelect}
         />
       </Stack>
     );

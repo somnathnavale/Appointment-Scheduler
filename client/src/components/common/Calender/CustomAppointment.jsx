@@ -1,12 +1,12 @@
 import { Box, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { memo } from "react";
 import { useSelector } from "react-redux";
 import dropdown from "../../../constants/dropdown.json";
 import moment from "moment";
 
 const appointmentType = dropdown.appointmentType;
 
-const CustomAppointment = ({ appointment, isMonthView }) => {
+const CustomAppointment = memo(({ appointment, isMonthView }) => {
   const { selectedUser } = useSelector((store) => store.schedule);
 
   if (appointment?.type == null && appointment.scheduledWith === null) {
@@ -81,6 +81,8 @@ const CustomAppointment = ({ appointment, isMonthView }) => {
       )}
     </Box>
   );
-};
+});
+
+CustomAppointment.displayName = "CustomAppointment";
 
 export default CustomAppointment;

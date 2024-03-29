@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import Layout from "./Layout";
 import { Box, Typography } from "@mui/material";
 import GenerateFormFields from "../../components/common/GenerateFormFields";
@@ -17,7 +17,19 @@ import { ErrorHandler } from "../../helpers/asyncHandler";
 import ErrorSnackbar from "../../components/common/ErrorSnackbar";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const styles = {
+  calink: { ml: 1 },
+  fplink: {
+    color: "secondary.main",
+    display: "block",
+    mt: 2,
+    textAlign: "right",
+  },
+  loginBtn: { mt: 2, width: "100%" },
+  formField: { mt: 2 },
+};
+
+const Login = memo(() => {
   const [formData, setFormData] = useState(defaultLoginUserForm);
   const [info, setInfo] = useState(defaultInfo);
 
@@ -25,11 +37,10 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleChange = (e) => {
-    return ((name, value) => {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    })(e.target.name, e.target.value);
-  };
+  const handleChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +60,7 @@ const Login = () => {
   };
 
   return (
-    <Layout>
+    <>
       <ErrorSnackbar
         open={info.status === STATUS.ERROR}
         onClose={() => setInfo(defaultInfo)}
@@ -68,7 +79,7 @@ const Login = () => {
         <CustomLinkPrimary
           linkText="Create account"
           url="/register"
-          style={{ ml: 1 }}
+          style={styles.calink}
         />
       </Box>
       <form onSubmit={handleSubmit}>
@@ -79,28 +90,33 @@ const Login = () => {
               ...field,
               value: formData[field.name],
               onChange: handleChange,
-              style: { mt: 2 },
+              style: styles.formField,
             }}
           />
         ))}
         <CustomLinkPrimary
           linkText="Forgot passsword ?"
           url="/forgot-password"
-          style={{
-            color: "secondary.main",
-            display: "block",
-            mt: 2,
-            textAlign: "right",
-          }}
+          style={styles.fplink}
         />
         <CustomButton
           btnText={info.status === STATUS.LOADING ? "Logging in..." : "Login"}
-          style={{ mt: 2, width: "100%" }}
+          style={styles.loginBtn}
           disabled={info.status === STATUS.LOADING}
         />
       </form>
+    </>
+  );
+});
+
+Login.displayName = "Login";
+
+const LoginWithLayout = () => {
+  return (
+    <Layout>
+      <Login />
     </Layout>
   );
 };
 
-export default Login;
+export default LoginWithLayout;

@@ -1,18 +1,28 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axiosPublic from "../../config/axios";
 import useAxios from "../../hooks/useAxios";
 import { Page, STATUS, defaultAsyncInfo } from "../../constants/common";
 import { ErrorHandler } from "../../helpers/asyncHandler";
-import { Box } from "@mui/material";
 import InnerLayout from "../../components/Layout/InnerLayout";
 import CustomCalender from "../../components/common/Calender/CustomCalender";
 import { convertAppointmentIntoInstnaces } from "../../helpers/appointmentsHelper";
 
-const MyAppointments = () => {
+const styles = {
+  innerLayout: {
+    p: 2,
+    pb: "0px !important",
+    color: "grey.700",
+    height: "100%",
+    maxWidth: "100vw",
+    overflowX: "auto",
+    maxHeight: { xs: "inherit", md: "calc( 100vh - 120px )" },
+  },
+};
+
+const MyAppointments = memo(() => {
   const [appointments, setAppointments] = useState([]);
   const [asyncInfo, setAsyncInfo] = useState(defaultAsyncInfo);
-  const [events, setEvents] = useState();
 
   const { user } = useSelector((store) => store.user);
 
@@ -53,9 +63,9 @@ const MyAppointments = () => {
     fetchUserAppointments();
   }, [axios, user?.userId]);
 
-  function handleEventSelect(e) {
+  const handleEventSelect = useCallback((e) => {
     console.log(e);
-  }
+  }, []);
 
   const handleSlotSelect = useCallback((e) => {
     console.log(e);
@@ -63,28 +73,25 @@ const MyAppointments = () => {
   }, []);
 
   return (
-    <Box sx={{ height: "100%", bgcolor: "grey.200" }}>
-      <InnerLayout
-        style={{
-          p: 2,
-          pb: "0px !important",
-          color: "grey.700",
-          height: "100%",
-          maxWidth: "100vw",
-          overflowX: "auto",
-          maxHeight: { xs: "inherit", md: "calc( 100vh - 120px )" },
-        }}
-        height="100%"
-      >
-        <CustomCalender
-          events={appointments}
-          handleEventSelect={handleEventSelect}
-          page={Page.MY_APPOINTMENT}
-          handleSlotSelect={handleSlotSelect}
-        />
-      </InnerLayout>
-    </Box>
+    <CustomCalender
+      events={appointments}
+      handleEventSelect={handleEventSelect}
+      page={Page.MY_APPOINTMENT}
+      handleSlotSelect={handleSlotSelect}
+    />
+  );
+});
+
+MyAppointments.displayName = "MyAppointments";
+
+const WrappedMyAppointments = () => {
+  return (
+    <InnerLayout style={styles.innerLayout} bgcolor="grey.200" height="100%">
+      <MyAppointments />
+    </InnerLayout>
   );
 };
 
-export default MyAppointments;
+WrappedMyAppointments.displayName = "WrappedMyAppointments";
+
+export default WrappedMyAppointments;

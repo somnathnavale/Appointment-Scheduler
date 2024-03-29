@@ -1,9 +1,14 @@
-import { Alert, Snackbar } from "@mui/material";
-import React from "react";
+import { Snackbar } from "@mui/material";
+import React, { memo } from "react";
 import ErrorAlert from "./ErrorAlert";
 
-const ErrorSnackbar = (props) => {
+const styles = {
+  alertStyle: { my: 0 },
+};
+
+const ErrorSnackbar = memo((props) => {
   const { open, onClose, message, severity, style } = props;
+
   return (
     <Snackbar
       open={open}
@@ -16,10 +21,12 @@ const ErrorSnackbar = (props) => {
         message={message}
         onClose={onClose}
         severity={severity}
-        style={{ my: 0 }}
+        style={styles.alertStyle}
       />
     </Snackbar>
   );
-};
+});
+
+ErrorSnackbar.displayName = "ErrorSnackbar";
 
 export default ErrorSnackbar;

@@ -1,8 +1,8 @@
 import { Box, ListItem, alpha } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const NavbarItem = ({ item }) => {
+const NavbarItem = memo(({ item }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -61,6 +61,8 @@ const NavbarItem = ({ item }) => {
       <Box component="span">{item.name} </Box>
     </ListItem>
   );
-};
+});
+
+NavbarItem.displayName = "NavbarItem";
 
 export default NavbarItem;

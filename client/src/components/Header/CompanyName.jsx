@@ -1,10 +1,11 @@
 import { Icon, Stack, Typography } from "@mui/material";
 import EventAvailableRoundedIcon from "@mui/icons-material/EventAvailableRounded";
-import React from "react";
+import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
 
-const CompanyName = () => {
+const CompanyName = memo(() => {
   const navigate = useNavigate();
+
   return (
     <Stack
       direction="row"
@@ -30,6 +31,8 @@ const CompanyName = () => {
       <Typography variant="h4">Calendify</Typography>
     </Stack>
   );
-};
+});
+
+CompanyName.displayName = "CompanyName";
 
 export default CompanyName;

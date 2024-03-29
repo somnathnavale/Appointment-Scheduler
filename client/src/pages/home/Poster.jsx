@@ -1,12 +1,18 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
+import React, { useCallback } from "react";
 import poster from "../../assets/homeposter.jpg";
 import CustomButton from "../../components/common/CustomButton";
 import { useNavigate } from "react-router-dom";
 import InnerLayout from "../../components/Layout/InnerLayout";
 
+const styles = {
+  schBtn: { width: "auto" },
+};
+
 const Poster = () => {
   const navigate = useNavigate();
+
+  const handleNaviagete = useCallback(() => navigate("/schedule"), [navigate]);
 
   return (
     <InnerLayout bgcolor="#fff">
@@ -45,8 +51,8 @@ const Poster = () => {
             btnText="Schedule"
             type="button"
             color="secondary"
-            style={{ width: "auto" }}
-            onClick={() => navigate("/schedule")}
+            style={styles.schBtn}
+            onClick={handleNaviagete}
           />
         </Box>
         <Box
