@@ -1,28 +1,28 @@
-import { Snackbar } from "@mui/material";
+import { Alert, Snackbar } from "@mui/material";
 import React, { memo } from "react";
-import ErrorAlert from "./ErrorAlert";
-
-const styles = {
-  alertStyle: { my: 0 },
-};
 
 const ErrorSnackbar = memo((props) => {
-  const { open, onClose, message, severity, style } = props;
-
+  let { open, onClose, message, severity, variant, position , style, delay} = props;
   return (
     <Snackbar
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={delay || 5000}
       onClose={onClose}
-      anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      style={{ ...style }}
+      anchorOrigin={{ vertical: position?.y || "top", horizontal: position?.x || "center" }}
+      sx={{...style}}
     >
-      <ErrorAlert
-        message={message}
-        onClose={onClose}
-        severity={severity}
-        style={styles.alertStyle}
-      />
+      {open && message?.length ? (
+        <Alert
+          onClose={onClose}
+          severity={severity}
+          variant={variant || "standard"}
+          sx={{ width: "100%", my: 0, fontSize:"16px" }}
+        >
+          {message}
+        </Alert>
+      ) : (
+        <p></p>
+      )}
     </Snackbar>
   );
 });

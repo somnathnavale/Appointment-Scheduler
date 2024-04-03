@@ -1,16 +1,44 @@
 import { Box } from "@mui/material";
-import React, { Suspense, lazy } from "react";
-import { useSelector } from "react-redux";
+import React, { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import UserInfo from "./UserInfo";
-import { Page } from "../../../constants/common";
+import {
+  Page,
+  Severity,
+  defaultAsyncInfo,
+} from "../../../constants/common";
 import AppointmentView from "../../appointment/AppointmentView";
-import ScheduleForm from "./ScheduleForm";
 import Loading from "../../../components/common/Loading";
+import Scheduler from "./Scheduler";
+import ErrorSnackbar from "../../../components/common/ErrorSnackbar";
+import { setPageNavigation } from "../../../features/schedule/scheduleSlice";
 
 const CalenderView = lazy(() => import("./CalenderView"));
 
 const Main = () => {
-  const { selectedUser, pageView } = useSelector((store) => store.schedule);
+  const { selectedUser, pageView, pageNavigation } = useSelector(
+    (store) => store.schedule
+  );
+  const [asyncInfo, setAsyncInfo] = useState(defaultAsyncInfo);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (pageNavigation.severity !== Severity.NONE) {
+      setAsyncInfo({
+        ...defaultAsyncInfo,
+        message: pageNavigation.message,
+        severity: pageNavigation.severity,
+      });
+      dispatch(setPageNavigation({
+        from:null,
+        message:"",
+        severity:Severity.NONE
+      }))
+    }
+  }, [pageNavigation,dispatch]);
+
+  const handleSnakClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);
 
   if (!selectedUser?.userId) {
     return (
@@ -27,8 +55,15 @@ const Main = () => {
       </Box>
     );
   }
+
   return (
     <Box sx={{ height: "100%", bgcolor: "fff" }}>
+      <ErrorSnackbar
+        open={!!asyncInfo.severity}
+        onClose={handleSnakClose}
+        message={asyncInfo.message}
+        severity={asyncInfo.severity}
+      />
       {pageView === Page.CALENDER ? (
         <Box
           sx={{
@@ -38,7 +73,7 @@ const Main = () => {
             flexDirection: "column",
           }}
         >
-          <Box sx={{}}>
+          <Box>
             <UserInfo selectedUser={selectedUser} />
           </Box>
           <Box
@@ -65,7 +100,7 @@ const Main = () => {
       ) : pageView === Page.EVENT ? (
         <AppointmentView />
       ) : (
-        <ScheduleForm />
+        <Scheduler />
       )}
     </Box>
   );

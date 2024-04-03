@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -10,7 +10,7 @@ import { defaultContextMenu } from "../../../constants/calenderConstants";
 import CustomMenuCalender from "./CustomMenuCalender";
 
 const CustomCalender = memo(
-  ({ events, handleEventSelect, page, handleCreateSelect }) => {
+  ({ events, handleEventSelect, page, handleCreateSelect, disabledCreateAppointment }) => {
     const [zoom, setZoom] = useState(5);
     const [view, setView] = useState(Views.WEEK);
     const [date, setDate] = useState(moment(new Date()));
@@ -18,9 +18,14 @@ const CustomCalender = memo(
 
     const localizer = momentLocalizer(moment);
 
+    // this is needed to remove create appointment button from screen on selecting other user
+    useEffect(()=>{
+      setContextMenuInfo(defaultContextMenu);
+    },[events])
+
     const handleSlotSelect = useCallback(
       (e) => {
-        if (view === Views.MONTH) return;
+        if (view === Views.MONTH || disabledCreateAppointment || moment(e.start).isBefore(moment())) return;
         setContextMenuInfo({
           xPosition: e.box.x,
           yPosition: e.box.y,
@@ -29,7 +34,7 @@ const CustomCalender = memo(
           resourceId: e.resourceId,
         });
       },
-      [view],
+      [view,disabledCreateAppointment],
     );
 
     const dateText = useMemo(() => {
@@ -68,7 +73,7 @@ const CustomCalender = memo(
 
     const onViewChange = useCallback((_, val) => setView(val), []);
 
-    const onDateChange = useCallback((date) => setDate(date), []);
+    const onDateChange = useCallback((e) => setDate(e.target.value), []);
 
     return (
       <Box
@@ -136,7 +141,7 @@ const CustomCalender = memo(
             localizer={localizer}
             events={events}
             views={[Views.MONTH, Views.WEEK, Views.DAY]}
-            defaultView={view}
+            defaultView={Views.WEEK}
             view={view}
             date={date}
             startAccessor="start"
@@ -144,11 +149,11 @@ const CustomCalender = memo(
             style={{ flexGrow: 1 }}
             min={moment().set({ hour: 9, minute: 0, second: 0 }).format()}
             max={moment().set({ hour: 18, minute: 0, second: 0 }).format()}
+            timeslots={2}
             onView={(v) => setView(v)}
             onNavigate={(...e) => console.log(e)}
             onSelectSlot={handleSlotSelect}
             onSelectEvent={handleEventSelect}
-            timeslots={2}
             components={{
               event: ({ event }) => {
                 if (event?.title)

@@ -14,7 +14,8 @@ const SearchPeople = memo(({ searchText, handleChange }) => {
   return (
     <>
       <CustomTextField
-        placeHolder="Search a people"
+        placeholder="Search a person"
+        label="Search"
         type="text"
         name="searchText"
         value={searchText}

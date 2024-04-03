@@ -3,7 +3,6 @@ import React, { memo } from "react";
 
 const CustomButton = memo((props) => {
   const { btnText, onClick, type, color, variant, style, disabled, id } = props;
-  console.log(btnText);
   return (
     <Button
       variant={variant ? variant : "contained"}

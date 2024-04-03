@@ -1,5 +1,5 @@
-import { STATUS, defaultAsyncInfo } from "../constants/common";
-import { ENDPOINTS } from "../constants/endpoints";
+import { Severity, defaultAsyncInfo } from "../constants/common";
+import { Endpoints } from "../constants/endpoints";
 import { convertAppointmentIntoInstnaces } from "../helpers/appointmentsHelper";
 import { ErrorHandler } from "../helpers/asyncHandler";
 
@@ -11,7 +11,7 @@ export const getAllAppointmentOfCurrentUser = async function (...args) {
       loadingMessage: "Fetching User Appointments",
     });
     try {
-      const response = axios.get(ENDPOINTS.getAllUserAppointments, {
+      const response = axios.get(Endpoints.GET_USER_APPOINTMENTS, {
         params: args.params,
       });
       const appointments = convertAppointmentIntoInstnaces(
@@ -28,7 +28,7 @@ export const getAllAppointmentOfCurrentUser = async function (...args) {
       setAsyncInfo({
         ...defaultAsyncInfo,
         message: errObj.message,
-        status: STATUS.ERROR,
+        status: Severity.ERROR,
       });
     }
   };

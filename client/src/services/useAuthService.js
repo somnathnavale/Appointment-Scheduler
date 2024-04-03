@@ -1,10 +1,10 @@
 import axiosPublic from "../config/axios";
-import { ENDPOINTS } from "../constants/endpoints";
+import { Endpoints } from "../constants/endpoints";
 
 const useAuthService = () => {
   const userRegistration = async (data) => {
     try {
-      const response = axiosPublic.post(ENDPOINTS.registerUser, data);
+      const response = axiosPublic.post(Endpoints.REGISTER_USER, data);
     } catch (error) {
       console.log(error);
     }
@@ -12,7 +12,7 @@ const useAuthService = () => {
 
   const userLogin = async (data) => {
     try {
-      const response = axiosPublic.post(ENDPOINTS.login, data);
+      const response = axiosPublic.post(Endpoints.LOGIN, data);
     } catch (error) {
       console.log(error);
     }

@@ -54,7 +54,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         Optional<User> scheduledWithUser = userRepository.findById(saveAppointmentRequestDTO.getScheduledWith());
 
         if (scheduledByUser.isEmpty() || scheduledWithUser.isEmpty()) {
-            throw new InvalidAppointmentException("Provide Correct Values for Scheduled By and Scheduled With User field");
+            throw new InvalidAppointmentException("Provide correct values for scheduled by and scheduled with field");
         }
 
         Occurrence occurrence = saveAppointmentRequestDTO.getOccurrence();
@@ -68,18 +68,18 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         if (instances > 30) {
-            throw new InvalidAppointmentException("Cannot create more than 30 appointment instances one time");
+            throw new InvalidAppointmentException("Cannot create more than 30 appointment instances at one time");
         }
 
         if (startDateTime.isAfter(endDateTime) || startDateTime.isBefore(LocalDateTime.now())) {
-            throw new InvalidAppointmentException("Appointments Only be created in Present Or Future");
+            throw new InvalidAppointmentException("Appointments only be created in Present or Future");
         }
 
         int daysGap = commonHelper.getIntOccurrenceByEnumKey(occurrence);
 
         boolean isOverlappingAppointmentExists = isAppointmentsOverlapping(startDateTime, endDateTime, instances, daysGap, saveAppointmentRequestDTO.getScheduledBy(), saveAppointmentRequestDTO.getScheduledWith());
 
-        if (isOverlappingAppointmentExists) throw new InvalidAppointmentException("Cannot create Overlapping appointments");
+        if (isOverlappingAppointmentExists) throw new InvalidAppointmentException("Cannot create overlapping appointments");
 
         scheduledByUser.ifPresent(appointment::setScheduledBy);
         scheduledWithUser.ifPresent(appointment::setScheduledWith);

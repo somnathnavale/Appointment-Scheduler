@@ -1,75 +1,10 @@
+import moment from "moment";
 import dropdown from "./dropdown.json";
 
-const appointmentStatuses = dropdown.appointmentStatus;
-const appointmentOccurrences = dropdown.appointmentOccurrence;
+const appointmentStatuses = dropdown.status;
+const appointmentOccurrences = dropdown.occurrence;
 
 export const appointmentForm = [
-  {
-    name: "date",
-    placeholder: "Date",
-    label: "Date",
-    required: true,
-    type: "date",
-    defaultValue: "",
-    autoComplete: "off",
-    info: "",
-    disabled: {
-      register: false,
-      update: false,
-    },
-    grid: {
-      xs: 12,
-      sm: 6,
-      md: 4,
-      lg: 4,
-    },
-    color: "primary",
-    forms: ["register", "update"],
-  },
-  {
-    name: "startTime",
-    placeholder: "Start Time",
-    label: "Start Time",
-    required: true,
-    type: "dropdown",
-    defaultValue: "",
-    autoComplete: "off",
-    info: "",
-    disabled: {
-      register: false,
-      update: false,
-    },
-    grid: {
-      xs: 12,
-      sm: 6,
-      md: 4,
-      lg: 4,
-    },
-    color: "primary",
-    forms: ["register", "update"],
-  },
-  {
-    name: "endTime",
-    placeholder: "End Time",
-    label: "End Time",
-    required: true,
-    type: "dropdown",
-    defaultValue: "",
-    autoComplete: "off",
-    info: "",
-    disabled: {
-      register: false,
-      update: false,
-    },
-    grid: {
-      xs: 12,
-      sm: 6,
-      md: 4,
-      lg: 4,
-    },
-    color: "primary",
-    forms: ["register", "update"],
-  },
   {
     name: "title",
     required: true,
@@ -77,6 +12,31 @@ export const appointmentForm = [
     defaultValue: "",
     placeholder: "Title",
     label: "Title",
+    autoComplete:"off",
+    info:"",
+    disabled: {
+      register: false,
+      update: false,
+    },
+    grid: {
+      xs: 12,
+      sm: 12,
+      md: 8,
+      lg: 8,
+    },
+    color: "primary",
+    forms: ["register", "update"],
+  },
+  {
+    name: "date",
+    placeholder: "Date",
+    label: "Date",
+    required: true,
+    type: "date",
+    defaultValue: moment(new Date()),
+    info: "",
+    size:"medium",
+    disablePast:true,
     disabled: {
       register: false,
       update: false,
@@ -91,15 +51,63 @@ export const appointmentForm = [
     forms: ["register", "update"],
   },
   {
-    name: "description",
+    name: "start",
+    placeholder: "Start Time",
+    label: "Start Time",
     required: true,
-    type: "longText",
+    type: "dropdown",
+    lovKey:"timeSlots",
     defaultValue: "",
-    placeholder: "Description",
-    label: "Description",
+    info: "",
     disabled: {
       register: false,
       update: false,
+    },
+    grid: {
+      xs: 12,
+      sm: 6,
+      md: 4,
+      lg: 4,
+    },
+    color: "primary",
+    forms: ["register", "update"],
+  },
+  {
+    name: "end",
+    placeholder: "End Time",
+    label: "End Time",
+    required: true,
+    type: "dropdown",
+    lovKey:"timeSlots",
+    defaultValue: "",
+    autoComplete: "off",
+    info: "",
+    disabled: {
+      register: false,
+      update: false,
+    },
+    grid: {
+      xs: 12,
+      sm: 6,
+      md: 4,
+      lg: 4,
+    },
+    color: "primary",
+    forms: ["register", "update"],
+  },
+  {
+    name: "type",
+    placeholder: "Appointment Type",
+    label: "Appointment Type",
+    required: true,
+    type: "dropdown",
+    lovKey:"type",
+    defaultValue: "",
+    autoComplete: "off",
+    info: "",
+    disabled: {
+      register: false,
+      update: true,
     },
     grid: {
       xs: 12,
@@ -133,33 +141,12 @@ export const appointmentForm = [
     forms: ["register", "update"],
   },
   {
-    name: "appointmentType",
-    placeholder: "Appointment Type",
-    label: "Appointment Type",
-    required: true,
-    type: "dropdown",
-    defaultValue: "",
-    autoComplete: "off",
-    info: "",
-    disabled: {
-      register: false,
-      update: true,
-    },
-    grid: {
-      xs: 12,
-      sm: 6,
-      md: 4,
-      lg: 4,
-    },
-    color: "primary",
-    forms: ["register", "update"],
-  },
-  {
-    name: "appointmentStatus",
+    name: "status",
     placeholder: "Appointment Status",
     label: "Appointment Status",
     required: true,
     type: "dropdown",
+    lovKey:"status",
     defaultValue: appointmentStatuses.find(
       (status) => status.value === "SCHEDULED",
     ).value,
@@ -179,11 +166,12 @@ export const appointmentForm = [
     forms: ["register", "update"],
   },
   {
-    name: "appointmentOccurrence",
+    name: "occurrence",
     placeholder: "Appointment Occurrence",
     label: "Appointment Occurrence",
     required: true,
     type: "dropdown",
+    lovKey:"occurrence",
     defaultValue: appointmentOccurrences.find(
       (status) => status.value === "ONCE",
     ).value,
@@ -203,12 +191,12 @@ export const appointmentForm = [
     forms: ["register", "update"],
   },
   {
-    name: "appointmentInstances",
+    name: "instances",
     placeholder: "Appointment Instances",
     label: "Appointment Instances",
     required: true,
     type: "number",
-    defaultValue: null,
+    defaultValue: 1,
     autoComplete: "off",
     info: "",
     disabled: {
@@ -232,6 +220,7 @@ export const appointmentForm = [
     label: "Scheduled With",
     required: true,
     type: "dropdown",
+    lovKey:"scheduledWith",
     defaultValue: "",
     autoComplete: "off",
     info: "",
@@ -254,6 +243,7 @@ export const appointmentForm = [
     label: "Scheduled By",
     required: true,
     type: "dropdown",
+    lovKey:"scheduledBy",
     defaultValue: "",
     autoComplete: "off",
     info: "",
@@ -267,6 +257,29 @@ export const appointmentForm = [
       md: 4,
       lg: 4,
     },
+    color: "primary",
+    forms: ["register", "update"],
+  },
+  {
+    name: "description",
+    required: true,
+    type: "textarea",
+    defaultValue: "",
+    placeholder: "Description",
+    label: "Description",
+    autoComplete:"off",
+    info:"",
+    disabled: {
+      register: false,
+      update: false,
+    },
+    grid: {
+      xs: 12,
+      sm: 12,
+      md: 12,
+      lg: 12,
+    },
+    rows:2,
     color: "primary",
     forms: ["register", "update"],
   },
@@ -284,6 +297,8 @@ export const registerAppointmentFields = appointmentForm.map((field) => {
     disabled: disabled.register,
   };
 });
+
+export const registerRequiredFields = registerAppointmentFields.map(field=>({name:field.name,label:field.label}));
 
 export const updateAppointmentFields = appointmentForm.map((field) => {
   const { disabled, forms, ...rest } = field;

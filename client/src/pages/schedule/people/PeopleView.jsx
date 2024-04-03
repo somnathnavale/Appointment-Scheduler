@@ -2,12 +2,13 @@ import React, { useEffect, useState, memo, useCallback } from "react";
 import SearchPeople from "./SearchPeople";
 import PeopleList from "./PeopleList";
 import { Box, Stack } from "@mui/material";
-import { STATUS, defaultAsyncInfo } from "../../../constants/common";
+import { Severity, defaultAsyncInfo } from "../../../constants/common";
 import useAxios from "../../../hooks/useAxios";
 import axiosPublic from "../../../config/axios";
 import { ErrorHandler } from "../../../helpers/asyncHandler";
 import useDebounce from "../../../hooks/useDebounce";
 import Loading from "../../../components/common/Loading";
+import ErrorSnackbar from "../../../components/common/ErrorSnackbar";
 
 const PeopleView = memo(() => {
   const [searchText, setSearchText] = useState("");
@@ -19,11 +20,11 @@ const PeopleView = memo(() => {
 
   useEffect(() => {
     async function fetchUsers() {
-      setAsyncInfo((prev) => ({
-        ...prev,
-        loadingStatus: true,
-        loadingMessage: "Fetching Users",
-      }));
+      setAsyncInfo({
+        ...defaultAsyncInfo,
+        loading: true,
+        message: "Fetching Users...",
+      });
       try {
         const response = await axios.get("/api/users/search", {
           params: {
@@ -35,36 +36,41 @@ const PeopleView = memo(() => {
           name: user.firstname + " " + user.lastname,
         }));
         setPeople(peopleWithNames);
-        setAsyncInfo({
-          ...defaultAsyncInfo,
-        });
+        setAsyncInfo(defaultAsyncInfo);
       } catch (error) {
         const errObj = ErrorHandler(error);
-        setAsyncInfo((prev) => ({
-          ...prev,
-          loadingStatus: false,
-          loadingMessage: "",
+        setAsyncInfo({
+          ...defaultAsyncInfo,
           message: errObj.message,
-          status: STATUS.ERROR,
-        }));
+          severity: Severity.ERROR,
+        });
       }
     }
     fetchUsers();
   }, [axios, debouncedSearchText]);
 
   const handleChange = useCallback((e) => setSearchText(e.target.value), []);
+  const onClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);
 
   return (
-    <Stack sx={{ overflow: "auto", height: "100%" }}>
-      <SearchPeople searchText={searchText} handleChange={handleChange} />
-      <Box sx={{ position: "relative", flexGrow: 1 }}>
-        {asyncInfo.loadingStatus ? (
-          <Loading text={asyncInfo.loadingMessage} />
-        ) : (
-          <PeopleList people={people} />
-        )}
-      </Box>
-    </Stack>
+    <>
+      <ErrorSnackbar
+        open={!!asyncInfo.severity}
+        onClose={onClose}
+        message={asyncInfo.message}
+        severity={asyncInfo?.severity}
+      />
+      <Stack sx={{ overflow: "auto", height: "100%" }}>
+        <SearchPeople searchText={searchText} handleChange={handleChange} />
+        <Box sx={{ position: "relative", flexGrow: 1 }}>
+          {asyncInfo.loading ? (
+            <Loading text={asyncInfo.message} />
+          ) : (
+            <PeopleList people={people} />
+          )}
+        </Box>
+      </Stack>
+    </>
   );
 });
 

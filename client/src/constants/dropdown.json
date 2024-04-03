@@ -1,15 +1,15 @@
 {
-  "appointmentType": [
+  "type": [
     {
       "label": "In Person Meet",
       "value": "IN_PERSON"
     },
     {
-      "label": "VIRTUAL MEET UP",
+      "label": "Virtual Meet",
       "value": "VIRTUAL_MEET"
     }
   ],
-  "appointmentStatus": [
+  "status": [
     {
       "label": "Scheduled",
       "value": "SCHEDULED"
@@ -31,7 +31,7 @@
       "value": "PENDING"
     }
   ],
-  "appointmentOccurrence": [
+  "occurrence": [
     {
       "label": "One Time",
       "value": "ONCE"

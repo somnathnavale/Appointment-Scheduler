@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import dropdown from "../../../constants/dropdown.json";
 import moment from "moment";
 
-const appointmentType = dropdown.appointmentType;
+const appointmentType = dropdown.type;
 
 const CustomAppointment = memo(({ appointment, isMonthView }) => {
   const { selectedUser } = useSelector((store) => store.schedule);

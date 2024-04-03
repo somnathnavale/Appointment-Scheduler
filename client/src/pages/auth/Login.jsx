@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import Layout from "./Layout";
 import { Box, Typography } from "@mui/material";
 import GenerateFormFields from "../../components/common/GenerateFormFields";
@@ -9,13 +9,14 @@ import {
   loginFormFields,
 } from "../../constants/userConstants";
 import axiosPublic from "../../config/axios";
-import { ENDPOINTS } from "../../constants/endpoints";
+import { Endpoints } from "../../constants/endpoints";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../features/user/userSlice";
-import { STATUS, defaultInfo } from "../../constants/common";
+import { Severity, defaultAsyncInfo } from "../../constants/common";
 import { ErrorHandler } from "../../helpers/asyncHandler";
 import ErrorSnackbar from "../../components/common/ErrorSnackbar";
-import { useLocation, useNavigate } from "react-router-dom";
+import useRouting from "../../hooks/useRouting";
+import { AppRoutes } from "../../constants/routes";
 
 const styles = {
   calink: { ml: 1 },
@@ -31,11 +32,17 @@ const styles = {
 
 const Login = memo(() => {
   const [formData, setFormData] = useState(defaultLoginUserForm);
-  const [info, setInfo] = useState(defaultInfo);
+  const [asyncInfo, setAsyncInfo] = useState(defaultAsyncInfo);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { navigate, location } = useRouting();
+
+  useEffect(() => {
+    if (location.state?.navigate) {
+      let { message, severity } = location.state;
+      setAsyncInfo({ message, severity });
+    }
+  }, [location]);
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -45,26 +52,29 @@ const Login = memo(() => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setInfo({ status: STATUS.LOADING, message: "Logging in..." });
-      const response = await axiosPublic.post(ENDPOINTS.login, formData);
+      setAsyncInfo({ ...defaultAsyncInfo, loading:true,message: "Logging in..." });
+      const response = await axiosPublic.post(Endpoints.LOGIN, formData);
       dispatch(setUser(response.data));
       sessionStorage.setItem("user", JSON.stringify(response.data));
-      setInfo({ status: STATUS.SUCCESS, message: "" });
+      setAsyncInfo({ ...defaultAsyncInfo, severity:Severity.SUCCESS });
       setFormData(defaultLoginUserForm);
-      const path = location.state?.from || "/home";
+      const path = location.state?.from || AppRoutes.HOME;
       navigate(path);
     } catch (error) {
       const errObj = ErrorHandler(error);
-      setInfo({ status: STATUS.ERROR, message: errObj.message });
+      setAsyncInfo({ severity: Severity.ERROR, message: errObj.message });
     }
   };
+
+  const onClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);
 
   return (
     <>
       <ErrorSnackbar
-        open={info.status === STATUS.ERROR}
-        onClose={() => setInfo(defaultInfo)}
-        message={info.message}
+        open={!!asyncInfo.severity}
+        onClose={onClose}
+        message={asyncInfo.message}
+        severity={asyncInfo?.severity}
       />
       <Typography
         variant="h4"
@@ -78,7 +88,7 @@ const Login = memo(() => {
         <Typography variant="span">Don&apos;t have an account?</Typography>
         <CustomLinkPrimary
           linkText="Create account"
-          url="/register"
+          url={AppRoutes.REGISTER}
           style={styles.calink}
         />
       </Box>
@@ -96,13 +106,13 @@ const Login = memo(() => {
         ))}
         <CustomLinkPrimary
           linkText="Forgot passsword ?"
-          url="/forgot-password"
+          url={AppRoutes.FORGOT_PASSWORD}
           style={styles.fplink}
         />
         <CustomButton
-          btnText={info.status === STATUS.LOADING ? "Logging in..." : "Login"}
+          btnText={asyncInfo.loading ? "Logging in..." : "Login"}
           style={styles.loginBtn}
-          disabled={info.status === STATUS.LOADING}
+          disabled={asyncInfo.loading}
         />
       </form>
     </>

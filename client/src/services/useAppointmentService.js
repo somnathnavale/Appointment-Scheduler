@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axiosPublic from "../config/axios";
-import { ENDPOINTS } from "../constants/endpoints";
+import { Endpoints } from "../constants/endpoints";
 import useAxios from "../hooks/useAxios";
 import { useSelector } from "react-redux";
 import { ErrorHandler } from "../helpers/asyncHandler";
-import { STATUS } from "../constants/common";
+import { Severity } from "../constants/common";
 import { convertAppointmentIntoInstnaces } from "../helpers/appointmentsHelper";
 
 const defaultAsyncInfo = {
@@ -39,7 +39,7 @@ const useAppointmentService = ({ callback, initialData }) => {
   //     scheduledWith: user?.userId,
   //   };
   //   try {
-  //     const response = axios.get(ENDPOINTS.getAllUserAppointments, { params });
+  //     const response = axios.get(Endpoints.getAllUserAppointments, { params });
   //     const appointments = convertAppointmentIntoInstnaces(
   //       response.data.commonAppointments
   //     );
@@ -54,7 +54,7 @@ const useAppointmentService = ({ callback, initialData }) => {
   //     setAsyncInfo({
   //       ...defaultAsyncInfo,
   //       message: errObj.message,
-  //       status: STATUS.ERROR,
+  //       status: Severity.ERROR,
   //     });
   //   }
   // };

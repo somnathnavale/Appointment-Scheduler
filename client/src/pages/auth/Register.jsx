@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useCallback } from "react";
 import { useState } from "react";
 import {
   defaultRegisterUserForm,
@@ -10,10 +10,12 @@ import CustomLinkPrimary from "../../components/common/CustomLinkPrimary";
 import CustomButton from "../../components/common/CustomButton";
 import GenerateFormFields from "../../components/common/GenerateFormFields";
 import axiosPublic from "../../config/axios";
-import { ENDPOINTS } from "../../constants/endpoints";
-import { STATUS, defaultInfo } from "../../constants/common";
+import { Endpoints } from "../../constants/endpoints";
+import { Severity, defaultAsyncInfo } from "../../constants/common";
 import { ErrorHandler } from "../../helpers/asyncHandler";
 import { useNavigate } from "react-router-dom";
+import ErrorSnackbar from "../../components/common/ErrorSnackbar";
+import { AppRoutes } from "../../constants/routes";
 
 const styles = {
   loginLink: { ml: 1 },
@@ -21,50 +23,61 @@ const styles = {
 };
 
 const Register = () => {
-  const [info, setInfo] = useState(defaultInfo);
+  const [asyncInfo, setAsyncInfo] = useState(defaultAsyncInfo);
   const [formData, setFormData] = useState(defaultRegisterUserForm);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setInfo({ status: STATUS.LOADING, message: "Registering User..." });
+    setAsyncInfo({ ...defaultAsyncInfo, loading: true, message: "Registering User..." });
     try {
-      await axiosPublic.post(ENDPOINTS.registerUser, formData);
-      setInfo({ status: STATUS.SUCCESS, message: "" });
-      navigate("/login");
+      await axiosPublic.post(Endpoints.REGISTER_USER, formData);
+      setAsyncInfo({ ...defaultAsyncInfo, severity: Severity.SUCCESS });
+      navigate(AppRoutes.LOGIN, {
+        state: {
+          navigate: true,
+          message: "User registered successfully",
+          severity: Severity.SUCCESS,
+        },
+      });
     } catch (error) {
       const errObj = ErrorHandler(error);
-      setInfo({ status: STATUS.ERROR, message: errObj.message });
+      setAsyncInfo({
+        severity: Severity.ERROR,
+        message: errObj.message,
+        loading: false,
+      });
     }
   };
 
-  const handleChange = (e) => {
-    return ((name, value) => {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    })(e.target.name, e.target.value);
-  };
+  const handleChange = useCallback(
+    (e) =>
+      setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value })),
+    []
+  );
 
-  const columnCalculator = (name) => {
-    if (name === "firstname" || name === "lastname") return 6;
-    return 12;
-  };
+  const columnCalculator = (name) =>
+    name === "firstname" || name === "lastname" ? 6 : 12;
+
+  const onClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);
 
   return (
     <>
-      <Typography
-        variant="h4"
-        sx={{
-          color: "grey.800",
-        }}
-      >
+      <ErrorSnackbar
+        open={!!asyncInfo.severity}
+        onClose={onClose}
+        message={asyncInfo.message}
+        severity={asyncInfo?.severity}
+      />
+      <Typography variant="h4" sx={{ color: "grey.800" }}>
         Get started with Calendify
       </Typography>
       <Box sx={{ mt: 2 }}>
         <Typography variant="span">Already have an account?</Typography>
         <CustomLinkPrimary
           linkText="Sign in"
-          url="/login"
+          url={AppRoutes.LOGIN}
           style={styles.loginLink}
         />
       </Box>
@@ -84,12 +97,10 @@ const Register = () => {
         </Grid>
         <CustomButton
           btnText={
-            info.status === STATUS.LOADING
-              ? "Creating acc..."
-              : "Create account"
+            asyncInfo.loading ? "Creating accoount..." : "Create account"
           }
           style={styles.caBtn}
-          disabled={info.status === STATUS.LOADING}
+          disabled={asyncInfo.loading}
         />
       </form>
     </>

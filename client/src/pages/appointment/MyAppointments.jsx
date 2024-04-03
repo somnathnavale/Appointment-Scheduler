@@ -2,11 +2,13 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axiosPublic from "../../config/axios";
 import useAxios from "../../hooks/useAxios";
-import { Page, STATUS, defaultAsyncInfo } from "../../constants/common";
+import { Page, Severity, defaultAsyncInfo } from "../../constants/common";
 import { ErrorHandler } from "../../helpers/asyncHandler";
 import InnerLayout from "../../components/Layout/InnerLayout";
 import CustomCalender from "../../components/common/Calender/CustomCalender";
 import { convertAppointmentIntoInstnaces } from "../../helpers/appointmentsHelper";
+import { Endpoints } from "../../constants/endpoints";
+import ErrorSnackbar from "../../components/common/ErrorSnackbar";
 
 const styles = {
   innerLayout: {
@@ -18,6 +20,9 @@ const styles = {
     overflowX: "auto",
     maxHeight: { xs: "inherit", md: "calc( 100vh - 120px )" },
   },
+  snackbar:{
+    my:1
+  }
 };
 
 const MyAppointments = memo(() => {
@@ -31,33 +36,27 @@ const MyAppointments = memo(() => {
 
   useEffect(() => {
     async function fetchUserAppointments() {
-      setAsyncInfo((prev) => ({
-        ...prev,
-        loadingStatus: true,
-        loadingMessage: "Fetching User Appointments",
-      }));
+      setAsyncInfo({
+        ...defaultAsyncInfo,
+        loading: true,
+        message: "Fetching your appointments...",
+      });
       try {
         const response = await axios.get(
-          `/api/appointments/users?scheduled-by=${user.userId}&scheduled-with=${user.userId}`,
+          Endpoints.GET_USER_APPOINTMENTS(user.userId, user.userId)
         );
         const totalAppointments = convertAppointmentIntoInstnaces(
-          response.data.commonAppointments,
+          response.data.commonAppointments
         );
         setAppointments([...totalAppointments]);
-        setAsyncInfo({
-          ...defaultAsyncInfo,
-          loadingStatus: false,
-          loadingMessage: "",
-        });
+        setAsyncInfo(defaultAsyncInfo);
       } catch (error) {
         const errObj = ErrorHandler(error);
-        setAsyncInfo((prev) => ({
-          ...prev,
-          loadingStatus: false,
-          loadingMessage: "",
+        setAsyncInfo({
+          loading: false,
           message: errObj.message,
-          status: STATUS.ERROR,
-        }));
+          severity: Severity.ERROR,
+        });
       }
     }
     fetchUserAppointments();
@@ -72,13 +71,25 @@ const MyAppointments = memo(() => {
     //write code to dispatch action to set page view and event
   }, []);
 
+  const onClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);
+
   return (
-    <CustomCalender
-      events={appointments}
-      handleEventSelect={handleEventSelect}
-      page={Page.MY_APPOINTMENT}
-      handleSlotSelect={handleSlotSelect}
-    />
+    <>
+      <ErrorSnackbar
+        open={!!asyncInfo.severity}
+        onClose={onClose}
+        message={asyncInfo.message}
+        severity={asyncInfo?.severity}
+        style={styles.snackbar}
+      />
+      <CustomCalender
+        events={appointments}
+        handleEventSelect={handleEventSelect}
+        page={Page.MY_APPOINTMENT}
+        handleSlotSelect={handleSlotSelect}
+        disabledCreateAppointment={true}
+      />
+    </>
   );
 });
 

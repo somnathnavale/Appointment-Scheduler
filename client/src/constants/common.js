@@ -1,21 +1,16 @@
-export const STATUS = Object.freeze({
-  IDLE: "IDLE",
-  LOADING: "LOADING",
-  SUCCESS: "SUCCESS",
-  ERROR: "ERROR",
+export const Severity = Object.freeze({
+  INFO:"info",
+  SUCCESS: "success",
+  ERROR: "error",
+  WARNING: "warning",
+  NONE:""
 });
 
-export const defaultInfo = {
-  status: STATUS.IDLE,
-  message: "",
-};
-
 export const defaultAsyncInfo = {
-  loadingStatus: false,
-  loadingMessage: "",
-  loadingAction: "",
+  loading: false,
   message: "",
-  status: "",
+  action: "",
+  severity: Severity.NONE
 };
 
 export const Page = {

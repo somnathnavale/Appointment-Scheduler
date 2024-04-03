@@ -1,10 +1,9 @@
 import { TextField } from "@mui/material";
 import React, { memo } from "react";
 
-const CustomTextField = memo((props) => {
+const CustomNumberField = memo((props) => {
   const {
     placeholder,
-    type,
     name,
     value,
     onChange,
@@ -14,17 +13,34 @@ const CustomTextField = memo((props) => {
     variant,
     label,
     disabled,
+    min,
+    max,
   } = props;
-  
+
+  const handleKeyDown = (event) => {
+    if (
+      event.key === 'Backspace' ||
+      event.key === 'Delete' ||
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight' ||
+      /[0-9]/.test(event.key)
+    ) {
+      return;
+    } else {
+      event.preventDefault();
+    }
+  };
+
   return (
     <TextField
       variant={variant ? variant : "outlined"}
       label={label}
-      type={type ? type : "text"}
+      type="number"
       name={name}
       value={value}
       placeholder={placeholder}
       onChange={onChange}
+      onKeyDown={handleKeyDown}
       fullWidth
       sx={{
         ...style,
@@ -32,10 +48,11 @@ const CustomTextField = memo((props) => {
       disabled={disabled}
       required={required}
       autoComplete={autoComplete}
+      InputProps={{ inputProps: { min, max} }}
     />
   );
 });
 
-CustomTextField.displayName = "CustomTextField";
+CustomNumberField.displayName = "CustomNumberField";
 
-export default CustomTextField;
+export default CustomNumberField;

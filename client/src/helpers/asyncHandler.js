@@ -1,25 +1,27 @@
+import { Severity } from "../constants/common";
+
 export const ErrorHandler = (error) => {
-  if (error.isAxiosError) {
+  if (error?.isAxiosError) {
     if (error.response) {
       const { message, status } = error.response.data;
       const statusCode = error.response.status;
-      return { message, status, statusCode };
+      return { message, status:status, statusCode };
     } else if (error.request) {
       return {
         message: error?.message || "Network Error",
-        status: "error",
+        status: Severity.ERROR,
         statusCode: 0,
       };
     } else {
       return {
         message: error?.message || "Unknown Error",
-        status: "error",
+        status: Severity.ERROR,
         statusCode: 500,
       };
     }
   }
 
-  return { message: "Something went wrong", status: "error", statusCode: 500 };
+  return { message: "Something went wrong", status: Severity.ERROR, statusCode: 500 };
 };
 
 export const asyncHandler = (fn) => {

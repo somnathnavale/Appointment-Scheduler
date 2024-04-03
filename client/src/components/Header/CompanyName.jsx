@@ -2,6 +2,7 @@ import { Icon, Stack, Typography } from "@mui/material";
 import EventAvailableRoundedIcon from "@mui/icons-material/EventAvailableRounded";
 import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../constants/routes";
 
 const CompanyName = memo(() => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const CompanyName = memo(() => {
   return (
     <Stack
       direction="row"
-      onClick={() => navigate("/")}
+      onClick={() => navigate(AppRoutes.HOME)}
       sx={{ cursor: "pointer" }}
     >
       <Icon

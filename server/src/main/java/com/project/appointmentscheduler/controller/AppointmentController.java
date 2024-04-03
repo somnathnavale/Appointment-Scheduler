@@ -26,7 +26,6 @@ public class AppointmentController {
 
     @PostMapping("/")
     public ResponseEntity<GetAppointmentResponseDTO> saveAppointment(@Valid @RequestBody SaveAppointmentRequestDTO saveAppointmentRequestDTO){
-        System.out.println(saveAppointmentRequestDTO.toString());
         GetAppointmentResponseDTO appointment= appointmentService.saveAppointment(saveAppointmentRequestDTO);
         return ResponseEntity.ok(appointment);
     }

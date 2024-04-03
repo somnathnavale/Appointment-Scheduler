@@ -51,12 +51,19 @@ const CustomToolbar = memo((props) => {
 
   const handleViewChange = useCallback(
     (e) => onViewChange(e, e.target.id),
-    [onViewChange],
+    [onViewChange]
   );
 
   const handleDateChange = useCallback(
-    () => onDateChange(moment(new Date())),
-    [onDateChange],
+    () =>
+      onDateChange(
+        {
+          target: {
+            value: moment(new Date()),
+          },
+        }
+      ),
+    [onDateChange]
   );
 
   return (
@@ -73,10 +80,10 @@ const CustomToolbar = memo((props) => {
       }}
     >
       <Stack spacing={1} direction="row" alignItems="center">
-        <ZoomInRoundedIcon
+        <ZoomOutRoundedIcon
           sx={styles.iconStyle}
-          onClick={() => changeZoom(zoom + 5 > 20 ? 20 : zoom + 5)}
-          titleAccess="Zoom In"
+          onClick={() => changeZoom(zoom - 5 < 5 ? 5 : zoom - 5)}
+          titleAccess="Zoom Out"
         />
         <Slider
           aria-label="Zoom"
@@ -87,10 +94,10 @@ const CustomToolbar = memo((props) => {
           sx={{ minWidth: "80px", color: "primary.dark" }}
           size="small"
         />
-        <ZoomOutRoundedIcon
+        <ZoomInRoundedIcon
           sx={styles.iconStyle}
-          onClick={() => changeZoom(zoom - 5 < 5 ? 5 : zoom - 5)}
-          titleAccess="Zoom Out"
+          onClick={() => changeZoom(zoom + 5 > 20 ? 20 : zoom + 5)}
+          titleAccess="Zoom In"
         />
       </Stack>
       <Box
@@ -101,6 +108,7 @@ const CustomToolbar = memo((props) => {
       >
         <CustomDatePicker
           value={date}
+          name="date"
           onChange={onDateChange}
           style={styles.datePicker}
         />

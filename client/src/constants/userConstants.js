@@ -93,3 +93,8 @@ export const changePasswordFormFields = userForm
     const { forms, ...rest } = obj;
     return rest;
   });
+
+export const Action={
+  UPDATE:"update",
+  CHANGE_PASSWORD:"change_password"
+}

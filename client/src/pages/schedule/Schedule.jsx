@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import InnerLayout from "../../components/Layout/InnerLayout";
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import PeopleView from "./people/PeopleView";
 import Main from "./main/Main";
 

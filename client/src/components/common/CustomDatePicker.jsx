@@ -3,6 +3,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import React, { memo } from "react";
 import { Box } from "@mui/material";
+import moment from "moment";
 
 const CustomDatePicker = memo((props) => {
   const {
@@ -17,7 +18,6 @@ const CustomDatePicker = memo((props) => {
     value,
     onChange,
     style,
-    variant,
   } = props;
 
   return (
@@ -38,15 +38,21 @@ const CustomDatePicker = memo((props) => {
           disablePast={disablePast ?? false}
           disableFuture={disableFuture ?? false}
           value={value}
-          onChange={onChange}
-          sx={{
-            ...style,
-          }}
+          onChange={(val) =>
+            onChange({
+              target: {
+                name,
+                value: val,
+              },
+            })
+          }
+          defaultValue={moment()}
           slotProps={{
             textField: {
-              size: "small",
+              size: size ?? "small",
               required: required,
               fullWidth: true,
+              ...style
             },
           }}
         />

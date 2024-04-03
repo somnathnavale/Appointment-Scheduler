@@ -1,10 +1,9 @@
-import { TextField } from "@mui/material";
+import { TextField, useMediaQuery, useTheme } from "@mui/material";
 import React, { memo } from "react";
 
-const CustomTextField = memo((props) => {
+const CustomTextArea = memo((props) => {
   const {
     placeholder,
-    type,
     name,
     value,
     onChange,
@@ -14,13 +13,14 @@ const CustomTextField = memo((props) => {
     variant,
     label,
     disabled,
+    rows
   } = props;
-  
+
   return (
     <TextField
       variant={variant ? variant : "outlined"}
       label={label}
-      type={type ? type : "text"}
+      type={"text"}
       name={name}
       value={value}
       placeholder={placeholder}
@@ -32,10 +32,12 @@ const CustomTextField = memo((props) => {
       disabled={disabled}
       required={required}
       autoComplete={autoComplete}
+      rows={rows}
+      multiline
     />
   );
 });
 
-CustomTextField.displayName = "CustomTextField";
+CustomTextArea.displayName = "CustomTextArea";
 
-export default CustomTextField;
+export default CustomTextArea;

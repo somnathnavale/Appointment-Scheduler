@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import CustomCalender from "../../../components/common/Calender/CustomCalender";
-import { Page, STATUS, defaultAsyncInfo } from "../../../constants/common";
+import { Page, Severity, defaultAsyncInfo } from "../../../constants/common";
 import { useDispatch, useSelector } from "react-redux";
 import axiosPublic from "../../../config/axios";
 import useAxios from "../../../hooks/useAxios";
@@ -10,6 +10,9 @@ import {
   setPageView,
   setSelectedEvent,
 } from "../../../features/schedule/scheduleSlice";
+import moment from "moment";
+import { Endpoints } from "../../../constants/endpoints";
+import ErrorSnackbar from "../../../components/common/ErrorSnackbar";
 
 const CalenderView = memo(() => {
   const [appointments, setAppointments] = useState([]);
@@ -23,37 +26,31 @@ const CalenderView = memo(() => {
 
   useEffect(() => {
     async function fetchUserAppointments() {
-      setAsyncInfo((prev) => ({
-        ...prev,
-        loadingStatus: true,
-        loadingMessage: "Fetching User Appointments",
-      }));
+      setAsyncInfo({
+        ...defaultAsyncInfo,
+        loading: true,
+        message: "Fetching user appointments...",
+      });
       try {
         const response = await axios.get(
-          `/api/appointments/users?scheduled-by=${user.userId}&scheduled-with=${selectedUser.userId}`,
+          Endpoints.GET_USER_APPOINTMENTS(user.userId, selectedUser.userId)
         );
         const totalAppointments = convertAppointmentIntoInstnaces([
           ...response.data.commonAppointments,
           ...response.data.otherAppointments,
         ]);
         setAppointments([...totalAppointments]);
-        setAsyncInfo({
-          ...defaultAsyncInfo,
-          loadingStatus: false,
-          loadingMessage: "",
-        });
+        setAsyncInfo(defaultAsyncInfo);
       } catch (error) {
         const errObj = ErrorHandler(error);
-        setAsyncInfo((prev) => ({
-          ...prev,
-          loadingStatus: false,
-          loadingMessage: "",
+        setAsyncInfo({
+          ...defaultAsyncInfo,
           message: errObj.message,
-          status: STATUS.ERROR,
-        }));
+          severity: Severity.ERROR,
+        });
       }
     }
-    fetchUserAppointments();
+    if (user?.userId && selectedUser?.userId) fetchUserAppointments();
   }, [axios, user?.userId, selectedUser?.userId]);
 
   const handleEventSelect = useCallback(
@@ -65,7 +62,7 @@ const CalenderView = memo(() => {
       dispatch(setPageView(Page.EVENT));
       dispatch(setSelectedEvent(selectedEvent));
     },
-    [dispatch],
+    [dispatch]
   );
 
   const handleCreateSelect = useCallback(
@@ -73,23 +70,37 @@ const CalenderView = memo(() => {
       dispatch(setPageView(Page.SCHEDULE));
       dispatch(
         setSelectedEvent({
-          start: e.start,
-          end: e.end,
+          date: moment(e.start).format(),
+          start: moment(e.start).format("HH:mm"),
+          end: moment(e.end).format("HH:mm"),
           appointmentId: -1,
           appointmentInstanceId: -1,
-        }),
+          scheduledWith: selectedUser.userId,
+          scheduledBy: user.userId,
+        })
       );
     },
-    [dispatch],
+    [dispatch, selectedUser, user]
   );
 
+  const onClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);
+
   return (
-    <CustomCalender
-      events={appointments}
-      handleEventSelect={handleEventSelect}
-      page={Page.SCHEDULE}
-      handleCreateSelect={handleCreateSelect}
-    />
+    <>
+      <ErrorSnackbar
+        open={!!asyncInfo.severity}
+        onClose={onClose}
+        message={asyncInfo.message}
+        severity={asyncInfo?.severity}
+      />
+      <CustomCalender
+        events={appointments}
+        handleEventSelect={handleEventSelect}
+        page={Page.SCHEDULE}
+        handleCreateSelect={handleCreateSelect}
+        disabledCreateAppointment={selectedUser.userId === user.userId}
+      />
+    </>
   );
 });
 
