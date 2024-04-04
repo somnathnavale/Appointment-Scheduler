@@ -122,7 +122,7 @@ const CustomCalender = memo(
               },
             ".rbc-today.rbc-time-slot, .rbc-today:not(.rbc-off-range-bg,.rbc-time-header-cell):not(.rbc-header)":
               {
-                bgcolor: (theme) => alpha(theme.palette.primary.lighter, 0.5),
+                bgcolor: (theme) => alpha(theme.palette.primary.lighter, 0.8),
               },
             ".rbc-event, .rbc-background-event": {
               height: "100%",
