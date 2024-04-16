@@ -5,4 +5,5 @@ export const Endpoints = Object.freeze({
   UPDATE_USER : (userId)=>`/api/users/${userId}`,
   GET_USER_APPOINTMENTS : (by,withUser) => `/api/appointments/users?scheduled-by=${by}&scheduled-with=${withUser}`,
   CREATE_APPOINTMENT : "/api/appointments/",
+  UPDATE_APPOINTMENT : (appId, instanceId)=>`/api/appointments/${appId}/appointment-instance/${instanceId}`
 });

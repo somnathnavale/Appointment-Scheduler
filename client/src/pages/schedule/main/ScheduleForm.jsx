@@ -1,12 +1,11 @@
 import { Grid } from "@mui/material";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   defaultAppointmentForm,
   registerAppointmentFields,
 } from "../../../constants/appointmentConstants";
 import GenerateFormFields from "../../../components/common/GenerateFormFields";
-import dropdown from "../../../constants/dropdown.json";
 import moment from "moment";
 import CustomButton from "../../../components/common/CustomButton";
 import { validateScheduleForm } from "../../../helpers/appointmentsHelper";
@@ -17,87 +16,41 @@ import axiosPublic from "../../../config/axios";
 import { Endpoints } from "../../../constants/endpoints";
 import { setPageNavigation, setPageView } from "../../../features/schedule/scheduleSlice";
 import ErrorSnackbar from "../../../components/common/ErrorSnackbar";
+import useAppointmentForm from "./useAppointmentForm";
+import Loading from "../../../components/common/Loading";
 
 const ScheduleForm =() => {
-  const {  selectedUser,selectedEvent } = useSelector(
+  const { selectedEvent } = useSelector(
     (store) => store.schedule
   );
-  const { user } = useSelector((store) => store.user);
+
   const [formData, setFormData] = useState(defaultAppointmentForm);
   const [asyncInfo,setAsyncInfo] = useState(defaultAsyncInfo);
+  const dispatch = useDispatch();
 
   const axios= useAxios(axiosPublic);
-  const dispatch = useDispatch();
-  
+  const {remainingFields} = useAppointmentForm(selectedEvent);
+
   useEffect(() => {
-    setFormData((prev) => ({
+    if(selectedEvent?.appointmentId){
+      setFormData((prev) => ({
       ...prev,
       ...selectedEvent,
-      date: selectedEvent?.date
-        ? moment(selectedEvent?.date)
-        : prev.date,
-    }));
+        date: moment(selectedEvent?.date) || null,
+        scheduledWith: selectedEvent?.scheduledWith?.userId,
+        scheduledBy: selectedEvent?.scheduledBy?.userId,
+      }));
+    }
   }, [selectedEvent]);
 
   const handleChange = useCallback((e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
 
-  const scheduledWithLov = useMemo(
-    () => [
-      {
-        label: selectedUser.name,
-        value: selectedUser.userId,
-      },
-    ],
-    [selectedUser]
-  );
-
-  const scheduledByLov = useMemo(
-    () => [
-      {
-        label: user.firstname + " " + user.lastname,
-        value: user.userId,
-      },
-    ],
-    [user]
-  );
-
-  const remainingFields = useCallback(
-    (field) => {
-      let dropdownValues = [];
-      switch (field) {
-        case "type":
-          dropdownValues = dropdown.type;
-          break;
-        case "occurrence":
-          dropdownValues = dropdown.occurrence;
-          break;
-        case "start":
-          dropdownValues = dropdown.timeSlots;
-          break;
-        case "end":
-          dropdownValues = dropdown.timeSlots;
-          break;
-        case "status":
-          dropdownValues = dropdown.status;
-          break;
-        case "scheduledWith":
-          dropdownValues = scheduledWithLov;
-          break;
-        case "scheduledBy":
-          dropdownValues = scheduledByLov;
-          break;
-      }
-      return dropdownValues;
-    },
-    [scheduledByLov, scheduledWithLov]
-  );
-
   const handleSubmit=async(e)=>{
     e.preventDefault();
     
-    const validationResponse=validateScheduleForm(formData);
+    const validationResponse=validateScheduleForm(formData,"post");
     if(validationResponse.severity===Severity.WARNING){
       setAsyncInfo({...defaultAsyncInfo,severity:Severity.WARNING,message:validationResponse.message});
       return;
@@ -123,6 +76,7 @@ const ScheduleForm =() => {
       })
     }
   }
+  
   const handleSnakClose =useCallback(() => setAsyncInfo(defaultAsyncInfo),[])
 
   return (
@@ -133,6 +87,7 @@ const ScheduleForm =() => {
         message={asyncInfo.message}
         severity={asyncInfo.severity}
       />
+      {asyncInfo.loading && <Loading text={asyncInfo.message}/>}
       <Grid container spacing={2} >
         {registerAppointmentFields.map((field, idx) => {
           const { grid, ...others } = field;
@@ -155,7 +110,7 @@ const ScheduleForm =() => {
           xs={12}
           sx={{ display: "flex !important", justifyContent: "center",mt:1  }}
         >
-          <CustomButton btnText="Schedule Appointment" color="primary" disabled={asyncInfo.loading}/>
+          <CustomButton btnText={asyncInfo.loading ?"Scheduling Appointment..." :"Schedule Appointment"} color="primary" disabled={asyncInfo.loading}/>
         </Grid>
       </Grid>
     </form>

@@ -12,6 +12,7 @@ const CustomDropdown = memo((props) => {
     variant,
     label,
     disabled,
+    readOnly,
     dropdownValues,
   } = props;
 
@@ -26,8 +27,9 @@ const CustomDropdown = memo((props) => {
         label={label}
         placeholder={placeholder}
         onChange={onChange}
-        fullWidth
+        fullWidth={props?.fullWidth || true}
         required={required}
+        readOnly={readOnly}
         disabled={disabled}
         sx={{ ...style }}
       >

@@ -1,8 +1,7 @@
 package com.project.appointmentscheduler.controller;
 
-import com.project.appointmentscheduler.dto.GetAllAppointmentResponseDTO;
-import com.project.appointmentscheduler.dto.GetAppointmentResponseDTO;
-import com.project.appointmentscheduler.dto.SaveAppointmentRequestDTO;
+import com.project.appointmentscheduler.dto.*;
+import com.project.appointmentscheduler.error.exceptions.InvalidAppointmentException;
 import com.project.appointmentscheduler.service.interfaces.AppointmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,13 @@ public class AppointmentController {
     public ResponseEntity<GetAppointmentResponseDTO> saveAppointment(@Valid @RequestBody SaveAppointmentRequestDTO saveAppointmentRequestDTO){
         GetAppointmentResponseDTO appointment= appointmentService.saveAppointment(saveAppointmentRequestDTO);
         return ResponseEntity.ok(appointment);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Message> updateAppointment(@PathVariable Long appointmentId, @Valid @RequestBody SaveAppointmentRequestDTO appointmentDTO){
+        if(appointmentId!=appointmentDTO.getAppointmentId()) throw new InvalidAppointmentException("Mismatch in appointment Ids");
+        Message msg= appointmentService.updateAppointment(appointmentDTO);
+        return ResponseEntity.ok(msg);
     }
 
     @GetMapping("/users")

@@ -18,6 +18,7 @@ const CustomDatePicker = memo((props) => {
     value,
     onChange,
     style,
+    disabled
   } = props;
 
   return (
@@ -34,9 +35,10 @@ const CustomDatePicker = memo((props) => {
           name={name}
           size={size ?? "small"}
           format={format ?? "DD/MM/YYYY"}
-          readOnly={readOnly ?? false}
-          disablePast={disablePast ?? false}
-          disableFuture={disableFuture ?? false}
+          readOnly={readOnly || false}
+          disabled={disabled}
+          disablePast={disablePast || false}
+          disableFuture={disableFuture || false}
           value={value}
           onChange={(val) =>
             onChange({

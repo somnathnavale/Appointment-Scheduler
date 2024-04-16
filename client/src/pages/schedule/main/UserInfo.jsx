@@ -7,6 +7,7 @@ import {
   setSelectedEvent,
 } from "../../../features/schedule/scheduleSlice";
 import { Page } from "../../../constants/common";
+import moment from "moment";
 
 const UserInfo = memo(({ selectedUser }) => {
   const { user } = useSelector((store) => store.user);
@@ -18,8 +19,9 @@ const UserInfo = memo(({ selectedUser }) => {
       setSelectedEvent({
         appointmentId:-1,
         appointmentInstanceId:-1,
-        scheduledWith: selectedUser.userId,
-        scheduledBy: user.userId,
+        scheduledWith: selectedUser,
+        scheduledBy: user,
+        date: moment(new Date()).format(),
       })
     );
   }, [dispatch, user, selectedUser]);

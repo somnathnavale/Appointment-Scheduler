@@ -49,5 +49,9 @@ public class Appointment {
     @Column(nullable = false)
     private AppointmentType type;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Occurrence occurrence;
+
     private String location;
 }

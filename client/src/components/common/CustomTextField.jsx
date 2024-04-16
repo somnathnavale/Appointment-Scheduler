@@ -14,6 +14,7 @@ const CustomTextField = memo((props) => {
     variant,
     label,
     disabled,
+    readOnly
   } = props;
   
   return (
@@ -30,6 +31,7 @@ const CustomTextField = memo((props) => {
         ...style,
       }}
       disabled={disabled}
+      inputProps={{ readOnly:readOnly }}
       required={required}
       autoComplete={autoComplete}
     />

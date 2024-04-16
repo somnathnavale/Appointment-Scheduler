@@ -13,6 +13,7 @@ export const convertAppointmentIntoInstnaces = (appointments) => {
         ...others,
         start: moment(startDateTime).toDate(),
         end: moment(endDateTime).toDate(),
+        instances:appointmentInstances.length
       };
     });
     acc.push(...instances);
@@ -21,7 +22,7 @@ export const convertAppointmentIntoInstnaces = (appointments) => {
   return totalAppoitnmetInstances;
 };
 
-export const validateScheduleForm = (formData) => {
+export const validateScheduleForm = (formData, request) => {
   const date = formData?.date;
   const currentDay = moment();
   const isPastDate = currentDay.isAfter(date, "day");
@@ -47,15 +48,15 @@ export const validateScheduleForm = (formData) => {
     return {
       field: "date",
       severity: Severity.WARNING,
-      message: "Appointments cannot be scheduled in past",
+      message: "Appointments cannot be scheduled in past time",
     };
   }
 
-  if (endTime.isBefore(startTime, "minute")) {
+  if (endTime.isSameOrBefore(startTime, "minute")) {
     return {
       field: "start",
       severity: Severity.WARNING,
-      message: "start time cannot greater than end time",
+      message: "start time cannot be equal to or greater than the end time.",
     };
   }
 
@@ -74,28 +75,56 @@ export const validateScheduleForm = (formData) => {
     }
   }
 
-  if(formData.scheduledBy === formData.scheduledWith){
+  if (formData.scheduledBy === formData.scheduledWith) {
     return {
       field: "scheduledWith",
       severity: Severity.WARNING,
       message: `Cannot schedule appointment with yourself`,
-    }
+    };
+  }
+
+  let appointmentData = {
+    title: formData.title,
+    description: formData.description,
+    startDateTime: startDateTime.format("YYYY-MM-DDTHH:mm:ss"),
+    endDateTime: endDateTime.format("YYYY-MM-DDTHH:mm:ss"),
+    scheduledBy: formData.scheduledBy,
+    scheduledWith: formData.scheduledWith,
+    type: formData.type,
+    status: formData.status,
+    location: formData.location,
+    occurrence : formData.occurrence,
+    instances: formData?.instances,
+  };
+
+  if (request === "post") {
+    appointmentData.appointmentId=-1;
+  }
+  
+  if (request === "put") {
+    appointmentData.appointmentId= formData.appointmentId;
   }
 
   return {
     severity: Severity.SUCCESS,
-    data: {
-      title: formData.title,
-      description: formData.description,
-      startDateTime: startDateTime.format("YYYY-MM-DDTHH:mm:ss"),
-      endDateTime: endDateTime.format("YYYY-MM-DDTHH:mm:ss"),
-      scheduledBy: formData.scheduledBy,
-      scheduledWith: formData.scheduledWith,
-      type: formData.type,
-      status: formData.status,
-      instances: formData.instances,
-      occurrence: formData.occurrence,
-      location: formData.location,
-    },
+    data: appointmentData,
+  };
+};
+
+export const validateAppointmentInstanceUpdate = (formData) => {
+  const validationResponse=validateScheduleForm(formData,"put");
+  if (validationResponse.severity === Severity.WARNING) {
+    return validationResponse;
+  }
+  const {data}=validationResponse;
+  let instanceData = {
+    appointmentInstanceId:formData.appointmentInstanceId,
+    startDateTime: data.startDateTime,
+    endDateTime: data.endDateTime,
+    status: formData.status,
+  };
+  return {
+    severity: Severity.SUCCESS,
+    data: instanceData,
   };
 };

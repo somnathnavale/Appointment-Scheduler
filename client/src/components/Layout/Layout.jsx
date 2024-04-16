@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 
 const Layout = memo(() => {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight:"100vh" }}>
       <Header />
       <Main />
       <Footer />

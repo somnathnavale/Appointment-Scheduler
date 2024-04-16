@@ -1,14 +1,12 @@
 package com.project.appointmentscheduler.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.appointmentscheduler.dto.GetAllAppointmentResponseDTO;
-import com.project.appointmentscheduler.dto.GetAppointmentResponseDTO;
-import com.project.appointmentscheduler.dto.MeetStatsProjection;
-import com.project.appointmentscheduler.dto.SaveAppointmentRequestDTO;
+import com.project.appointmentscheduler.dto.*;
 import com.project.appointmentscheduler.entity.Appointment;
 import com.project.appointmentscheduler.entity.AppointmentInstance;
 import com.project.appointmentscheduler.entity.Occurrence;
 import com.project.appointmentscheduler.entity.User;
+import com.project.appointmentscheduler.error.exceptions.AppointmentNotExistException;
 import com.project.appointmentscheduler.error.exceptions.InvalidAppointmentException;
 import com.project.appointmentscheduler.helper.CommonHelper;
 import com.project.appointmentscheduler.repository.AppointmentInstanceRepository;
@@ -127,11 +125,66 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.getAppointmentStats();
     }
 
+    @Override
+    @Transactional
+    public Message updateAppointment(SaveAppointmentRequestDTO appointmentDTO) {
+        Appointment appointment = appointmentRepository.findById(appointmentDTO.getAppointmentId()).orElseThrow(()->new AppointmentNotExistException("Appointment with given Id is not found"));
+
+        return null;
+    }
+
     private GetAppointmentResponseDTO convertAppointmentToPrivateAppointment(Appointment appointment){
         GetAppointmentResponseDTO responseDTO = GetAppointmentResponseDTO.builder().appointmentId(appointment.getAppointmentId()).title("Scheduled With Another User").description("busy").appointmentInstances(appointment.getAppointmentInstances()).build();
 
         return responseDTO;
     }
+
+    private void validateAppointment(SaveAppointmentRequestDTO appointmentDTO, SaveAppointmentRequestDTO previousAppointmentDTO, UserAction action){
+        Appointment appointment = modelMapper.map(appointmentDTO, Appointment.class);
+
+        Optional<User> scheduledByUser = userRepository.findById(appointmentDTO.getScheduledBy());
+        Optional<User> scheduledWithUser = userRepository.findById(appointmentDTO.getScheduledWith());
+
+        if (scheduledByUser.isEmpty() || scheduledWithUser.isEmpty()) {
+            throw new InvalidAppointmentException("Provide correct values for scheduled by and scheduled with field");
+        }
+
+        if((appointmentDTO.getScheduledWith() != previousAppointmentDTO.getScheduledWith()) ||
+                (appointmentDTO.getScheduledBy() != previousAppointmentDTO.getScheduledBy()) ||
+                (appointmentDTO.getOccurrence() != previousAppointmentDTO.getOccurrence()) ||
+                (appointmentDTO.getInstances() != previousAppointmentDTO.getInstances())
+        ){
+            throw new InvalidAppointmentException("Value Mismatch is schedule by, schedule with, or occurrence or instnaces field");
+        }
+
+        Occurrence occurrence = appointmentDTO.getOccurrence();
+        int instances = appointmentDTO.getInstances();
+
+        LocalDateTime startDateTime = appointmentDTO.getStartDateTime();
+        LocalDateTime endDateTime = appointmentDTO.getEndDateTime();
+
+        if ((occurrence == Occurrence.ONCE && instances > 1) || (occurrence != Occurrence.ONCE && instances == 1)) {
+            throw new InvalidAppointmentException("Invalid appointment occurrence and instances input");
+        }
+
+        if (instances > 30) {
+            throw new InvalidAppointmentException("Cannot create more than 30 appointment instances at one time");
+        }
+
+        if (startDateTime.isAfter(endDateTime) || startDateTime.isBefore(LocalDateTime.now())) {
+            throw new InvalidAppointmentException("Appointments only be created in Present or Future");
+        }
+
+        int daysGap = commonHelper.getIntOccurrenceByEnumKey(occurrence);
+
+        boolean isOverlappingAppointmentExists = isAppointmentsOverlapping(startDateTime, endDateTime, instances, daysGap, appointmentDTO.getScheduledBy(), appointmentDTO.getScheduledWith());
+
+        if (isOverlappingAppointmentExists) throw new InvalidAppointmentException("Cannot create overlapping appointments");
+
+        scheduledByUser.ifPresent(appointment::setScheduledBy);
+        scheduledWithUser.ifPresent(appointment::setScheduledWith);
+    }
+
     private boolean isAppointmentsOverlapping(LocalDateTime startDateTime, LocalDateTime endDateTime, int instances, int daysGap, Long scheduledBy, Long scheduledWith) {
 
         List<LocalDateTime> startTimesList = new ArrayList<>();

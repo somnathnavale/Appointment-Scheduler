@@ -1,9 +1,15 @@
 package com.project.appointmentscheduler.controller;
 
+import com.project.appointmentscheduler.dto.Message;
+import com.project.appointmentscheduler.dto.UpdateAppointmentInstanceDTO;
 import com.project.appointmentscheduler.entity.AppointmentInstance;
+import com.project.appointmentscheduler.entity.User;
 import com.project.appointmentscheduler.service.interfaces.AppointmentInstanceService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,19 +26,17 @@ public class AppointmentInstanceController {
         return ResponseEntity.ok(instanceService.getAllAppointmentInstanceByAppointmentId(appointmentId));
     }
 
-//    @PostMapping("/{appointmentId}/appointment-instance")
-//    public ResponseEntity<AppointmentInstance> addAppointmentInstance(@PathVariable("appointmentId") Long appointmentId, @RequestBody AppointmentInstance instance){
-//        return null;
-//    }
-
     @GetMapping("/{appointmentId}/appointment-instance/{instanceId}")
     public ResponseEntity<AppointmentInstance> getAppointmentInstanceById(@PathVariable("appointmentId") Long appointmentId,@PathVariable("instanceId") Long instanceId){
         return ResponseEntity.ok(instanceService.getAppointmentInstanceById(appointmentId, instanceId));
     }
 
     @PutMapping("/{appointmentId}/appointment-instance/{instanceId}")
-    public ResponseEntity<AppointmentInstance> updateAppointmentInstanceById(@PathVariable("appointmentId") Long appointmentId,@PathVariable("instanceId") Long instanceId){
-        return ResponseEntity.ok(instanceService.updateAppointmentInstanceById(appointmentId, instanceId));
+    public ResponseEntity<Message> updateAppointmentInstanceById(@PathVariable("appointmentId") Long appointmentId, @PathVariable("instanceId") Long instanceId, @RequestBody @Valid UpdateAppointmentInstanceDTO appointmentInstanceDTO
+            , @AuthenticationPrincipal User loggedInUser){
+        boolean res = instanceService.updateAppointmentInstanceById(appointmentId, instanceId, appointmentInstanceDTO, loggedInUser.getUserId());
+        Message msg = new Message(HttpStatus.OK, "Appointment instance updated successfully");
+        return ResponseEntity.ok(msg);
     }
 
     @DeleteMapping("/{appointmentId}/appointment-instance/{instanceId}")

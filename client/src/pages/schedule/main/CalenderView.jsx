@@ -9,6 +9,7 @@ import { ErrorHandler } from "../../../helpers/asyncHandler";
 import {
   setPageView,
   setSelectedEvent,
+  setSelectedUser,
 } from "../../../features/schedule/scheduleSlice";
 import moment from "moment";
 import { Endpoints } from "../../../constants/endpoints";
@@ -58,9 +59,16 @@ const CalenderView = memo(() => {
       if (selectedEvent.type == null) {
         return;
       }
-
       dispatch(setPageView(Page.EVENT));
-      dispatch(setSelectedEvent(selectedEvent));
+      dispatch(
+        setSelectedEvent({
+          ...selectedEvent,
+          date: moment(selectedEvent.start).format(),
+          start: moment(selectedEvent.start).format("HH:mm"),
+          end: moment(selectedEvent.end).format("HH:mm"),
+        })
+      );
+      dispatch(setSelectedUser(selectedEvent?.scheduledWith));
     },
     [dispatch]
   );
@@ -75,8 +83,8 @@ const CalenderView = memo(() => {
           end: moment(e.end).format("HH:mm"),
           appointmentId: -1,
           appointmentInstanceId: -1,
-          scheduledWith: selectedUser.userId,
-          scheduledBy: user.userId,
+          scheduledWith: selectedUser,
+          scheduledBy: user,
         })
       );
     },

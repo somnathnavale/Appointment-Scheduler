@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 
 @Data
 public class SaveAppointmentRequestDTO {
+
+    private long appointmentId=-1;
+
     @NotBlank(message = "Appointment title is required field")
     private String title;
 

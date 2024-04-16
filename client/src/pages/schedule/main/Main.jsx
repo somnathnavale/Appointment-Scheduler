@@ -71,6 +71,7 @@ const Main = () => {
             bgcolor: "fff",
             display: "flex",
             flexDirection: "column",
+            overflow:"auto"
           }}
         >
           <Box>
@@ -98,7 +99,7 @@ const Main = () => {
           </Box>
         </Box>
       ) : pageView === Page.EVENT ? (
-        <AppointmentView />
+          <AppointmentView />
       ) : (
         <Scheduler />
       )}

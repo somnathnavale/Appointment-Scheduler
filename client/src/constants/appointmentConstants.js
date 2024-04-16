@@ -107,7 +107,7 @@ export const appointmentForm = [
     info: "",
     disabled: {
       register: false,
-      update: true,
+      update: false,
     },
     grid: {
       xs: 12,
@@ -201,7 +201,7 @@ export const appointmentForm = [
     info: "",
     disabled: {
       register: false,
-      update: true,
+      update: false,
     },
     max: 30,
     min: 1,
@@ -212,7 +212,7 @@ export const appointmentForm = [
       lg: 4,
     },
     color: "primary",
-    forms: ["register", "update"],
+    forms: ["register"],
   },
   {
     name: "scheduledWith",
@@ -294,16 +294,26 @@ export const registerAppointmentFields = appointmentForm.map((field) => {
   const { disabled, forms, ...rest } = field;
   return {
     ...rest,
-    disabled: disabled.register,
+    readOnly: disabled.register,
   };
 });
 
 export const registerRequiredFields = registerAppointmentFields.map(field=>({name:field.name,label:field.label}));
 
-export const updateAppointmentFields = appointmentForm.map((field) => {
+export const updateAppointmentFields = appointmentForm.filter(field=>field.forms.indexOf("update")!==-1).map((field) => {
   const { disabled, forms, ...rest } = field;
   return {
     ...rest,
-    disabled: disabled.update,
+    readOnly: disabled.update,
   };
 });
+
+export const Actions={
+  APPOINTMENT:"appointment",
+  INSTANCE:"instance"
+}
+
+export const readOnlyFields ={
+  [Actions.APPOINTMENT] :["scheduledWith","scheduledBy","occurrence"],
+  [Actions.INSTANCE] : ["title","description","type","location","scheduledWith","scheduledBy","occurrence"],
+}

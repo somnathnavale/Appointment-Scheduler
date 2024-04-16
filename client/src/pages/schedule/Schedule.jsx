@@ -3,6 +3,8 @@ import InnerLayout from "../../components/Layout/InnerLayout";
 import { Grid } from "@mui/material";
 import PeopleView from "./people/PeopleView";
 import Main from "./main/Main";
+import { useSelector } from "react-redux";
+import { Page } from "../../constants/common";
 
 const styles = {
   innerLayout: {
@@ -14,22 +16,29 @@ const styles = {
 };
 
 const Schedule = memo(() => {
+  const { pageView } = useSelector((store) => store.schedule);
   return (
     <Grid
       container
       spacing={2}
-      height="100%"
+      height="inherit"
       sx={{
-        maxHeight: { xs: "inherit", md: "calc( 100vh - 120px )" },
+        minHeight: {
+          md:"calc( 100vh - 120px )",
+        },
       }}
+      alignItems="stretch"
     >
       <Grid
         item
         md={4}
         xs={12}
         sx={{
-          height: { xs: "auto", md: "100%" },
-          maxHeight: { xs: "300px", md: "inherit" },
+          height: { xs: "auto" },
+          maxHeight: {
+            xs: "300px",
+            md:"calc( 100vh - 120px )",
+          },
           mb: { xs: 4, sm: 0 },
           overflow: "auto",
         }}
@@ -43,7 +52,11 @@ const Schedule = memo(() => {
         sx={{
           pt: 4,
           overflow: "hidden",
-          height: { md: "100%" },
+          maxHeight: {
+            xs: "inherit",
+            md: 
+              pageView === Page.EVENT ? "inherit": "calc( 100vh - 120px )",
+          },
         }}
       >
         <Main />
