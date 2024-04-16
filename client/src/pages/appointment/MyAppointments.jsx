@@ -9,6 +9,13 @@ import CustomCalender from "../../components/common/Calender/CustomCalender";
 import { convertAppointmentIntoInstnaces } from "../../helpers/appointmentsHelper";
 import { Endpoints } from "../../constants/endpoints";
 import ErrorSnackbar from "../../components/common/ErrorSnackbar";
+import {
+  setPageView,
+  setSelectedEvent,
+  setSelectedUser,
+} from "../../features/schedule/scheduleSlice";
+import moment from "moment";
+import useRouting from "../../hooks/useRouting";
 
 const styles = {
   innerLayout: {
@@ -20,9 +27,9 @@ const styles = {
     overflowX: "auto",
     maxHeight: { xs: "inherit", md: "calc( 100vh - 120px )" },
   },
-  snackbar:{
-    my:1
-  }
+  snackbar: {
+    my: 1,
+  },
 };
 
 const MyAppointments = memo(() => {
@@ -33,6 +40,7 @@ const MyAppointments = memo(() => {
 
   const dispatch = useDispatch();
   const axios = useAxios(axiosPublic);
+  const {navigate} = useRouting();
 
   useEffect(() => {
     async function fetchUserAppointments() {
@@ -62,13 +70,28 @@ const MyAppointments = memo(() => {
     fetchUserAppointments();
   }, [axios, user?.userId]);
 
-  const handleEventSelect = useCallback((e) => {
-    console.log(e);
-  }, []);
+  const handleEventSelect = useCallback(
+    (selectedEvent) => {
+     console.log(selectedEvent)
+      if (selectedEvent.type == null) {
+        return;
+      }
+      dispatch(setPageView(Page.EVENT));
+      dispatch(
+        setSelectedEvent({
+          ...selectedEvent,
+          date: moment(selectedEvent.start).format(),
+          start: moment(selectedEvent.start).format("HH:mm"),
+          end: moment(selectedEvent.end).format("HH:mm"),
+        })
+      );
+      dispatch(setSelectedUser(selectedEvent?.scheduledWith));
+      navigate("/schedule")
+    },
+    [dispatch,navigate]
+  );
 
   const handleSlotSelect = useCallback((e) => {
-    console.log(e);
-    //write code to dispatch action to set page view and event
   }, []);
 
   const onClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);
