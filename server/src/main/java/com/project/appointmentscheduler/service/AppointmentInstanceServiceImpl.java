@@ -1,6 +1,5 @@
 package com.project.appointmentscheduler.service;
 
-import com.project.appointmentscheduler.dto.Message;
 import com.project.appointmentscheduler.dto.UpdateAppointmentInstanceDTO;
 import com.project.appointmentscheduler.entity.Appointment;
 import com.project.appointmentscheduler.entity.AppointmentInstance;
@@ -41,13 +40,13 @@ public class AppointmentInstanceServiceImpl implements AppointmentInstanceServic
 
         Appointment appointment= appointmentRepository.findById(appointmentId).orElseThrow(()->new AppointmentNotExistException("Appointment with given Id is not found"));
 
-        if (appointment.getScheduledBy().getUserId()!=loggedInUserId){
+        if (!appointment.getScheduledBy().getUserId().equals(loggedInUserId)){
             throw new ForbiddenAccessException("Your Are Not Allowed to update Appointment Instance");
         }
 
         AppointmentInstance instance = instanceRepository.findById(instanceId).orElseThrow(()-> new AppointmentNotExistException("Appointment Instance with given Id is not found"));
 
-        if(instance.getAppointment().getAppointmentId()!=appointment.getAppointmentId()){
+        if(!instance.getAppointment().getAppointmentId().equals(appointment.getAppointmentId())){
             throw new AppointmentNotExistException("Appointment with given Id is not found");
         }
 
@@ -62,9 +61,6 @@ public class AppointmentInstanceServiceImpl implements AppointmentInstanceServic
         String startTime = startDateTime.format(formatter);
         String endTime = endDateTime.format(formatter);
 
-        if (startTime == null || endTime == null) {
-            throw new RuntimeException("Error occurred during processing request, please try again later");
-        }
         boolean isOverlapping = instanceRepository.checkOverlappingInstances(
                 startTime,
                 endTime,
@@ -83,8 +79,21 @@ public class AppointmentInstanceServiceImpl implements AppointmentInstanceServic
     }
 
     @Override
-    public Boolean deleteAppointmentInstanceById(Long appointmentId, Long instanceId) {
-        return false;
+    public Boolean deleteAppointmentInstanceById(Long appointmentId, Long instanceId, Long loggedInUserId) {
+        Appointment appointment= appointmentRepository.findById(appointmentId).orElseThrow(()->new AppointmentNotExistException("Appointment with given Id is not found"));
+
+        if (!appointment.getScheduledBy().getUserId().equals(loggedInUserId)){
+            throw new ForbiddenAccessException("Your Are Not Allowed to delete Appointment Instance");
+        }
+
+        AppointmentInstance instance = instanceRepository.findById(instanceId).orElseThrow(()-> new AppointmentNotExistException("Appointment Instance with given Id is not found"));
+
+        if(!instance.getAppointment().getAppointmentId().equals(appointmentId)){
+            throw new AppointmentNotExistException("Appointment with given Id is not found");
+        }
+
+        instanceRepository.deleteById(instanceId);
+        return true;
     }
 
 }

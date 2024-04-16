@@ -13,4 +13,6 @@ public interface AppointmentService {
 
     List<MeetStatsProjection> getMeetStats();
     Message updateAppointment(SaveAppointmentRequestDTO appointmentDTO);
+
+    Boolean deleteAppointment(Long appointmentId, Long userId);
 }

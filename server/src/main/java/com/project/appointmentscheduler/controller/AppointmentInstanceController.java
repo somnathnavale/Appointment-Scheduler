@@ -40,8 +40,10 @@ public class AppointmentInstanceController {
     }
 
     @DeleteMapping("/{appointmentId}/appointment-instance/{instanceId}")
-    public ResponseEntity<Boolean> deleteAppointmentInstanceById(@PathVariable("appointmentId") Long appointmentId, @PathVariable("instanceId") Long instanceId){
-        return ResponseEntity.ok(instanceService.deleteAppointmentInstanceById(appointmentId, instanceId));
+    public ResponseEntity<Message> deleteAppointmentInstanceById(@PathVariable("appointmentId") Long appointmentId, @PathVariable("instanceId") Long instanceId, @AuthenticationPrincipal User loggedInUser){
+        boolean res = instanceService.deleteAppointmentInstanceById(appointmentId, instanceId, loggedInUser.getUserId());
+        Message msg = new Message(HttpStatus.OK, "Appointment instance deleted successfully");
+        return ResponseEntity.ok(msg);
     }
 
 }

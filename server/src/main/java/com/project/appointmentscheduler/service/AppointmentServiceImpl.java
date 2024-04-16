@@ -7,6 +7,7 @@ import com.project.appointmentscheduler.entity.AppointmentInstance;
 import com.project.appointmentscheduler.entity.Occurrence;
 import com.project.appointmentscheduler.entity.User;
 import com.project.appointmentscheduler.error.exceptions.AppointmentNotExistException;
+import com.project.appointmentscheduler.error.exceptions.ForbiddenAccessException;
 import com.project.appointmentscheduler.error.exceptions.InvalidAppointmentException;
 import com.project.appointmentscheduler.helper.CommonHelper;
 import com.project.appointmentscheduler.repository.AppointmentInstanceRepository;
@@ -131,6 +132,18 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = appointmentRepository.findById(appointmentDTO.getAppointmentId()).orElseThrow(()->new AppointmentNotExistException("Appointment with given Id is not found"));
 
         return null;
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteAppointment(Long appointmentId, Long userId) {
+        Appointment appointment= appointmentRepository.findById(appointmentId).orElseThrow(()->new AppointmentNotExistException("Appointment with given Id is not found"));
+        if (!appointment.getScheduledBy().getUserId().equals(userId)){
+            throw new ForbiddenAccessException("Your Are Not Allowed to delete Appointment");
+        }
+
+        appointmentRepository.deleteById(appointmentId);
+        return true;
     }
 
     private GetAppointmentResponseDTO convertAppointmentToPrivateAppointment(Appointment appointment){

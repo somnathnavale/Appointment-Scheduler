@@ -10,7 +10,6 @@ import {
   updateAppointmentFields,
 } from "../../constants/appointmentConstants";
 import moment from "moment";
-import dropdown from "../../constants/dropdown.json";
 import {
   validateAppointmentInstanceUpdate,
   validateScheduleForm,
@@ -26,19 +25,8 @@ import { Grid } from "@mui/material";
 import GenerateFormFields from "../../components/common/GenerateFormFields";
 import useAppointmentForm from "../schedule/main/useAppointmentForm";
 import CustomButton from "../../components/common/CustomButton";
-import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
-import FolderDeleteIcon from "@mui/icons-material/FolderDelete";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ControlPointDuplicateIcon from "@mui/icons-material/ControlPointDuplicate";
 import Loading from "../../components/common/Loading";
-
-const actions = [
-  { icon: <FolderDeleteIcon />, name: "Delete Appointment" },
-  { icon: <DeleteIcon />, name: "Delete Instance" },
-  { icon: <ControlPointDuplicateIcon />, name: "Duplicate Appointment" },
-];
+import MoreActions from "./MoreActions";
 
 const styles = {
   btn: { mr: 2, fontWeight: 500 },
@@ -60,7 +48,6 @@ const UpdateForm = memo(() => {
 
   useEffect(() => {
     if (selectedEvent?.appointmentId) {
-      console.log(selectedEvent);
       setFormData((prev) => ({
         ...prev,
         ...selectedEvent,
@@ -154,13 +141,8 @@ const UpdateForm = memo(() => {
     });
     try {
       const data = validationResponse.data;
-      await new Promise((res)=>{
-        setTimeout(()=>{
-          res();
-        },2000)
-      })
       await axios.put(
-        Endpoints.UPDATE_APPOINTMENT(
+        Endpoints.UPDATE_APPOINTMENT_INSTANCE(
           formData.appointmentId,
           formData.appointmentInstanceId
         ),
@@ -258,19 +240,7 @@ const UpdateForm = memo(() => {
             onClick={handleInstanceUpdate}
           />
         </Grid>
-        <SpeedDial
-          ariaLabel="more options"
-          sx={{ position: "absolute", bottom: 16, right: 0 }}
-          icon={<SpeedDialIcon />}
-        >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-            />
-          ))}
-        </SpeedDial>
+        <MoreActions setAsyncInfo={setAsyncInfo} disabled={disabled}/>
       </Grid>
     </form>
   );

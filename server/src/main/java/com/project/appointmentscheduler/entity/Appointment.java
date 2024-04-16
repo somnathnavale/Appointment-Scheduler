@@ -41,7 +41,7 @@ public class Appointment {
     @JoinColumn(name="scheduled_with",referencedColumnName = "userId",nullable = false)
     private User scheduledWith;
 
-    @OneToMany(mappedBy = "appointment")
+    @OneToMany(mappedBy = "appointment",cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<AppointmentInstance> appointmentInstances;
 

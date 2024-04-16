@@ -14,5 +14,5 @@ public interface AppointmentInstanceService {
 
     Boolean updateAppointmentInstanceById(Long appointmentId, Long instanceId, UpdateAppointmentInstanceDTO appointmentInstanceDTO, Long loggedInUserId);
 
-    Boolean deleteAppointmentInstanceById(Long appointmentId, Long instanceId);
+    Boolean deleteAppointmentInstanceById(Long appointmentId, Long instanceId, Long loggedInUserId);
 }
