@@ -33,15 +33,19 @@ public class CommonHelper {
     }
 
     public String convertDatesToJsonArray(List<LocalDateTime> dates) {
-        ObjectMapper objectMapper = new ObjectMapper();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         String[] formattedDates = dates.stream()
                 .map(formatter::format)
                 .toArray(String[]::new);
+        return convertToJsonArray(formattedDates);
+    }
+
+    public String convertToJsonArray(Object obj) {
+        ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            return objectMapper.writeValueAsString(formattedDates);
+            return objectMapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;

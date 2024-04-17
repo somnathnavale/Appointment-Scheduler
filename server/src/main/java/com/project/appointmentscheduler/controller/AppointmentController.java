@@ -35,7 +35,8 @@ public class AppointmentController {
     @PutMapping("/{appointmentId}")
     public ResponseEntity<Message> updateAppointment(@PathVariable Long appointmentId, @Valid @RequestBody SaveAppointmentRequestDTO appointmentDTO){
         if(appointmentId!=appointmentDTO.getAppointmentId()) throw new InvalidAppointmentException("Mismatch in appointment Ids");
-        Message msg= appointmentService.updateAppointment(appointmentDTO);
+        Boolean res= appointmentService.updateAppointment(appointmentDTO);
+        Message msg = new Message(HttpStatus.OK, "Appointment Updated Successfully");
         return ResponseEntity.ok(msg);
     }
     @DeleteMapping("/{appointmentId}")

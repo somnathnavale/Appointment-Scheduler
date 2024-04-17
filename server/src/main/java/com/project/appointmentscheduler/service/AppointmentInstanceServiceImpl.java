@@ -9,6 +9,7 @@ import com.project.appointmentscheduler.error.exceptions.InvalidAppointmentExcep
 import com.project.appointmentscheduler.repository.AppointmentInstanceRepository;
 import com.project.appointmentscheduler.repository.AppointmentRepository;
 import com.project.appointmentscheduler.service.interfaces.AppointmentInstanceService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,8 +80,11 @@ public class AppointmentInstanceServiceImpl implements AppointmentInstanceServic
     }
 
     @Override
+    @Transactional
     public Boolean deleteAppointmentInstanceById(Long appointmentId, Long instanceId, Long loggedInUserId) {
         Appointment appointment= appointmentRepository.findById(appointmentId).orElseThrow(()->new AppointmentNotExistException("Appointment with given Id is not found"));
+
+        int instances = appointment.getAppointmentInstances().size();
 
         if (!appointment.getScheduledBy().getUserId().equals(loggedInUserId)){
             throw new ForbiddenAccessException("Your Are Not Allowed to delete Appointment Instance");
@@ -93,6 +97,10 @@ public class AppointmentInstanceServiceImpl implements AppointmentInstanceServic
         }
 
         instanceRepository.deleteById(instanceId);
+
+        if(instances==1){
+            appointmentRepository.deleteById(appointmentId);
+        }
         return true;
     }
 

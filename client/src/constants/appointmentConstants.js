@@ -314,6 +314,6 @@ export const Actions={
 }
 
 export const readOnlyFields ={
-  [Actions.APPOINTMENT] :["scheduledWith","scheduledBy","occurrence"],
+  [Actions.APPOINTMENT] :["scheduledWith","scheduledBy","occurrence","date","status"],
   [Actions.INSTANCE] : ["title","description","type","location","scheduledWith","scheduledBy","occurrence"],
 }

@@ -1,6 +1,5 @@
 package com.project.appointmentscheduler.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.appointmentscheduler.dto.*;
 import com.project.appointmentscheduler.entity.Appointment;
 import com.project.appointmentscheduler.entity.AppointmentInstance;
@@ -128,9 +127,94 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     @Transactional
-    public Message updateAppointment(SaveAppointmentRequestDTO appointmentDTO) {
+    public Boolean updateAppointment(SaveAppointmentRequestDTO appointmentDTO) {
         Appointment appointment = appointmentRepository.findById(appointmentDTO.getAppointmentId()).orElseThrow(()->new AppointmentNotExistException("Appointment with given Id is not found"));
 
+        List<AppointmentInstance> appointmentInstanceList= appointment.getAppointmentInstances();
+
+        Optional<User> scheduledByUser = userRepository.findById(appointmentDTO.getScheduledBy());
+        Optional<User> scheduledWithUser = userRepository.findById(appointmentDTO.getScheduledWith());
+
+        if (scheduledByUser.isEmpty() || scheduledWithUser.isEmpty()) {
+            throw new InvalidAppointmentException("Provide correct values for scheduled by and scheduled with field");
+        }
+
+        if((appointmentDTO.getScheduledWith() != appointment.getScheduledWith().getUserId()) ||
+                (appointmentDTO.getScheduledBy() != appointment.getScheduledBy().getUserId()) ||
+                (appointmentDTO.getOccurrence() != appointment.getOccurrence()) ||
+                (appointmentDTO.getInstances() != appointmentInstanceList.size())
+        ){
+            throw new InvalidAppointmentException("Value Mismatch is schedule by, schedule with, or occurrence or instances field");
+        }
+
+        Occurrence occurrence = appointmentDTO.getOccurrence();
+        int instances = appointmentDTO.getInstances();
+
+        if ((occurrence == Occurrence.ONCE && instances > 1) || (occurrence != Occurrence.ONCE && instances == 1)) {
+            throw new InvalidAppointmentException("Invalid appointment occurrence and instances input");
+        }
+
+        if (instances > 30) {
+            throw new InvalidAppointmentException("Cannot create more than 30 appointment instances at one time");
+        }
+
+        List<LocalDateTime> startTimesList = new ArrayList<>();
+        List<LocalDateTime> endTimesList = new ArrayList<>();
+        List<Long> instanceIds = new ArrayList<>();
+
+        List<AppointmentInstance> updatedInstanceList=new ArrayList<>();
+
+        for(int i=0;i<appointmentInstanceList.size();i++){
+
+            AppointmentInstance instance = appointmentInstanceList.get(i);
+            LocalDateTime startDateTime = instance.getStartDateTime();
+            LocalDateTime endDateTime = instance.getStartDateTime();
+
+            if(startDateTime.isAfter(LocalDateTime.now())){
+                LocalDateTime std= appointmentDTO.getStartDateTime();
+                LocalDateTime etd= appointmentDTO.getEndDateTime();
+                startDateTime = startDateTime.withHour(std.getHour()).withMinute(std.getMinute());
+                endDateTime = endDateTime.withHour(etd.getHour()).withMinute(etd.getMinute());
+
+                startTimesList.add(startDateTime);
+                endTimesList.add(endDateTime);
+                instanceIds.add(instance.getAppointmentInstanceId());
+
+                instance.setStartDateTime(startDateTime);
+                instance.setEndDateTime(endDateTime);
+                updatedInstanceList.add(instance);
+            }
+        }
+
+        String startTimesJSON = commonHelper.convertDatesToJsonArray(startTimesList);
+        String endTimesJSON = commonHelper.convertDatesToJsonArray(endTimesList);
+        String instancesIdsJSON = commonHelper.convertToJsonArray(instanceIds);
+
+        if (startTimesJSON == null || endTimesJSON == null || instancesIdsJSON==null) {
+            throw new RuntimeException("Error occurred during processing request, please try again later");
+        }
+
+        boolean areAppointmentsOverlapping = appointmentRepository.checkOverlappingAppointmentsUpdate(
+                startTimesJSON,
+                endTimesJSON,
+                instancesIdsJSON,
+                appointmentDTO.getScheduledBy(),
+                appointmentDTO.getScheduledWith()
+        );
+
+        if (areAppointmentsOverlapping) throw new InvalidAppointmentException("Cannot create overlapping appointments");
+
+        scheduledByUser.ifPresent(appointment::setScheduledBy);
+        scheduledWithUser.ifPresent(appointment::setScheduledWith);
+
+        appointment.setDescription(appointmentDTO.getDescription());
+        appointment.setLocation(appointmentDTO.getLocation());
+        appointment.setTitle(appointmentDTO.getTitle());
+        appointment.setType(appointmentDTO.getType());
+
+        appointmentRepository.save(appointment);
+
+        instanceRepository.saveAll(updatedInstanceList);
         return null;
     }
 
@@ -150,52 +234,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         GetAppointmentResponseDTO responseDTO = GetAppointmentResponseDTO.builder().appointmentId(appointment.getAppointmentId()).title("Scheduled With Another User").description("busy").appointmentInstances(appointment.getAppointmentInstances()).build();
 
         return responseDTO;
-    }
-
-    private void validateAppointment(SaveAppointmentRequestDTO appointmentDTO, SaveAppointmentRequestDTO previousAppointmentDTO, UserAction action){
-        Appointment appointment = modelMapper.map(appointmentDTO, Appointment.class);
-
-        Optional<User> scheduledByUser = userRepository.findById(appointmentDTO.getScheduledBy());
-        Optional<User> scheduledWithUser = userRepository.findById(appointmentDTO.getScheduledWith());
-
-        if (scheduledByUser.isEmpty() || scheduledWithUser.isEmpty()) {
-            throw new InvalidAppointmentException("Provide correct values for scheduled by and scheduled with field");
-        }
-
-        if((appointmentDTO.getScheduledWith() != previousAppointmentDTO.getScheduledWith()) ||
-                (appointmentDTO.getScheduledBy() != previousAppointmentDTO.getScheduledBy()) ||
-                (appointmentDTO.getOccurrence() != previousAppointmentDTO.getOccurrence()) ||
-                (appointmentDTO.getInstances() != previousAppointmentDTO.getInstances())
-        ){
-            throw new InvalidAppointmentException("Value Mismatch is schedule by, schedule with, or occurrence or instnaces field");
-        }
-
-        Occurrence occurrence = appointmentDTO.getOccurrence();
-        int instances = appointmentDTO.getInstances();
-
-        LocalDateTime startDateTime = appointmentDTO.getStartDateTime();
-        LocalDateTime endDateTime = appointmentDTO.getEndDateTime();
-
-        if ((occurrence == Occurrence.ONCE && instances > 1) || (occurrence != Occurrence.ONCE && instances == 1)) {
-            throw new InvalidAppointmentException("Invalid appointment occurrence and instances input");
-        }
-
-        if (instances > 30) {
-            throw new InvalidAppointmentException("Cannot create more than 30 appointment instances at one time");
-        }
-
-        if (startDateTime.isAfter(endDateTime) || startDateTime.isBefore(LocalDateTime.now())) {
-            throw new InvalidAppointmentException("Appointments only be created in Present or Future");
-        }
-
-        int daysGap = commonHelper.getIntOccurrenceByEnumKey(occurrence);
-
-        boolean isOverlappingAppointmentExists = isAppointmentsOverlapping(startDateTime, endDateTime, instances, daysGap, appointmentDTO.getScheduledBy(), appointmentDTO.getScheduledWith());
-
-        if (isOverlappingAppointmentExists) throw new InvalidAppointmentException("Cannot create overlapping appointments");
-
-        scheduledByUser.ifPresent(appointment::setScheduledBy);
-        scheduledWithUser.ifPresent(appointment::setScheduledWith);
     }
 
     private boolean isAppointmentsOverlapping(LocalDateTime startDateTime, LocalDateTime endDateTime, int instances, int daysGap, Long scheduledBy, Long scheduledWith) {

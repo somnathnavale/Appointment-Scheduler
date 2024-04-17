@@ -22,6 +22,15 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
             @Param("p_scheduled_with") Long scheduledWith
     );
 
+    @Procedure(procedureName = "check_overlapping_appointments_update")
+    public boolean checkOverlappingAppointmentsUpdate(
+            @Param("array_of_start_times") String arrayOfStartTimes,
+            @Param("array_of_end_times") String arrayOfEndTimes,
+            @Param("array_of_instance_ids") String arrayOfInstanceIds,
+            @Param("p_scheduled_by") Long scheduledBy,
+            @Param("p_scheduled_with") Long scheduledWith
+    );
+
     @Query(
             value = "Select * FROM appointment WHERE scheduled_by=:userId OR scheduled_with=:userId",
             nativeQuery = true

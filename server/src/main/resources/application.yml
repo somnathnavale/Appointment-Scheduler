@@ -8,7 +8,7 @@ spring:
     password: SAM1@navale
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
 

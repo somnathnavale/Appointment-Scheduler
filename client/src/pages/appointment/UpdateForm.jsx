@@ -80,25 +80,21 @@ const UpdateForm = memo(() => {
         setAsyncInfo((prev) => ({ ...prev, action: Actions.APPOINTMENT }));
         return;
       }
-      const validationResponse = validateScheduleForm(formData, "put");
-      if (validationResponse.severity === Severity.WARNING) {
-        setAsyncInfo({
-          ...defaultAsyncInfo,
-          severity: Severity.WARNING,
-          message: validationResponse.message,
-        });
+      const {severity,data,message} = validateScheduleForm(formData, "put");
+      
+      if (severity === Severity.WARNING) {
+        setAsyncInfo(prev=>({ ...prev, severity,message }));
         return;
       }
-
       setAsyncInfo({
-        ...defaultAsyncInfo,
+        action: Actions.APPOINTMENT ,
+        severity:Severity.NONE,
         loading: true,
-        mssage: "Creating Appointment...",
+        message: "Updating Appointment...",
       });
 
       try {
-        const data = validationResponse.data;
-        //await axios.post(Endpoints.,data);
+        await axios.put(Endpoints.UPDATE_APPOINTMENT(formData.appointmentId),data);
         dispatch(setPageView(Page.CALENDER));
         dispatch(
           setPageNavigation({
@@ -116,7 +112,7 @@ const UpdateForm = memo(() => {
         });
       }
     },
-    [formData, dispatch, asyncInfo.action]
+    [formData, dispatch, asyncInfo.action,axios]
   );
 
   const handleInstanceUpdate = useCallback(async () => {
@@ -124,13 +120,9 @@ const UpdateForm = memo(() => {
       setAsyncInfo((prev) => ({ ...prev, action: Actions.INSTANCE }));
       return;
     }
-    const validationResponse = validateAppointmentInstanceUpdate(formData);
-    if (validationResponse.severity === Severity.WARNING) {
-      setAsyncInfo(prev=>({
-        ...prev,
-        severity: Severity.WARNING,
-        message: validationResponse.message,
-      }));
+    const {data,severity,message} = validateAppointmentInstanceUpdate(formData);
+    if (severity === Severity.WARNING) {
+      setAsyncInfo(prev=>({ ...prev, severity,message }));
       return;
     }
     setAsyncInfo({
@@ -140,7 +132,6 @@ const UpdateForm = memo(() => {
       message: "Updating Appointment Instance...",
     });
     try {
-      const data = validationResponse.data;
       await axios.put(
         Endpoints.UPDATE_APPOINTMENT_INSTANCE(
           formData.appointmentId,

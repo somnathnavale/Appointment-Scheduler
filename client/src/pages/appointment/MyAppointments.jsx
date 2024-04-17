@@ -72,7 +72,6 @@ const MyAppointments = memo(() => {
 
   const handleEventSelect = useCallback(
     (selectedEvent) => {
-     console.log(selectedEvent)
       if (selectedEvent.type == null) {
         return;
       }

@@ -12,7 +12,7 @@ public interface AppointmentService {
     GetAllAppointmentResponseDTO getAllAppointmentsByUser(Long scheduledBy, Long scheduledWith);
 
     List<MeetStatsProjection> getMeetStats();
-    Message updateAppointment(SaveAppointmentRequestDTO appointmentDTO);
+    Boolean updateAppointment(SaveAppointmentRequestDTO appointmentDTO);
 
     Boolean deleteAppointment(Long appointmentId, Long userId);
 }

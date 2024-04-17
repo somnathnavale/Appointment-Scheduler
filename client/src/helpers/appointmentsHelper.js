@@ -112,19 +112,22 @@ export const validateScheduleForm = (formData, request) => {
 };
 
 export const validateAppointmentInstanceUpdate = (formData) => {
-  const validationResponse=validateScheduleForm(formData,"put");
-  if (validationResponse.severity === Severity.WARNING) {
-    return validationResponse;
+  const response=validateScheduleForm(formData,"put");
+  const {severity,data}= response;
+  
+  if (severity === Severity.WARNING) {
+    return response;
   }
-  const {data}=validationResponse;
+
   let instanceData = {
     appointmentInstanceId:formData.appointmentInstanceId,
     startDateTime: data.startDateTime,
     endDateTime: data.endDateTime,
     status: formData.status,
   };
+
   return {
-    severity: Severity.SUCCESS,
+    severity,
     data: instanceData,
   };
 };
