@@ -9,6 +9,7 @@ import { ErrorHandler } from "../../../helpers/asyncHandler";
 import useDebounce from "../../../hooks/useDebounce";
 import Loading from "../../../components/common/Loading";
 import ErrorSnackbar from "../../../components/common/ErrorSnackbar";
+import { useSelector } from "react-redux";
 
 const PeopleView = memo(() => {
   const [searchText, setSearchText] = useState("");
@@ -17,6 +18,7 @@ const PeopleView = memo(() => {
 
   const axios = useAxios(axiosPublic);
   const debouncedSearchText = useDebounce(searchText, 1000);
+  const {user} = useSelector(store=>store.user);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -31,13 +33,22 @@ const PeopleView = memo(() => {
             name: debouncedSearchText,
           },
         });
-        const peopleWithNames = response.data.map((user) => ({
+        let peopleWithNames = response.data.map((user) => ({
           ...user,
           name: user.firstname + " " + user.lastname,
         }));
+
+        if(user!=null && peopleWithNames.find(person=>person.userId===user.userId)?.userId){
+          const {token,...loggedInUser}= user;
+          peopleWithNames=peopleWithNames.filter(person=>person?.userId!==loggedInUser.userId);
+          loggedInUser.name= loggedInUser.firstname +" "+ loggedInUser.lastname+ " (you)";
+          peopleWithNames.unshift(loggedInUser);
+        }
+
         setPeople(peopleWithNames);
         setAsyncInfo(defaultAsyncInfo);
       } catch (error) {
+        console.log(error)
         const errObj = ErrorHandler(error);
         setAsyncInfo({
           ...defaultAsyncInfo,
@@ -47,7 +58,7 @@ const PeopleView = memo(() => {
       }
     }
     fetchUsers();
-  }, [axios, debouncedSearchText]);
+  }, [axios, debouncedSearchText, user]);
 
   const handleChange = useCallback((e) => setSearchText(e.target.value), []);
   const onClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);
