@@ -7,6 +7,7 @@ import com.project.appointmentscheduler.dto.UserDTO;
 import com.project.appointmentscheduler.entity.User;
 import com.project.appointmentscheduler.repository.UserRepository;
 import com.project.appointmentscheduler.service.interfaces.AuthService;
+import com.project.appointmentscheduler.service.interfaces.EmailService;
 import com.project.appointmentscheduler.service.interfaces.JwtService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,15 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
     public User registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser=userRepository.save(user);
+
+        emailService.sendUserRegistrationEmail(user.getEmail(), user.getFirstname()+" "+user.getLastname());
         return savedUser;
     }
 

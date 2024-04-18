@@ -13,6 +13,7 @@ import com.project.appointmentscheduler.repository.AppointmentInstanceRepository
 import com.project.appointmentscheduler.repository.AppointmentRepository;
 import com.project.appointmentscheduler.repository.UserRepository;
 import com.project.appointmentscheduler.service.interfaces.AppointmentService;
+import com.project.appointmentscheduler.service.interfaces.EmailService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     private ModelMapper modelMapper;
     @Autowired
     private CommonHelper commonHelper;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public List<GetAppointmentResponseDTO> getAllAppointments() {
@@ -102,6 +106,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         GetAppointmentResponseDTO responseDTO = modelMapper.map(appointment,GetAppointmentResponseDTO.class);
         responseDTO.setAppointmentInstances(appointmentInstanceList);
+
+        emailService.sendAppointmentRegistrationEmail(appointment,appointmentInstanceList.get(0).getStartDateTime(),appointmentInstanceList.get(instances-1).getEndDateTime());
         return responseDTO;
     }
 
@@ -215,6 +221,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(appointment);
 
         instanceRepository.saveAll(updatedInstanceList);
+
+        emailService.sendAppointmentUpdateEmail(appointment,updatedInstanceList.get(0).getStartDateTime(),updatedInstanceList.get(instances-1).getEndDateTime());
+
         return null;
     }
 

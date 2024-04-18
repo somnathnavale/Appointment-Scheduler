@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recurring Appointment Scheduled</title>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+  <h1>Recurring Appointment Scheduled</h1>
+  <p>Dear <span th:text="${scheduledBy}">Scheduled By</span>,</p>
+  <p>Your recurring appointments with <span th:text="${scheduledWith}">Scheduled With</span> has been successfully scheduled!</p>
+  <h2>Meeting Details:</h2>
+  <ul>
+    <li><strong>Title:</strong> <span th:text="${title}">Title</span></li>
+    <li><strong>Date:</strong> <span th:text="${date}">Date</span></li>
+    <li><strong>Time:</strong> <span th:text="${startTime}">Start</span> - <span th:text="${endTime}">End</span></li>
+    <li><strong>Location:</strong> <span th:text="${location}">Location</span></li>
+    <li><strong>Type:</strong> <span th:text="${type}">type</span></li>
+  </ul>
+  <p>This meeting will recur on the following schedule:</p>
+  <ul>
+    <li><strong>Frequency:</strong> <span th:text="${occurrence}">frequency</span></li>
+    <li><strong>End Date:</strong> <span th:text="${endDate}">End Date</span></li>
+  </ul>
+  <p>Thank you for using Calendify for your meeting scheduling needs. We look forward to productive and collaborative meetings ahead!</p>
+  <p>Best regards,<br>The Calendify Team</p>
+</div>
+</body>
+</html>

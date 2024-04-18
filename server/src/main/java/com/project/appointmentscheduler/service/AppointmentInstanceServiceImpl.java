@@ -9,6 +9,7 @@ import com.project.appointmentscheduler.error.exceptions.InvalidAppointmentExcep
 import com.project.appointmentscheduler.repository.AppointmentInstanceRepository;
 import com.project.appointmentscheduler.repository.AppointmentRepository;
 import com.project.appointmentscheduler.service.interfaces.AppointmentInstanceService;
+import com.project.appointmentscheduler.service.interfaces.EmailService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class AppointmentInstanceServiceImpl implements AppointmentInstanceServic
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public AppointmentInstance getAppointmentInstanceById(Long appointmentId,Long instanceId) {
@@ -76,6 +80,7 @@ public class AppointmentInstanceServiceImpl implements AppointmentInstanceServic
         instance.setStatus(appointmentInstanceDTO.getStatus());
         instanceRepository.save(instance);
 
+        emailService.sendAppointmentInstanceUpdateEmail(appointment,instance.getStartDateTime(),instance.getEndDateTime(),instance);
         return true;
     }
 

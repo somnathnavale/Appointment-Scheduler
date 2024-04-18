@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment Instance Updated</title>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+  <h1>Appointment Instance Updated</h1>
+  <p>Dear <span th:text="${scheduledBy}">Scheduled By</span>,</p>
+  <p>Your appointment instance with <span th:text="${scheduledWith}">Scheduled With</span> has been updated!</p>
+  <h2>Updated Appointment Details:</h2>
+  <ul>
+    <li><strong>Title:</strong> <span th:text="${title}">Title</span></li>
+    <li><strong>Date:</strong> <span th:text="${date}">Date</span></li>
+    <li><strong>Time:</strong> <span th:text="${startTime}">Start</span> - <span th:text="${endTime}">End</span></li>
+    <li><strong>Location:</strong> <span th:text="${location}">Location</span></li>
+    <li><strong>Type:</strong> <span th:text="${type}">type</span></li>
+    <li><strong>Status:</strong> <span th:text="${status}">status</span></li>
+  </ul>
+  <p>Please review the updated details above.</p>
+  <p>Thank you for choosing Calendify for your appointment scheduling needs.</p>
+  <p>Best regards,<br>The Calendify Team</p>
+</div>
+</body>
+</html>
