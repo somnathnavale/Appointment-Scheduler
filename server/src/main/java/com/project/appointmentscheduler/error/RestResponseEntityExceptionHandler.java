@@ -3,6 +3,7 @@ package com.project.appointmentscheduler.error;
 import com.project.appointmentscheduler.dto.Message;
 import com.project.appointmentscheduler.error.exceptions.ForbiddenAccessException;
 import com.project.appointmentscheduler.error.exceptions.InvalidAppointmentException;
+import com.project.appointmentscheduler.error.exceptions.InvalidOTPException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpHeaders;
@@ -62,6 +63,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(InvalidAppointmentException.class)
     public ResponseEntity<Message> handleInvalidAppointment(InvalidAppointmentException exception){
+        Message errorMessage=new Message(HttpStatus.BAD_REQUEST,exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    }
+
+    @ExceptionHandler(InvalidOTPException.class)
+    public ResponseEntity<Message> handleInvalidOTP(InvalidOTPException exception){
         Message errorMessage=new Message(HttpStatus.BAD_REQUEST,exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }

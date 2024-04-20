@@ -13,4 +13,6 @@ public interface EmailService {
     public void sendAppointmentUpdateEmail(Appointment appointment, LocalDateTime startDateTime ,LocalDateTime endDateTime);
     public void sendAppointmentInstanceUpdateEmail(Appointment appointment, LocalDateTime startDateTime ,LocalDateTime endDateTime, AppointmentInstance appointmentInstance);
     public void sendAppointmentReminder(Appointment appointment,LocalDateTime startDateTime, LocalDateTime endDateTime);
+
+    public void sendEmailsForOTP(String name, String email, int otp);
 }

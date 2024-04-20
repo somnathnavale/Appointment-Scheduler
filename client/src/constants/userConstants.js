@@ -1,3 +1,5 @@
+import { defaultAsyncInfo } from "./common";
+
 export const userForm = [
   {
     name: "firstname",
@@ -30,7 +32,7 @@ export const userForm = [
     autoComplete: "off",
     info: "",
     defaultValue: "",
-    forms: ["register", "login"],
+    forms: ["register", "login", "forgot"],
   },
   {
     name: "password",
@@ -41,10 +43,35 @@ export const userForm = [
     autoComplete: "off",
     info: "",
     defaultValue: "",
-    forms: ["register", "login", "change"],
+    forms: ["register", "login", "change", "forgot"],
+  },
+  {
+    name: "confirmPassword",
+    placeholder: "",
+    label: "Confirm Password",
+    required: true,
+    type: "password",
+    autoComplete: "off",
+    info: "",
+    defaultValue: "",
+    forms: ["forgot"],
+  },
+  {
+    name: "otp",
+    placeholder: "",
+    label: "OTP",
+    required: true,
+    type: "number",
+    autoComplete: "off",
+    info: "",
+    max: 999999,
+    min: 100000,
+    defaultValue: "",
+    forms: ["forgot"],
   },
 ];
 
+// register
 export const defaultRegisterUserForm = userForm
   .filter((elem) => elem.forms.indexOf("register") !== -1)
   .reduce((acc, curr) => {
@@ -59,6 +86,7 @@ export const registerFormFields = userForm
     return rest;
   });
 
+// login
 export const defaultLoginUserForm = userForm
   .filter((elem) => elem.forms.indexOf("login") !== -1)
   .reduce((acc, curr) => {
@@ -73,6 +101,7 @@ export const loginFormFields = userForm
     return rest;
   });
 
+// update
 export const defaultUpdateUserForm = userForm
   .filter((elem) => elem.forms.indexOf("update") !== -1)
   .reduce((acc, curr) => {
@@ -87,6 +116,7 @@ export const updateUserFormFields = userForm
     return rest;
   });
 
+//change password
 export const changePasswordFormFields = userForm
   .filter((elem) => elem.forms.indexOf("change") !== -1)
   .map((obj) => {
@@ -94,7 +124,35 @@ export const changePasswordFormFields = userForm
     return rest;
   });
 
+//forgot password
+export const forgotPasswordFormFields = userForm
+  .filter((elem) => elem.forms.indexOf("forgot") !== -1)
+  .map((obj) => {
+    const { forms, ...rest } = obj;
+    return rest;
+  });
+
+export const defaultForgotPasswordForm = userForm
+.filter((elem) => elem.forms.indexOf("forgot") !== -1)
+.reduce((acc, curr) => {
+  acc[curr.name] = curr.defaultValue;
+  return acc;
+}, {});
+
 export const Action={
   UPDATE:"update",
   CHANGE_PASSWORD:"change_password"
+}
+
+// forgot password screen constants
+export const ForPassStage={
+  USERNAME : "username",
+  OTP :"otp",
+  PASSWORD :"password"
+}
+
+export const ForPassStageFields={
+  [ForPassStage.USERNAME] : ["email"],
+  [ForPassStage.OTP] : ["otp"],
+  [ForPassStage.PASSWORD] : ["password", "confirmPassword"]
 }

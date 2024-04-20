@@ -44,4 +44,10 @@ public class UserServiceImpl implements UserService {
         List<UserDTO> users = userRepository.findByFullNameContainingIgnoreCase(name).stream().map(user -> modelMapper.map(user, UserDTO.class)).toList();
         return users;
     }
+
+    @Override
+    public User findUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(()->new EntityNotFoundException("User not found with given email id"));
+        return user;
+    }
 }

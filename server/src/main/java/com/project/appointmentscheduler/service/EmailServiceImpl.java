@@ -143,6 +143,7 @@ public class EmailServiceImpl implements EmailService {
         sendAppointmentEmails(appointment,startDateTime,endDateTime,"update",appointmentInstance);
     }
 
+    @Async
     public void sendAppointmentReminder(Appointment appointment,LocalDateTime startDateTime, LocalDateTime endDateTime){
 
         User scheduledWith = appointment.getScheduledWith();
@@ -166,6 +167,23 @@ public class EmailServiceImpl implements EmailService {
         EmailDetails emailDetails= EmailDetails.builder().to(scheduledBy.getEmail()).cc(scheduledWith.getEmail()).subject(subject).body(htmlContent).build();
 
         sendEmail(emailDetails);
+    }
+
+    @Async
+    @Override
+    public void sendEmailsForOTP(String name, String email, int otp) {
+
+        Context context = new Context();
+        context.setVariable("user", name);
+        context.setVariable("otp", otp);
+        String htmlContent = templateEngine.process(EmailTemplates.FORGOT_PASSWORD_OTP, context);
+
+        String subject = EmailSubjects.FORGOT_PASSWORD_OTP;
+
+        EmailDetails emailDetails= EmailDetails.builder().to(email).subject(subject).body(htmlContent).build();
+
+        sendEmail(emailDetails);
+
     }
 
 }

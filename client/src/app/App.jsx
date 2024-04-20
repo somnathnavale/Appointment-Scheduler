@@ -9,6 +9,7 @@ import Schedule from "../pages/schedule/Schedule";
 import AuthLayout from "../components/Layout/AuthLayout";
 import MyAppointments from "../pages/appointment/MyAppointments.jsx";
 import { AppRoutes } from "../constants/routes.js";
+import ForgotPassword from "../pages/auth/ForgotPassword.jsx";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path={AppRoutes.HOME} element={<PersistedLayer />}>
         <Route path={AppRoutes.LOGIN} element={<Login />} />
         <Route path={AppRoutes.REGISTER} element={<Register />} />
+        <Route path={AppRoutes.FORGOT_PASSWORD} element={<ForgotPassword />} />
         <Route path={AppRoutes.LAYOUT} element={<Layout />}>
           <Route index element={<Home />} />
           <Route element={<AuthLayout />}>

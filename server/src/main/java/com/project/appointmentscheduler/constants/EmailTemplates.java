@@ -7,5 +7,6 @@ public interface EmailTemplates {
     static final String APPOINTMENT_UPDATE = "appointment-update";
     static final String APPOINTMENT_INSTANCE_UPDATE = "appointment-instance-update";
     static final String APPOINTMENT_REMINDER= "appointment-reminder";
+    static final String FORGOT_PASSWORD_OTP= "forgot-password-otp";
 
 }
