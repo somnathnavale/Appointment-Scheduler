@@ -4,7 +4,7 @@ import { Page, Severity, defaultAsyncInfo } from "../../../constants/common";
 import { useDispatch, useSelector } from "react-redux";
 import axiosPublic from "../../../config/axios";
 import useAxios from "../../../hooks/useAxios";
-import { convertAppointmentIntoInstnaces } from "../../../helpers/appointmentsHelper";
+import { convertAppointmentIntoInstances } from "../../../helpers/appointmentsHelper";
 import { ErrorHandler } from "../../../helpers/asyncHandler";
 import {
   setPageView,
@@ -36,7 +36,7 @@ const CalenderView = memo(() => {
         const response = await axios.get(
           Endpoints.GET_USER_APPOINTMENTS(user.userId, selectedUser.userId)
         );
-        const totalAppointments = convertAppointmentIntoInstnaces([
+        const totalAppointments = convertAppointmentIntoInstances([
           ...response.data.commonAppointments,
           ...response.data.otherAppointments,
         ]);

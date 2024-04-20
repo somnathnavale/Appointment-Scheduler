@@ -6,7 +6,7 @@ import { Page, Severity, defaultAsyncInfo } from "../../constants/common";
 import { ErrorHandler } from "../../helpers/asyncHandler";
 import InnerLayout from "../../components/Layout/InnerLayout";
 import CustomCalender from "../../components/common/Calender/CustomCalender";
-import { convertAppointmentIntoInstnaces } from "../../helpers/appointmentsHelper";
+import { convertAppointmentIntoInstances } from "../../helpers/appointmentsHelper";
 import { Endpoints } from "../../constants/endpoints";
 import ErrorSnackbar from "../../components/common/ErrorSnackbar";
 import {
@@ -53,7 +53,7 @@ const MyAppointments = memo(() => {
         const response = await axios.get(
           Endpoints.GET_USER_APPOINTMENTS(user.userId, user.userId)
         );
-        const totalAppointments = convertAppointmentIntoInstnaces(
+        const totalAppointments = convertAppointmentIntoInstances(
           response.data.commonAppointments
         );
         setAppointments([...totalAppointments]);

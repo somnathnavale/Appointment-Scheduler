@@ -15,6 +15,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByEmail(String email);
     Optional<UserDTO> findByUserId(Long id);
 
-    @Query(value = "SELECT * FROM user u WHERE lower(concat(u.firstname, ' ', u.lastname)) LIKE lower(concat('%', :name, '%'))", nativeQuery = true)
+    @Query(value = "SELECT * FROM user u WHERE lower(concat(u.firstname, ' ', u.lastname)) LIKE lower(concat('%', :name, '%')) limit 20", nativeQuery = true)
     List<User> findByFullNameContainingIgnoreCase(@Param("name") String name);
 }

@@ -6,4 +6,5 @@ public interface EmailSubjects {
     static final String APPOINTMENT_REGISTRATION_RECURRING = "New recurring appointment scheduled with <<scheduledWith>>.";
     static final String APPOINTMENT_UPDATE = "Updated appointment scheduled with <<scheduledWith>>.";
     static final String APPOINTMENT_INSTANCE_UPDATE = "Updated appointment instance scheduled with <<scheduledWith>>.";
+    static final String APPOINTMENT_REMINDER = "Today, you have appointment with <<scheduledWith>>.";
 }

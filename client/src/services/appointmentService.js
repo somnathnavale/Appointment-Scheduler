@@ -1,6 +1,6 @@
 import { Severity, defaultAsyncInfo } from "../constants/common";
 import { Endpoints } from "../constants/endpoints";
-import { convertAppointmentIntoInstnaces } from "../helpers/appointmentsHelper";
+import { convertAppointmentIntoInstances } from "../helpers/appointmentsHelper";
 import { ErrorHandler } from "../helpers/asyncHandler";
 
 export const getAllAppointmentOfCurrentUser = async function (...args) {
@@ -14,7 +14,7 @@ export const getAllAppointmentOfCurrentUser = async function (...args) {
       const response = axios.get(Endpoints.GET_USER_APPOINTMENTS, {
         params: args.params,
       });
-      const appointments = convertAppointmentIntoInstnaces(
+      const appointments = convertAppointmentIntoInstances(
         response.data.commonAppointments,
       );
       setData(appointments);

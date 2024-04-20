@@ -48,7 +48,6 @@ const PeopleView = memo(() => {
         setPeople(peopleWithNames);
         setAsyncInfo(defaultAsyncInfo);
       } catch (error) {
-        console.log(error)
         const errObj = ErrorHandler(error);
         setAsyncInfo({
           ...defaultAsyncInfo,

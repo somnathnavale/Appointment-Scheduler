@@ -5,7 +5,7 @@ import useAxios from "../hooks/useAxios";
 import { useSelector } from "react-redux";
 import { ErrorHandler } from "../helpers/asyncHandler";
 import { Severity } from "../constants/common";
-import { convertAppointmentIntoInstnaces } from "../helpers/appointmentsHelper";
+import { convertAppointmentIntoInstances } from "../helpers/appointmentsHelper";
 
 const defaultAsyncInfo = {
   loadingStatus: false,
@@ -40,7 +40,7 @@ const useAppointmentService = ({ callback, initialData }) => {
   //   };
   //   try {
   //     const response = axios.get(Endpoints.getAllUserAppointments, { params });
-  //     const appointments = convertAppointmentIntoInstnaces(
+  //     const appointments = convertAppointmentIntoInstances(
   //       response.data.commonAppointments
   //     );
   //     setData(appointments);

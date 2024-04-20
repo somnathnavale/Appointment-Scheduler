@@ -142,4 +142,30 @@ public class EmailServiceImpl implements EmailService {
     public void sendAppointmentInstanceUpdateEmail(Appointment appointment, LocalDateTime startDateTime ,LocalDateTime endDateTime, AppointmentInstance appointmentInstance){
         sendAppointmentEmails(appointment,startDateTime,endDateTime,"update",appointmentInstance);
     }
+
+    public void sendAppointmentReminder(Appointment appointment,LocalDateTime startDateTime, LocalDateTime endDateTime){
+
+        User scheduledWith = appointment.getScheduledWith();
+        User scheduledBy = appointment.getScheduledBy();
+
+        Context context = new Context();
+
+        context.setVariable("scheduledBy", scheduledBy.getFirstname()+" "+ scheduledBy.getLastname());
+        context.setVariable("scheduledWith", scheduledWith.getFirstname()+" "+ scheduledWith.getLastname());
+
+        context.setVariable("title", appointment.getTitle());
+        context.setVariable("startTime", startDateTime.format(DateTimeFormatter.ofPattern("HH:mm a")));
+        context.setVariable("endTime", endDateTime.format(DateTimeFormatter.ofPattern("HH:mm a")));
+        context.setVariable("location", appointment.getLocation());
+        context.setVariable("type", appointment.getType());
+
+        String htmlContent = templateEngine.process(EmailTemplates.APPOINTMENT_REMINDER, context);
+
+        String subject = EmailSubjects.APPOINTMENT_REMINDER.replace("<<scheduledWith>>", scheduledWith.getFirstname()+" "+scheduledWith.getLastname());
+
+        EmailDetails emailDetails= EmailDetails.builder().to(scheduledBy.getEmail()).cc(scheduledWith.getEmail()).subject(subject).body(htmlContent).build();
+
+        sendEmail(emailDetails);
+    }
+
 }

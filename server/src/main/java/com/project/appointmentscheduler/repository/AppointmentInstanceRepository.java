@@ -23,4 +23,7 @@ public interface AppointmentInstanceRepository extends JpaRepository<Appointment
             @Param("p_scheduled_with") Long scheduledWith,
             @Param("p_instance_id") Long instanceId
     );
+
+    @Query(value = "SELECT * FROM appointment_instance where DATE(start_date_time) = date(NOW()) AND status<>'CANCELLED'",nativeQuery = true)
+    List<AppointmentInstance> findAppointmentsForCurrentDate();
 }

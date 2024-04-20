@@ -2,7 +2,7 @@ import moment from "moment";
 import { Severity } from "../constants/common";
 import { registerRequiredFields } from "../constants/appointmentConstants";
 
-export const convertAppointmentIntoInstnaces = (appointments) => {
+export const convertAppointmentIntoInstances = (appointments) => {
   const totalAppoitnmetInstances = appointments.reduce((acc, curr) => {
     const { appointmentInstances, ...rest } = curr;
 
