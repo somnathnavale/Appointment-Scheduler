@@ -10,6 +10,8 @@ import com.project.appointmentscheduler.entity.User;
 import com.project.appointmentscheduler.service.interfaces.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,8 +35,17 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.username}")
     private String emailSender;
 
-    @Async
-    private void sendEmail(EmailDetails emailDetails) {
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Value("${rabbitmq.exchange.email.name}")
+    private String emailExchange;
+
+    @Value("${rabbitmq.binding.email.name}")
+    private String emailRoutingKey;
+
+    @RabbitListener(queues = "email_queue")
+    public void sendEmail(EmailDetails emailDetails) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
 
@@ -52,7 +63,6 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    @Async
     public void sendUserRegistrationEmail(String to, String fullName){
         Context context = new Context();
         context.setVariable("fullName", fullName);
@@ -60,7 +70,7 @@ public class EmailServiceImpl implements EmailService {
         String htmlContent = templateEngine.process(EmailTemplates.USER_REGISTRATION, context);
         EmailDetails emailDetails= EmailDetails.builder().to(to).subject(EmailSubjects.USER_REGISTRATION).body(htmlContent).build();
 
-       sendEmail(emailDetails);
+        rabbitTemplate.convertAndSend(emailExchange, emailRoutingKey, emailDetails);
     }
 
     private void sendAppointmentEmails(Appointment appointment, LocalDateTime startDateTime ,LocalDateTime endDateTime, String action, AppointmentInstance instance){
@@ -125,25 +135,21 @@ public class EmailServiceImpl implements EmailService {
 
         EmailDetails emailDetails= EmailDetails.builder().to(scheduledBy.getEmail()).cc(scheduledWith.getEmail()).subject(subject).body(htmlContent).build();
 
-        sendEmail(emailDetails);
+        rabbitTemplate.convertAndSend(emailExchange, emailRoutingKey, emailDetails);
     }
 
-    @Async
     public void sendAppointmentRegistrationEmail(Appointment appointment, LocalDateTime startDateTime ,LocalDateTime endDateTime){
         sendAppointmentEmails(appointment,startDateTime,endDateTime,"register",null);
     }
 
-    @Async
     public void sendAppointmentUpdateEmail(Appointment appointment, LocalDateTime startDateTime ,LocalDateTime endDateTime){
         sendAppointmentEmails(appointment,startDateTime,endDateTime,"update",null);
     }
 
-    @Async
     public void sendAppointmentInstanceUpdateEmail(Appointment appointment, LocalDateTime startDateTime ,LocalDateTime endDateTime, AppointmentInstance appointmentInstance){
         sendAppointmentEmails(appointment,startDateTime,endDateTime,"update",appointmentInstance);
     }
 
-    @Async
     public void sendAppointmentReminder(Appointment appointment,LocalDateTime startDateTime, LocalDateTime endDateTime){
 
         User scheduledWith = appointment.getScheduledWith();
@@ -166,11 +172,8 @@ public class EmailServiceImpl implements EmailService {
 
         EmailDetails emailDetails= EmailDetails.builder().to(scheduledBy.getEmail()).cc(scheduledWith.getEmail()).subject(subject).body(htmlContent).build();
 
-        sendEmail(emailDetails);
+        rabbitTemplate.convertAndSend(emailExchange, emailRoutingKey, emailDetails);
     }
-
-    @Async
-    @Override
     public void sendEmailsForOTP(String name, String email, int otp) {
 
         Context context = new Context();
@@ -182,7 +185,7 @@ public class EmailServiceImpl implements EmailService {
 
         EmailDetails emailDetails= EmailDetails.builder().to(email).subject(subject).body(htmlContent).build();
 
-        sendEmail(emailDetails);
+        rabbitTemplate.convertAndSend(emailExchange, emailRoutingKey, emailDetails);
 
     }
 
