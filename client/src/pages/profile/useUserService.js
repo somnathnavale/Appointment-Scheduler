@@ -24,7 +24,7 @@ export const useUserService = () => {
   const handleChange = useCallback(
     (e) =>
       setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value })),
-    []
+    [],
   );
 
   const handleUpdate = useCallback(
@@ -51,7 +51,7 @@ export const useUserService = () => {
         setAsyncInfo({
           ...defaultAsyncInfo,
           message: "User updated successfully",
-          severity: Severity.SUCCESS
+          severity: Severity.SUCCESS,
         });
         dispatch(setUser(updatedUserObj));
       } catch (error) {
@@ -60,11 +60,11 @@ export const useUserService = () => {
         setAsyncInfo({
           ...defaultAsyncInfo,
           message: errObj.message,
-          severity: Severity.ERROR
+          severity: Severity.ERROR,
         });
       }
     },
-    [formData, axios, dispatch, editToggle]
+    [formData, axios, dispatch, editToggle],
   );
 
   const handleUpdatePassword = useCallback(
@@ -80,7 +80,7 @@ export const useUserService = () => {
       try {
         await axios.put(
           Endpoints.CHANGE_PASSWORD(formData.userId),
-          updatedUserObj
+          updatedUserObj,
         );
         setAsyncInfo({
           ...defaultAsyncInfo,
@@ -93,11 +93,11 @@ export const useUserService = () => {
         setAsyncInfo({
           ...defaultAsyncInfo,
           message: errObj.message,
-          severity: Severity.ERROR
+          severity: Severity.ERROR,
         });
       }
     },
-    [axios, formData]
+    [axios, formData],
   );
 
   const onClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);

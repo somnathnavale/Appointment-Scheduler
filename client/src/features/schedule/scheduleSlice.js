@@ -5,11 +5,11 @@ const initialState = {
   selectedUser: null,
   pageView: Page.CALENDER,
   selectedEvent: null,
-  pageNavigation:{
-    from:null,
-    message:"",
-    severity:Severity.NONE
-  }
+  pageNavigation: {
+    from: null,
+    message: "",
+    severity: Severity.NONE,
+  },
 };
 
 const scheduleSlice = createSlice({
@@ -25,13 +25,17 @@ const scheduleSlice = createSlice({
     setSelectedEvent: (state, action) => {
       state.selectedEvent = action.payload;
     },
-    setPageNavigation :(state,action)=>{
-      state.pageNavigation=action.payload
-    }
+    setPageNavigation: (state, action) => {
+      state.pageNavigation = action.payload;
+    },
   },
 });
 
-export const { setSelectedUser, setPageView, setSelectedEvent , setPageNavigation} =
-  scheduleSlice.actions;
+export const {
+  setSelectedUser,
+  setPageView,
+  setSelectedEvent,
+  setPageNavigation,
+} = scheduleSlice.actions;
 
 export default scheduleSlice.reducer;

@@ -102,7 +102,7 @@ const CustomAppointment = memo(({ appointment, isMonthView }) => {
             icon={FactCheckRoundedIcon}
             text={
               appointmentStatus.find(
-                (type) => type.value === appointment?.status
+                (type) => type.value === appointment?.status,
               ).label
             }
           />

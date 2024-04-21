@@ -12,7 +12,7 @@ import Loading from "../../components/common/Loading";
 const UpdateForm = lazy(() => import("./UpdateForm"));
 
 const AppointmentView = () => {
-  const [info,setInfo]=useState(true);
+  const [info, setInfo] = useState(true);
   const dispatch = useDispatch();
   const goBack = () => {
     dispatch(setPageView(Page.CALENDER));
@@ -25,18 +25,22 @@ const AppointmentView = () => {
         px: 2,
         height: "100%",
         mt: 1,
-        mb:2
+        mb: 2,
       }}
     >
-      {info && <Alert severity="info" onClose={() => setInfo(false)}>
-        Use Instance button for updating current appointment instance, Appointment button will update all instances if it is recurring appointment.  
-      </Alert>}
+      {info && (
+        <Alert severity="info" onClose={() => setInfo(false)}>
+          Use Instance button for updating current appointment instance,
+          Appointment button will update all instances if it is recurring
+          appointment.
+        </Alert>
+      )}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           mb: 3,
-          mt:1,
+          mt: 1,
           color: "secondary.dark",
         }}
       >
@@ -55,7 +59,7 @@ const AppointmentView = () => {
           textAlign="center"
           sx={{ fontWeight: 500, flexGrow: 1, alignSelf: "baseline" }}
         >
-          Appointment Details 
+          Appointment Details
         </Typography>
       </Box>
       <Box

@@ -14,9 +14,9 @@ const CustomTextField = memo((props) => {
     variant,
     label,
     disabled,
-    readOnly
+    readOnly,
   } = props;
-  
+
   return (
     <TextField
       variant={variant ? variant : "outlined"}
@@ -31,7 +31,7 @@ const CustomTextField = memo((props) => {
         ...style,
       }}
       disabled={disabled}
-      inputProps={{ readOnly:readOnly }}
+      inputProps={{ readOnly: readOnly }}
       required={required}
       autoComplete={autoComplete}
     />

@@ -2,7 +2,18 @@ import { Button } from "@mui/material";
 import React, { memo } from "react";
 
 const CustomButton = memo((props) => {
-  const { btnText, onClick, type, color, variant, style, disabled, id, title,opacity } = props;
+  const {
+    btnText,
+    onClick,
+    type,
+    color,
+    variant,
+    style,
+    disabled,
+    id,
+    title,
+    opacity,
+  } = props;
   return (
     <Button
       variant={variant ? variant : "contained"}
@@ -15,7 +26,7 @@ const CustomButton = memo((props) => {
         "&.Mui-disabled": {
           color: "text.secondary",
         },
-        opacity:opacity || 1
+        opacity: opacity || 1,
       }}
       disabled={disabled}
       onClick={onClick}

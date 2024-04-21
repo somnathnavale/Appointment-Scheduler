@@ -11,7 +11,7 @@ const GenerateFormFields = memo((props) => {
     return <CustomPasswordField {...props} />;
   }
   if (props.type === "dropdown") {
-    return <CustomDropdown {...props } />;
+    return <CustomDropdown {...props} />;
   }
   if (props.type === "date") {
     return <CustomDatePicker {...props} />;

@@ -19,10 +19,10 @@ const CustomNumberField = memo((props) => {
 
   const handleKeyDown = (event) => {
     if (
-      event.key === 'Backspace' ||
-      event.key === 'Delete' ||
-      event.key === 'ArrowLeft' ||
-      event.key === 'ArrowRight' ||
+      event.key === "Backspace" ||
+      event.key === "Delete" ||
+      event.key === "ArrowLeft" ||
+      event.key === "ArrowRight" ||
       /[0-9]/.test(event.key)
     ) {
       return;
@@ -48,7 +48,7 @@ const CustomNumberField = memo((props) => {
       disabled={disabled}
       required={required}
       autoComplete={autoComplete}
-      InputProps={{ inputProps: { min, max} }}
+      InputProps={{ inputProps: { min, max } }}
     />
   );
 });

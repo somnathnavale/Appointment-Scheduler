@@ -17,12 +17,12 @@ const UserInfo = memo(({ selectedUser }) => {
     dispatch(setPageView(Page.SCHEDULE));
     dispatch(
       setSelectedEvent({
-        appointmentId:-1,
-        appointmentInstanceId:-1,
+        appointmentId: -1,
+        appointmentInstanceId: -1,
         scheduledWith: selectedUser,
         scheduledBy: user,
         date: moment(new Date()).format(),
-      })
+      }),
     );
   }, [dispatch, user, selectedUser]);
 

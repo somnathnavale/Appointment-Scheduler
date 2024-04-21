@@ -13,7 +13,7 @@ export const convertAppointmentIntoInstances = (appointments) => {
         ...others,
         start: moment(startDateTime).toDate(),
         end: moment(endDateTime).toDate(),
-        instances:appointmentInstances.length
+        instances: appointmentInstances.length,
       };
     });
     acc.push(...instances);
@@ -93,16 +93,16 @@ export const validateScheduleForm = (formData, request) => {
     type: formData.type,
     status: formData.status,
     location: formData.location,
-    occurrence : formData.occurrence,
+    occurrence: formData.occurrence,
     instances: formData?.instances,
   };
 
   if (request === "post") {
-    appointmentData.appointmentId=-1;
+    appointmentData.appointmentId = -1;
   }
-  
+
   if (request === "put") {
-    appointmentData.appointmentId= formData.appointmentId;
+    appointmentData.appointmentId = formData.appointmentId;
   }
 
   return {
@@ -112,15 +112,15 @@ export const validateScheduleForm = (formData, request) => {
 };
 
 export const validateAppointmentInstanceUpdate = (formData) => {
-  const response=validateScheduleForm(formData,"put");
-  const {severity,data}= response;
-  
+  const response = validateScheduleForm(formData, "put");
+  const { severity, data } = response;
+
   if (severity === Severity.WARNING) {
     return response;
   }
 
   let instanceData = {
-    appointmentInstanceId:formData.appointmentInstanceId,
+    appointmentInstanceId: formData.appointmentInstanceId,
     startDateTime: data.startDateTime,
     endDateTime: data.endDateTime,
     status: formData.status,

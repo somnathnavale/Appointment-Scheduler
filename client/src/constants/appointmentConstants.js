@@ -12,8 +12,8 @@ export const appointmentForm = [
     defaultValue: "",
     placeholder: "Title",
     label: "Title",
-    autoComplete:"off",
-    info:"",
+    autoComplete: "off",
+    info: "",
     disabled: {
       register: false,
       update: false,
@@ -35,8 +35,8 @@ export const appointmentForm = [
     type: "date",
     defaultValue: moment(new Date()),
     info: "",
-    size:"medium",
-    disablePast:true,
+    size: "medium",
+    disablePast: true,
     disabled: {
       register: false,
       update: false,
@@ -56,7 +56,7 @@ export const appointmentForm = [
     label: "Start Time",
     required: true,
     type: "dropdown",
-    lovKey:"timeSlots",
+    lovKey: "timeSlots",
     defaultValue: "",
     info: "",
     disabled: {
@@ -78,7 +78,7 @@ export const appointmentForm = [
     label: "End Time",
     required: true,
     type: "dropdown",
-    lovKey:"timeSlots",
+    lovKey: "timeSlots",
     defaultValue: "",
     autoComplete: "off",
     info: "",
@@ -101,7 +101,7 @@ export const appointmentForm = [
     label: "Appointment Type",
     required: true,
     type: "dropdown",
-    lovKey:"type",
+    lovKey: "type",
     defaultValue: "",
     autoComplete: "off",
     info: "",
@@ -146,7 +146,7 @@ export const appointmentForm = [
     label: "Appointment Status",
     required: true,
     type: "dropdown",
-    lovKey:"status",
+    lovKey: "status",
     defaultValue: appointmentStatuses.find(
       (status) => status.value === "SCHEDULED",
     ).value,
@@ -171,7 +171,7 @@ export const appointmentForm = [
     label: "Appointment Occurrence",
     required: true,
     type: "dropdown",
-    lovKey:"occurrence",
+    lovKey: "occurrence",
     defaultValue: appointmentOccurrences.find(
       (status) => status.value === "ONCE",
     ).value,
@@ -220,7 +220,7 @@ export const appointmentForm = [
     label: "Scheduled With",
     required: true,
     type: "dropdown",
-    lovKey:"scheduledWith",
+    lovKey: "scheduledWith",
     defaultValue: "",
     autoComplete: "off",
     info: "",
@@ -243,7 +243,7 @@ export const appointmentForm = [
     label: "Scheduled By",
     required: true,
     type: "dropdown",
-    lovKey:"scheduledBy",
+    lovKey: "scheduledBy",
     defaultValue: "",
     autoComplete: "off",
     info: "",
@@ -267,8 +267,8 @@ export const appointmentForm = [
     defaultValue: "",
     placeholder: "Description",
     label: "Description",
-    autoComplete:"off",
-    info:"",
+    autoComplete: "off",
+    info: "",
     disabled: {
       register: false,
       update: false,
@@ -279,7 +279,7 @@ export const appointmentForm = [
       md: 12,
       lg: 12,
     },
-    rows:2,
+    rows: 2,
     color: "primary",
     forms: ["register", "update"],
   },
@@ -298,22 +298,40 @@ export const registerAppointmentFields = appointmentForm.map((field) => {
   };
 });
 
-export const registerRequiredFields = registerAppointmentFields.map(field=>({name:field.name,label:field.label}));
+export const registerRequiredFields = registerAppointmentFields.map(
+  (field) => ({ name: field.name, label: field.label }),
+);
 
-export const updateAppointmentFields = appointmentForm.filter(field=>field.forms.indexOf("update")!==-1).map((field) => {
-  const { disabled, forms, ...rest } = field;
-  return {
-    ...rest,
-    readOnly: disabled.update,
-  };
-});
+export const updateAppointmentFields = appointmentForm
+  .filter((field) => field.forms.indexOf("update") !== -1)
+  .map((field) => {
+    const { disabled, forms, ...rest } = field;
+    return {
+      ...rest,
+      readOnly: disabled.update,
+    };
+  });
 
-export const Actions={
-  APPOINTMENT:"appointment",
-  INSTANCE:"instance"
-}
+export const Actions = {
+  APPOINTMENT: "appointment",
+  INSTANCE: "instance",
+};
 
-export const readOnlyFields ={
-  [Actions.APPOINTMENT] :["scheduledWith","scheduledBy","occurrence","date","status"],
-  [Actions.INSTANCE] : ["title","description","type","location","scheduledWith","scheduledBy","occurrence"],
-}
+export const readOnlyFields = {
+  [Actions.APPOINTMENT]: [
+    "scheduledWith",
+    "scheduledBy",
+    "occurrence",
+    "date",
+    "status",
+  ],
+  [Actions.INSTANCE]: [
+    "title",
+    "description",
+    "type",
+    "location",
+    "scheduledWith",
+    "scheduledBy",
+    "occurrence",
+  ],
+};

@@ -44,7 +44,11 @@ const Profile = memo(() => {
           maxWidth: { sm: "400px", md: "600px" },
         }}
       >
-        <Typography variant="h3" color="secondary.dark" sx={{fontWeight:500}}>
+        <Typography
+          variant="h3"
+          color="secondary.dark"
+          sx={{ fontWeight: 500 }}
+        >
           User Details
         </Typography>
         <UpdateProfile

@@ -30,7 +30,11 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setAsyncInfo({ ...defaultAsyncInfo, loading: true, message: "Registering User..." });
+    setAsyncInfo({
+      ...defaultAsyncInfo,
+      loading: true,
+      message: "Registering User...",
+    });
     try {
       await axiosPublic.post(Endpoints.REGISTER_USER, formData);
       setAsyncInfo({ ...defaultAsyncInfo, severity: Severity.SUCCESS });
@@ -54,7 +58,7 @@ const Register = () => {
   const handleChange = useCallback(
     (e) =>
       setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value })),
-    []
+    [],
   );
 
   const columnCalculator = (name) =>

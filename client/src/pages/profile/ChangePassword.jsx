@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React, { memo, } from "react";
+import React, { memo } from "react";
 import {
   Action,
   changePasswordFormFields,
@@ -16,40 +16,40 @@ const styles = {
   },
 };
 
-const ChangePassword = memo(({ asyncInfo, formData, handleChange, handleUpdatePassword }) => {
-  
-  return (
-    <form onSubmit={handleUpdatePassword}>
-      <Grid container spacing={1} sx={{ mt: 4 }}>
-        {changePasswordFormFields.map((field) => (
-          <Grid item key={field.name} xs={8}>
-            <GenerateFormFields
-              {...{
-                ...field,
-                value: formData[field.name],
-                onChange: handleChange,
-                size:"small"
-              }}
+const ChangePassword = memo(
+  ({ asyncInfo, formData, handleChange, handleUpdatePassword }) => {
+    return (
+      <form onSubmit={handleUpdatePassword}>
+        <Grid container spacing={1} sx={{ mt: 4 }}>
+          {changePasswordFormFields.map((field) => (
+            <Grid item key={field.name} xs={8}>
+              <GenerateFormFields
+                {...{
+                  ...field,
+                  value: formData[field.name],
+                  onChange: handleChange,
+                  size: "small",
+                }}
+              />
+            </Grid>
+          ))}
+          <Grid item xs={4}>
+            <CustomButton
+              btnText={
+                asyncInfo.loading && asyncInfo.action === Action.CHANGE_PASSWORD
+                  ? "Changing Password..."
+                  : "Change Password"
+              }
+              style={styles.changePassBtn}
+              variant="outlined"
+              disabled={asyncInfo.loading}
             />
           </Grid>
-        ))}
-        <Grid item xs={4}>
-          <CustomButton
-            btnText={
-              asyncInfo.loading &&
-              asyncInfo.action === Action.CHANGE_PASSWORD
-                ? "Changing Password..."
-                : "Change Password"
-            }
-            style={styles.changePassBtn}
-            variant="outlined"
-            disabled={asyncInfo.loading}
-          />
         </Grid>
-      </Grid>
-    </form>
-  );
-});
+      </form>
+    );
+  },
+);
 
 ChangePassword.displayName = "ChangePassword";
 

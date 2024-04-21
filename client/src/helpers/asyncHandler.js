@@ -5,7 +5,7 @@ export const ErrorHandler = (error) => {
     if (error.response) {
       const { message, status } = error.response.data;
       const statusCode = error.response.status;
-      return { message, status:status, statusCode };
+      return { message, status: status, statusCode };
     } else if (error.request) {
       return {
         message: error?.message || "Network Error",
@@ -21,7 +21,11 @@ export const ErrorHandler = (error) => {
     }
   }
 
-  return { message: "Something went wrong", status: Severity.ERROR, statusCode: 500 };
+  return {
+    message: "Something went wrong",
+    status: Severity.ERROR,
+    statusCode: 500,
+  };
 };
 
 export const asyncHandler = (fn) => {

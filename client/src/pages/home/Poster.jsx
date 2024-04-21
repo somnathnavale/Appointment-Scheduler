@@ -13,7 +13,10 @@ const styles = {
 const Poster = () => {
   const navigate = useNavigate();
 
-  const handleNaviagete = useCallback(() => navigate(AppRoutes.SCHEDULE), [navigate]);
+  const handleNaviagete = useCallback(
+    () => navigate(AppRoutes.SCHEDULE),
+    [navigate],
+  );
 
   return (
     <InnerLayout bgcolor="#fff">

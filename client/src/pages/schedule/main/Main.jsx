@@ -2,11 +2,7 @@ import { Box } from "@mui/material";
 import React, { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserInfo from "./UserInfo";
-import {
-  Page,
-  Severity,
-  defaultAsyncInfo,
-} from "../../../constants/common";
+import { Page, Severity, defaultAsyncInfo } from "../../../constants/common";
 import AppointmentView from "../../appointment/AppointmentView";
 import Loading from "../../../components/common/Loading";
 import Scheduler from "./Scheduler";
@@ -17,7 +13,7 @@ const CalenderView = lazy(() => import("./CalenderView"));
 
 const Main = () => {
   const { selectedUser, pageView, pageNavigation } = useSelector(
-    (store) => store.schedule
+    (store) => store.schedule,
   );
   const [asyncInfo, setAsyncInfo] = useState(defaultAsyncInfo);
 
@@ -30,13 +26,15 @@ const Main = () => {
         message: pageNavigation.message,
         severity: pageNavigation.severity,
       });
-      dispatch(setPageNavigation({
-        from:null,
-        message:"",
-        severity:Severity.NONE
-      }))
+      dispatch(
+        setPageNavigation({
+          from: null,
+          message: "",
+          severity: Severity.NONE,
+        }),
+      );
     }
-  }, [pageNavigation,dispatch]);
+  }, [pageNavigation, dispatch]);
 
   const handleSnakClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);
 
@@ -71,7 +69,7 @@ const Main = () => {
             bgcolor: "fff",
             display: "flex",
             flexDirection: "column",
-            overflow:"auto"
+            overflow: "auto",
           }}
         >
           <Box>
@@ -99,7 +97,7 @@ const Main = () => {
           </Box>
         </Box>
       ) : pageView === Page.EVENT ? (
-          <AppointmentView />
+        <AppointmentView />
       ) : (
         <Scheduler />
       )}

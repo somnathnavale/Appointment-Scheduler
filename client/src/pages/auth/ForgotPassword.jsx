@@ -27,7 +27,7 @@ const ForgotPassword = () => {
   const [formData, setFormData] = useState(defaultForgotPasswordForm);
   const [stage, setStage] = useState(ForPassStage.USERNAME);
 
-  const {navigate} = useRouting();
+  const { navigate } = useRouting();
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -81,12 +81,12 @@ const ForgotPassword = () => {
           });
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
         const errObj = ErrorHandler(error);
         setAsyncInfo({ severity: Severity.ERROR, message: errObj.message });
       }
     },
-    [stage, formData, navigate]
+    [stage, formData, navigate],
   );
 
   const handleChange = useCallback((e) => {
@@ -115,7 +115,7 @@ const ForgotPassword = () => {
       <form>
         {forgotPasswordFormFields
           .filter(
-            (field) => ForPassStageFields[stage]?.indexOf(field.name) != -1
+            (field) => ForPassStageFields[stage]?.indexOf(field.name) != -1,
           )
           .map((field) => (
             <GenerateFormFields

@@ -3,7 +3,8 @@ import { IconButton, InputAdornment, TextField } from "@mui/material";
 import React, { memo, useState } from "react";
 
 const CustomPasswordField = memo((props) => {
-  const { label, placeholder, name, value, onChange, style, required, size } = props;
+  const { label, placeholder, name, value, onChange, style, required, size } =
+    props;
 
   const [showPassword, setShowPassword] = useState(false);
 

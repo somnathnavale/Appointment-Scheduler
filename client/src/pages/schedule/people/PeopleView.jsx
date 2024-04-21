@@ -18,7 +18,7 @@ const PeopleView = memo(() => {
 
   const axios = useAxios(axiosPublic);
   const debouncedSearchText = useDebounce(searchText, 1000);
-  const {user} = useSelector(store=>store.user);
+  const { user } = useSelector((store) => store.user);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -38,10 +38,17 @@ const PeopleView = memo(() => {
           name: user.firstname + " " + user.lastname,
         }));
 
-        if(user!=null && peopleWithNames.find(person=>person.userId===user.userId)?.userId){
-          const {token,...loggedInUser}= user;
-          peopleWithNames=peopleWithNames.filter(person=>person?.userId!==loggedInUser.userId);
-          loggedInUser.name= loggedInUser.firstname +" "+ loggedInUser.lastname+ " (you)";
+        if (
+          user != null &&
+          peopleWithNames.find((person) => person.userId === user.userId)
+            ?.userId
+        ) {
+          const { token, ...loggedInUser } = user;
+          peopleWithNames = peopleWithNames.filter(
+            (person) => person?.userId !== loggedInUser.userId,
+          );
+          loggedInUser.name =
+            loggedInUser.firstname + " " + loggedInUser.lastname + " (you)";
           peopleWithNames.unshift(loggedInUser);
         }
 

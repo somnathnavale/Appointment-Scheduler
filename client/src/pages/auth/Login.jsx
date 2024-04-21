@@ -52,11 +52,15 @@ const Login = memo(() => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setAsyncInfo({ ...defaultAsyncInfo, loading:true,message: "Logging in..." });
+      setAsyncInfo({
+        ...defaultAsyncInfo,
+        loading: true,
+        message: "Logging in...",
+      });
       const response = await axiosPublic.post(Endpoints.LOGIN, formData);
       dispatch(setUser(response.data));
       sessionStorage.setItem("user", JSON.stringify(response.data));
-      setAsyncInfo({ ...defaultAsyncInfo, severity:Severity.SUCCESS });
+      setAsyncInfo({ ...defaultAsyncInfo, severity: Severity.SUCCESS });
       setFormData(defaultLoginUserForm);
       const path = location.state?.from || AppRoutes.HOME;
       navigate(path);

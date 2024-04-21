@@ -24,7 +24,7 @@ const Schedule = memo(() => {
       height="inherit"
       sx={{
         minHeight: {
-          md:"calc( 100vh - 120px )",
+          md: "calc( 100vh - 120px )",
         },
       }}
       alignItems="stretch"
@@ -37,7 +37,7 @@ const Schedule = memo(() => {
           height: { xs: "auto" },
           maxHeight: {
             xs: "300px",
-            md:"calc( 100vh - 120px )",
+            md: "calc( 100vh - 120px )",
           },
           mb: { xs: 4, sm: 0 },
           overflow: "auto",
@@ -54,8 +54,7 @@ const Schedule = memo(() => {
           overflow: "hidden",
           maxHeight: {
             xs: "inherit",
-            md: 
-              pageView === Page.EVENT ? "inherit": "calc( 100vh - 120px )",
+            md: pageView === Page.EVENT ? "inherit" : "calc( 100vh - 120px )",
           },
         }}
       >

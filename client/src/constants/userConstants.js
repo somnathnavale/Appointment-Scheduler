@@ -133,26 +133,26 @@ export const forgotPasswordFormFields = userForm
   });
 
 export const defaultForgotPasswordForm = userForm
-.filter((elem) => elem.forms.indexOf("forgot") !== -1)
-.reduce((acc, curr) => {
-  acc[curr.name] = curr.defaultValue;
-  return acc;
-}, {});
+  .filter((elem) => elem.forms.indexOf("forgot") !== -1)
+  .reduce((acc, curr) => {
+    acc[curr.name] = curr.defaultValue;
+    return acc;
+  }, {});
 
-export const Action={
-  UPDATE:"update",
-  CHANGE_PASSWORD:"change_password"
-}
+export const Action = {
+  UPDATE: "update",
+  CHANGE_PASSWORD: "change_password",
+};
 
 // forgot password screen constants
-export const ForPassStage={
-  USERNAME : "username",
-  OTP :"otp",
-  PASSWORD :"password"
-}
+export const ForPassStage = {
+  USERNAME: "username",
+  OTP: "otp",
+  PASSWORD: "password",
+};
 
-export const ForPassStageFields={
-  [ForPassStage.USERNAME] : ["email"],
-  [ForPassStage.OTP] : ["otp"],
-  [ForPassStage.PASSWORD] : ["password", "confirmPassword"]
-}
+export const ForPassStageFields = {
+  [ForPassStage.USERNAME]: ["email"],
+  [ForPassStage.OTP]: ["otp"],
+  [ForPassStage.PASSWORD]: ["password", "confirmPassword"],
+};

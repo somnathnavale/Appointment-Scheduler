@@ -9,7 +9,7 @@ const Main = memo(() => {
         flexGrow: 1,
       }}
     >
-      <Outlet />  
+      <Outlet />
     </Box>
   );
 });

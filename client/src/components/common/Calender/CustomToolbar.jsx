@@ -51,19 +51,17 @@ const CustomToolbar = memo((props) => {
 
   const handleViewChange = useCallback(
     (e) => onViewChange(e, e.target.id),
-    [onViewChange]
+    [onViewChange],
   );
 
   const handleDateChange = useCallback(
     () =>
-      onDateChange(
-        {
-          target: {
-            value: moment(new Date()),
-          },
-        }
-      ),
-    [onDateChange]
+      onDateChange({
+        target: {
+          value: moment(new Date()),
+        },
+      }),
+    [onDateChange],
   );
 
   return (

@@ -40,7 +40,7 @@ const MyAppointments = memo(() => {
 
   const dispatch = useDispatch();
   const axios = useAxios(axiosPublic);
-  const {navigate} = useRouting();
+  const { navigate } = useRouting();
 
   useEffect(() => {
     async function fetchUserAppointments() {
@@ -51,10 +51,10 @@ const MyAppointments = memo(() => {
       });
       try {
         const response = await axios.get(
-          Endpoints.GET_USER_APPOINTMENTS(user.userId, user.userId)
+          Endpoints.GET_USER_APPOINTMENTS(user.userId, user.userId),
         );
         const totalAppointments = convertAppointmentIntoInstances(
-          response.data.commonAppointments
+          response.data.commonAppointments,
         );
         setAppointments([...totalAppointments]);
         setAsyncInfo(defaultAsyncInfo);
@@ -82,16 +82,15 @@ const MyAppointments = memo(() => {
           date: moment(selectedEvent.start).format(),
           start: moment(selectedEvent.start).format("HH:mm"),
           end: moment(selectedEvent.end).format("HH:mm"),
-        })
+        }),
       );
       dispatch(setSelectedUser(selectedEvent?.scheduledWith));
-      navigate("/schedule")
+      navigate("/schedule");
     },
-    [dispatch,navigate]
+    [dispatch, navigate],
   );
 
-  const handleSlotSelect = useCallback((e) => {
-  }, []);
+  const handleSlotSelect = useCallback((e) => {}, []);
 
   const onClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);
 

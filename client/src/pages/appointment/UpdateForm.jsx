@@ -62,7 +62,7 @@ const UpdateForm = memo(() => {
     if (selectedEvent?.title) {
       const isDatePassed = moment(new Date()).isAfter(
         moment(selectedEvent?.date),
-        "minute"
+        "minute",
       );
       const isNotCreator = selectedEvent?.scheduledBy?.userId !== user?.userId;
       if (isDatePassed || isNotCreator) setDisabled(true);
@@ -80,28 +80,31 @@ const UpdateForm = memo(() => {
         setAsyncInfo((prev) => ({ ...prev, action: Actions.APPOINTMENT }));
         return;
       }
-      const {severity,data,message} = validateScheduleForm(formData, "put");
-      
+      const { severity, data, message } = validateScheduleForm(formData, "put");
+
       if (severity === Severity.WARNING) {
-        setAsyncInfo(prev=>({ ...prev, severity,message }));
+        setAsyncInfo((prev) => ({ ...prev, severity, message }));
         return;
       }
       setAsyncInfo({
-        action: Actions.APPOINTMENT ,
-        severity:Severity.NONE,
+        action: Actions.APPOINTMENT,
+        severity: Severity.NONE,
         loading: true,
         message: "Updating Appointment...",
       });
 
       try {
-        await axios.put(Endpoints.UPDATE_APPOINTMENT(formData.appointmentId),data);
+        await axios.put(
+          Endpoints.UPDATE_APPOINTMENT(formData.appointmentId),
+          data,
+        );
         dispatch(setPageView(Page.CALENDER));
         dispatch(
           setPageNavigation({
             from: "UpdateForm",
             message: "Appointment updated successfully",
             severity: Severity.SUCCESS,
-          })
+          }),
         );
       } catch (error) {
         const errObj = ErrorHandler(error);
@@ -112,7 +115,7 @@ const UpdateForm = memo(() => {
         });
       }
     },
-    [formData, dispatch, asyncInfo.action,axios]
+    [formData, dispatch, asyncInfo.action, axios],
   );
 
   const handleInstanceUpdate = useCallback(async () => {
@@ -120,14 +123,15 @@ const UpdateForm = memo(() => {
       setAsyncInfo((prev) => ({ ...prev, action: Actions.INSTANCE }));
       return;
     }
-    const {data,severity,message} = validateAppointmentInstanceUpdate(formData);
+    const { data, severity, message } =
+      validateAppointmentInstanceUpdate(formData);
     if (severity === Severity.WARNING) {
-      setAsyncInfo(prev=>({ ...prev, severity,message }));
+      setAsyncInfo((prev) => ({ ...prev, severity, message }));
       return;
     }
     setAsyncInfo({
-      action: Actions.INSTANCE ,
-      severity:Severity.NONE,
+      action: Actions.INSTANCE,
+      severity: Severity.NONE,
       loading: true,
       message: "Updating Appointment Instance...",
     });
@@ -135,9 +139,9 @@ const UpdateForm = memo(() => {
       await axios.put(
         Endpoints.UPDATE_APPOINTMENT_INSTANCE(
           formData.appointmentId,
-          formData.appointmentInstanceId
+          formData.appointmentInstanceId,
         ),
-        data
+        data,
       );
       dispatch(setPageView(Page.CALENDER));
       dispatch(
@@ -145,7 +149,7 @@ const UpdateForm = memo(() => {
           from: "UpdateForm",
           message: "Appointment instance updated successfully",
           severity: Severity.SUCCESS,
-        })
+        }),
       );
     } catch (error) {
       const errObj = ErrorHandler(error);
@@ -167,7 +171,7 @@ const UpdateForm = memo(() => {
         message={asyncInfo.message}
         severity={asyncInfo.severity}
       />
-      {asyncInfo.loading && <Loading text={asyncInfo.message}/>}
+      {asyncInfo.loading && <Loading text={asyncInfo.message} />}
       <Grid container spacing={2}>
         {updateAppointmentFields.map((field, idx) => {
           const { grid, ...others } = field;
@@ -231,7 +235,7 @@ const UpdateForm = memo(() => {
             onClick={handleInstanceUpdate}
           />
         </Grid>
-        <MoreActions setAsyncInfo={setAsyncInfo} disabled={disabled}/>
+        <MoreActions setAsyncInfo={setAsyncInfo} disabled={disabled} />
       </Grid>
     </form>
   );

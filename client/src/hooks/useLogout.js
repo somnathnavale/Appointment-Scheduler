@@ -13,7 +13,11 @@ const useLogout = () => {
     sessionStorage.removeItem("user");
     dispatch(resetUser({}));
     navigate(AppRoutes.LOGIN, {
-      state: { navigate: true, message: "Logged out successfully", severity: Severity.SUCCESS },
+      state: {
+        navigate: true,
+        message: "Logged out successfully",
+        severity: Severity.SUCCESS,
+      },
     });
   }, [dispatch, navigate]);
 

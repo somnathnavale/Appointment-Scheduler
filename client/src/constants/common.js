@@ -1,16 +1,16 @@
 export const Severity = Object.freeze({
-  INFO:"info",
+  INFO: "info",
   SUCCESS: "success",
   ERROR: "error",
   WARNING: "warning",
-  NONE:""
+  NONE: "",
 });
 
 export const defaultAsyncInfo = {
   loading: false,
   message: "",
   action: "",
-  severity: Severity.NONE
+  severity: Severity.NONE,
 };
 
 export const Page = {

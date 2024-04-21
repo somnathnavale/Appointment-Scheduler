@@ -60,7 +60,7 @@ const MoreActions = memo(({ setAsyncInfo, disabled }) => {
     });
     try {
       await axios.delete(
-        Endpoints.DELETE_APPOINTMENT(selectedEvent?.appointmentId)
+        Endpoints.DELETE_APPOINTMENT(selectedEvent?.appointmentId),
       );
       dispatch(setPageView(Page.CALENDER));
       dispatch(
@@ -68,7 +68,7 @@ const MoreActions = memo(({ setAsyncInfo, disabled }) => {
           from: "UpdateForm",
           message: "Appointment deleted successfully",
           severity: Severity.SUCCESS,
-        })
+        }),
       );
     } catch (error) {
       const errObj = ErrorHandler(error);
@@ -90,8 +90,8 @@ const MoreActions = memo(({ setAsyncInfo, disabled }) => {
       await axios.delete(
         Endpoints.DELETE_APPOINTMENT_INSTANCE(
           selectedEvent?.appointmentId,
-          selectedEvent?.appointmentInstanceId
-        )
+          selectedEvent?.appointmentInstanceId,
+        ),
       );
       dispatch(setPageView(Page.CALENDER));
       dispatch(
@@ -99,7 +99,7 @@ const MoreActions = memo(({ setAsyncInfo, disabled }) => {
           from: "UpdateForm",
           message: "Appointment instance deleted successfully",
           severity: Severity.SUCCESS,
-        })
+        }),
       );
     } catch (error) {
       const errObj = ErrorHandler(error);
@@ -118,7 +118,7 @@ const MoreActions = memo(({ setAsyncInfo, disabled }) => {
         ...selectedEvent,
         appointmentId: -1,
         appointmentInstanceId: -1,
-      })
+      }),
     );
   };
 
@@ -165,6 +165,6 @@ const MoreActions = memo(({ setAsyncInfo, disabled }) => {
   );
 });
 
-MoreActions.displayName="MoreActions";
+MoreActions.displayName = "MoreActions";
 
 export default MoreActions;

@@ -18,7 +18,7 @@ const CustomDatePicker = memo((props) => {
     value,
     onChange,
     style,
-    disabled
+    disabled,
   } = props;
 
   return (
@@ -54,7 +54,7 @@ const CustomDatePicker = memo((props) => {
               size: size ?? "small",
               required: required,
               fullWidth: true,
-              ...style
+              ...style,
             },
           }}
         />

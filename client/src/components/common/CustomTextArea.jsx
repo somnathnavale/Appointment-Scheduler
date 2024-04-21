@@ -14,7 +14,7 @@ const CustomTextArea = memo((props) => {
     label,
     disabled,
     readOnly,
-    rows
+    rows,
   } = props;
 
   return (
@@ -30,7 +30,7 @@ const CustomTextArea = memo((props) => {
       sx={{
         ...style,
       }}
-      inputProps={{ readOnly:readOnly }}
+      inputProps={{ readOnly: readOnly }}
       disabled={disabled}
       required={required}
       autoComplete={autoComplete}

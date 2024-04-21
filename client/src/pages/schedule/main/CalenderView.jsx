@@ -34,7 +34,7 @@ const CalenderView = memo(() => {
       });
       try {
         const response = await axios.get(
-          Endpoints.GET_USER_APPOINTMENTS(user.userId, selectedUser.userId)
+          Endpoints.GET_USER_APPOINTMENTS(user.userId, selectedUser.userId),
         );
         const totalAppointments = convertAppointmentIntoInstances([
           ...response.data.commonAppointments,
@@ -66,11 +66,11 @@ const CalenderView = memo(() => {
           date: moment(selectedEvent.start).format(),
           start: moment(selectedEvent.start).format("HH:mm"),
           end: moment(selectedEvent.end).format("HH:mm"),
-        })
+        }),
       );
       dispatch(setSelectedUser(selectedEvent?.scheduledWith));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleCreateSelect = useCallback(
@@ -85,10 +85,10 @@ const CalenderView = memo(() => {
           appointmentInstanceId: -1,
           scheduledWith: selectedUser,
           scheduledBy: user,
-        })
+        }),
       );
     },
-    [dispatch, selectedUser, user]
+    [dispatch, selectedUser, user],
   );
 
   const onClose = useCallback(() => setAsyncInfo(defaultAsyncInfo), []);
